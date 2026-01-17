@@ -1,0 +1,215 @@
+\section{Skull Stripping}
+
+High-resolution MRI images contain non-brain tissues such as skin, fat, muscle, neck structures, and eyeballs, unlike other modalities such as PET scans. The presence of these non-brain tissues can severely impact automated processing algorithms such as image segmentation and analysis techniques. Therefore, quantitative morphometric studies of MR brain images—such as those used in Alzheimer's disease research—commonly require a preprocessing step to remove non-brain and extra-cranial tissues \cite{kalavathiMethodsSkullStripping2016}.
+
+The MRI system produces brain images as 3D volumetric data composed of 2D slices. Further computer-aided processing is essential in order to extract meaningful information, whether for research, diagnostic, or clinical purposes.
+
+As noted earlier, quantitative morphometric studies require isolating brain tissue from non-brain tissue, a process referred to as \emph{skull stripping}. Automated skull-stripping enhances segmentation accuracy, making manual or automated segmentation methods more reliable. Examples from \cite{kalavathiMethodsSkullStripping2016} are shown in Figure~\ref{fig:skullstrip_example}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\linewidth]{images/Skull Stripping image.png}
+\caption{Examples of automated skull stripping from \cite{kalavathiMethodsSkullStripping2016}.}
+\label{fig:skullstrip_example}
+\end{figure}
+
+Voxel-based morphometry (VBM) results also showed significant improvements after skull stripping was applied \cite{rehmanConventionalDeepLearning2020}. Many brain imaging applications benefit from the precise segmentation of the brain from surrounding tissues.
+
+Skull-stripping algorithms are typically evaluated by their speed and their impact on downstream automated tasks such as segmentation.
+
+Multiple skull-stripping techniques have been developed due to their success and effectiveness in improving diagnostic and prognostic accuracy \cite{kalavathiMethodsSkullStripping2016}.
+
+Manual brain segmentation is considered the most robust and accurate approach, but it is extremely laborious, time-consuming, and subject to inter-clinician variability. Manual masks are often treated as the ground truth against which automated methods are validated \cite{rehmanConventionalDeepLearning2020}. This has led to a strong need for automated skull stripping.
+
+Despite significant progress, many skull-stripping approaches still perform well only on specific datasets and often require tuning of hyperparameters. According to \cite{rehmanConventionalDeepLearning2020}, skull-stripping methods fall into three primary categories:
+
+\begin{enumerate}
+\item Manual skull stripping
+\item Classical approaches
+\item Deep learning–based approaches
+\end{enumerate}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\linewidth]{images/Skull Stripping Techniques.png}
+\caption{Overview of skull-stripping categories \cite{rehmanConventionalDeepLearning2020}.}
+\end{figure}
+
+\subsection{Skull Stripping Methods}
+
+Based on \cite{kalavathiMethodsSkullStripping2016}, skull-stripping techniques can be grouped as follows:
+
+\begin{itemize}
+\item Mathematical morphology-based methods
+\item Intensity-based methods
+\item Deformable surface-based methods
+\item Atlas-based methods
+\item Hybrid methods
+\item Deep learning–based methods
+\end{itemize}
+
+\subsection{Morphology-Based Methods}
+
+These methods use morphological erosion and dilation operations—combined with thresholding and edge detection—to estimate the initial region of interest (ROI) and separate brain from non-brain tissues.
+
+A key drawback is that performance depends heavily on empirically tuned parameters related to the shape and size of the morphological structuring elements.
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+    \item \textbf{Brain Surface Extraction (BSE).}\\
+    Uses anisotropic diffusion filtering, Marr–Hildreth edge detection, and morphological operations such as erosion and dilation. BSE is fast (=3.5 seconds) \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{Brain Extraction Algorithm.}\\
+    Uses diffusion, morphological operations, and connected component analysis for T1W and T2W MRI \cite{rehmanConventionalDeepLearning2020}.
+
+    \item \textbf{SMHASS (2012).}\\
+    Combines deformable models with histogram analysis and morphological preprocessing \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Intensity-Based Methods}
+
+These methods classify brain vs.\ non-brain regions using pixel intensities. Examples include histogram-based, region-growing, and edge-based methods. Their primary limitation is sensitivity to MRI noise, low contrast, and bias field artifacts.
+
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+    \item \textbf{Graph Cuts (GCUT, 2010).}\\
+    Uses graph-theoretic segmentation to isolate brain tissue from dura, beginning with thresholding followed by connected submask selection \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{Region Growing (RG).}\\
+    Forms connected regions based on local intensity similarity. Variants include 2D approaches for coronal slices and MARGA for axial views and low-quality images \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Deformable Surface-Based Methods}
+
+These methods employ active contours (snakes) that evolve iteratively according to an energy functional. The contour adapts—shrinking or expanding—to match the brain boundary. Level-set formulations provide a robust mathematical framework.
+
+Their performance depends strongly on the initial contour and image quality, especially the clarity of edges.
+
+\textit{Examples}
+
+\begin{enumerate}
+    \item \textbf{BET (Brain Extraction Tool, 2002).}\\
+    Widely used, fast, and freely available. It expands a tessellated sphere to match brain edges using adaptive forces \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{Model-Based Level Set (MLS, 2006).}\\
+    Uses curvature and intensity-derived forces to evolve an active contour \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{3dSkullStrip (AFNI, 2005).}\\
+    BET-like but includes improvements to avoid eyes and ventricles \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Atlas / Template-Based Methods}
+
+These methods register the subject MRI to one or more anatomical atlases, enabling the transfer of brain masks to the subject.
+
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+    \item \textbf{MAPS (2011).}\\
+    Combines multiple atlas registrations to produce a consensus segmentation \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{BEaST (2012).}\\
+    Uses nonlocal segmentation with multi-resolution priors \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{Pincram (2015).}\\
+    Employs iterative refinement to propagate labels from multiple atlases \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+\subsection{Hybrid Methods}
+
+Hybrid approaches combine multiple algorithms or features to improve robustness and accuracy.
+
+\subsubsection{\textit{Examples}}
+
+\begin{enumerate}
+    \item \textbf{SPECTRE (2011).}\\
+    Integrates elastic registration, tissue segmentation, and morphological watershed operations \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{HWA (Hybrid Watershed Algorithm, 2004).}\\
+    Combines watershed segmentation with deformable surface models \cite{kalavathiMethodsSkullStripping2016}.
+
+    \item \textbf{BEMA (2004).}\\
+    Runs multiple extractors (BET, BSE, Watershed, etc.) in parallel and merges the results \cite{rehmanConventionalDeepLearning2020}.
+\end{enumerate}
+
+\subsection{Deep Learning-Based Methods}
+Deep learning approaches include 2D and 3D CNNs. While 3D CNNs capture 3D context, they require much higher computational resources. DL methods are generally categorized as:
+
+\begin{itemize}
+\item Patch-based CNNs
+\item Encoder–decoder CNNs (e.g., U-Net)
+\end{itemize}
+
+Encoder–decoder architectures typically perform better, are faster, and can capture global and local features.
+
+However despite their performance , deep learning mehods showcase several limitations, such as : 
+\begin{itemize}
+\item The requirement of large annotated datasets
+\item The inability of hyperparameter tuning due to the black-box behavior of the networks
+\item The sensitivity that emerges when trained on healthy individuals
+\end{itemize}
+
+\subsection{Comparative Analysis}
+
+\subsection{Automated vs.\ Manual Approaches}
+
+\begin{itemize}
+\item Automated methods are faster but may require parameter tuning.
+\item Semi-automated methods are accurate but slow and user-dependent.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+Common metrics include:
+
+\begin{itemize}
+\item Dice coefficient
+\item Jaccard Index
+\item Sensitivity / Specificity
+\item False Positive Rate / False Negative Rate
+\item Hausdorff Distance
+\item Average Symmetric Surface Distance (ASSD)
+\end{itemize}
+
+Comparative findings from \cite{kalavathiMethodsSkullStripping2016,rehmanConventionalDeepLearning2020} include:
+
+\begin{itemize}
+\item McStrip (hybrid) outperforms BET and BSE.
+\item HWA shows high sensitivity and robustness.
+\item Deep learning achieves highest Dice and specificity; 3D U-Net has highest sensitivity.
+\end{itemize}
+
+\subsection{Strengths and Weaknesses of Skull Stripping Approaches}
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\linewidth}{|X|X|X|}
+\hline
+\textbf{Methodology} & \textbf{Strengths} & \textbf{Weaknesses} \\
+\hline
+Mathematical Morphology & Simple to implement; fast & Parameter-dependent; noise-sensitive; risk of over/under-segmentation \\
+\hline
+Intensity-Based & Uses fundamental image properties & Sensitive to noise, bias field, threshold choice; watershed over-segmentation \\
+\hline
+Deformable Surface & Accurate and robust; boundary-aware & Sensitive to initialization; noise-sensitive; may fail in non-standard cases \\
+\hline
+Atlas-Based & Leverages anatomical priors; good when intensities are unreliable & Dependent on registration quality; computationally intensive \\
+\hline
+Hybrid & Combines strengths of multiple methods; often fully automatic & Complex; inherits weaknesses of contributing methods \\
+\hline
+Deep Learning & State-of-the-art performance; learns features automatically & Requires large datasets; expensive; black-box behavior \\
+\hline
+\end{tabularx}
+\caption{Comparative strengths and weaknesses of skull-stripping methodologies.}
+\end{table}
+
+\subsection{Primary Challenges}
+
+Major difficulties arise from:
+
+\begin{itemize}
+\item MRI artifacts (noise, intensity bias, motion)
+\item Anatomical complexity and overlapping tissue intensities
+\item Presence of pathology (e.g., tumors) affecting segmentation accuracy
+\end{itemize}

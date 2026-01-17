@@ -1,0 +1,320 @@
+
+\chapter{Overview of Dementia and Alzheimer's disease imaging}
+ 
+\section{Magnetic Resonance Imaging (MRI)}
+
+Magnetic Resonance Imaging (MRI) is a non-invasive method for visualizing the internal structure and certain functional aspects of the human body. In contrast with other imaging modalities such as CT scans, MRI uses a large magnetic field and non-ionizing electromagnetic radiation, and therefore does not cause exposure-related hazards. Detailed imaging occurs through the use of radio-frequency (RF) pulses in the presence of a carefully controlled magnetic field, producing high-quality images. When the patient is placed inside this magnetic field, the nuclei within the body align with the applied field and interact with the electromagnetic pulses. As analyzed below, the atoms precess, and this precessional movement is detected by receiver coils.
+
+\subsection{Spin}
+
+Atomic nuclei possess an intrinsic property known as \textit{spin}. Spin occurs in multiples of $1/2$ and may be positive or negative. Not all particles possess spin; it appears in particles with an odd number of protons and neutrons ($P+N=\text{odd}$) \cite{plewesPhysicsMRIPrimer2012}.
+
+\subsection{Properties of Spin}
+
+When a particle with net spin is placed within a magnetic field of strength $B$, it can absorb a photon of frequency $\nu$. This frequency depends on the gyromagnetic ratio $\gamma$ of the particle:
+
+\[
+\nu = \gamma B .
+\]
+
+For hydrogen atoms, the gyromagnetic ratio is
+
+\[
+\gamma = 42.58\ \text{MHz/T}.
+\]
+
+MRI uses nuclei with either an unpaired proton or an unpaired neutron, allowing them to possess a net spinning charge---i.e., angular momentum. Because spin is associated with electric charge, these nuclei generate a magnetic field and behave as magnetic dipoles.
+
+\subsection{Hydrogen Nuclei in MRI}
+
+Hydrogen atoms are the most abundant in the human body (primarily in water, H\textsubscript{2}O) and possess an unpaired proton, allowing them to act as magnetic dipoles under a strong magnetic field. When a magnetic field is applied, all hydrogen nuclear axes tend to align either parallel (spin-up) or anti-parallel (spin-down) to the field. These alignments correspond to distinct energy states. Nuclei transition between energy states by absorbing or emitting energy, typically via RF pulses, in a process known as \textit{resonance}.
+
+The axes of spinning protons do not align perfectly parallel to the applied field; rather, they \textit{precess}. The frequency of precession is called the \textit{Larmor frequency}, which is proportional to the magnetic field strength:
+
+\[
+\omega = \gamma B .
+\]
+
+After applying the magnetic field, the sum of all nuclei yields a weak net magnetic moment or magnetization vector (MV) parallel to the field. Applying an RF pulse at the Larmor frequency in the presence of a magnetic gradient selects a slice of tissue and excites the nuclei, causing them to absorb energy and rotate into the plane of the RF pulse.
+
+Longer RF pulses produce greater rotation angles. If the pulse has sufficient intensity, it flips the magnetization vector into the transverse (XY) plane, creating a \textit{90° flip angle} in which all protons precess in phase.
+
+At this moment, an RF signal is induced in a receiver coil. This signal depends on the presence and molecular environment of hydrogen atoms. Tightly bound hydrogen, such as in bone, produces weak or no usable signal, whereas loosely bound hydrogen in soft tissues produces a strong signal. The concentration of loosely bound hydrogen is known as the \textit{proton density} or \textit{spin density}.
+
+\subsection{Relaxation}
+
+When the RF pulse is turned off:
+
+\begin{itemize}
+    \item The excited nuclei return to their lower-energy spin state, emitting energy. This decay of transverse magnetization is detected as the \textit{free induction decay} (FID).
+    \item Nuclei realign with the main magnetic field through energy transfer to surrounding molecules. This is the basis of \textit{longitudinal} or \textit{spin-lattice} relaxation.
+\end{itemize}
+
+The time constant describing the recovery of longitudinal magnetization is called the \textit{T1 relaxation time}. Typical values are approximately 500 ms for short T1 tissues. The decay of transverse magnetization, governed by loss of phase coherence among precessing protons, is described by the \textit{T2 relaxation time} (e.g., $\sim 80$ ms for many tissues).
+
+\subsection{T1- and T2-Weighted Imaging}
+
+Relaxation properties allow distinctions between tissue types. MRI commonly uses two contrast mechanisms:
+
+\paragraph{T1-weighted imaging} employs short repetition times (TR) and is sensitive to T1 relaxation. Tissues with short T1 values (e.g., fat) appear bright, while tissues with longer T1 values appear darker. This modality is useful for visualizing fine anatomical detail due to high spatial resolution.
+
+\paragraph{T2-weighted imaging} uses long TR and long echo times (TE), emphasizing T2 relaxation. Water-rich or abnormal tissues (e.g., edema, inflammation, tumors) have long T2 values and appear bright \cite{kattiMagneticResonanceImaging2011}.
+
+By manipulating TR, TE, and spatial localization through gradient fields, MRI provides excellent anatomical detail while maintaining sensitivity to pathological changes. These contrast mechanisms form the foundation of diagnostic MRI.
+
+\section{The Clinical Use of Structural MRI in Alzheimer Disease}
+
+In the case of Alzheimer’s disease, we use the features of structural imaging that MRI can produce, and it has become an integral part of the clinical assessment process. New data from clinical studies showing changes in structural markers from preclinical to overt stages of the disease are reshaping the diagnostic landscape and influencing future diagnosis and treatment.
+
+As mentioned before, atrophy of the medial temporal structures is now a diagnostic marker at the MCI (Mild Cognitive Impairment) stage. It is also worth noting the importance of MRI for other forms of dementia not related to Alzheimer’s disease, highlighting the value of this imaging technique in differential diagnosis. In addition, atrophy in other areas, such as the hippocampus, or atrophy affecting the whole brain, can be signs of neurodegeneration, an important temporal step in the progression of Alzheimer’s disease.
+
+MRI is also increasingly used in research to track the effectiveness of disease-modifying drugs based on the structural markers mentioned above. While MRI plays an important role in tracking disease progression and determining atrophy in specific brain regions, it is essential to point out that many other imaging and non-imaging techniques are used in clinical assessment.
+
+The utility of structural imaging and other markers will be enhanced by standardization of acquisition and analysis methods, as well as by the development of robust algorithms for automated assessment \cite{frisoniClinicalUseStructural2010}.
+
+As previously mentioned, Alzheimer’s disease is associated with progressive accumulation of abnormal proteins in the brain, which lead to synaptic, neuronal, and axonal damage. Neurobiological changes occur years before symptoms appear, following a stereotypical pattern: early medial temporal lobe involvement (entorhinal cortex and hippocampus), followed by progressive neocortical damage \cite{braakNeuropathologicalStageingAlzheimerrelated1991a, delacourteBiochemicalPathwayNeurofibrillary1999}.
+
+The delay in cognitive impact suggests that the toxic effects of abnormal proteins accumulate progressively until they reach a critical threshold where cognitive symptoms become noticeable. For example, amnesic MCI is followed by other cognitive deficits across multiple domains until a disability threshold is reached and typical diagnostic criteria for AD are fulfilled.
+
+Due to new research on disease-modifying drugs that aim to slow disease progression, the value of identifying individuals at earlier stages has increased substantially. Several studies have shown correlations between tissue damage or loss in characteristically vulnerable regions—such as the hippocampus and entorhinal cortex—and the likelihood of progression from MCI to AD. This is also the main objective of the current work: to determine whether algorithms can reliably predict this conversion, which would have a major impact on treatment and disease management \cite{frisoniClinicalUseStructural2010}.
+
+\section{Atrophy as a Neurodegeneration Marker}
+
+Atrophy is a consequence of progressive neurodegeneration. Structural changes can be mapped onto the stages of tangle deposition based on the Braak staging system, as well as onto specific neuropsychological deficits. The earliest signs occur in the perforant pathway, producing memory impairments. Later changes in the parietal and frontal neocortices correspond to language deficits, visuospatial impairments, and behavioral changes.
+
+Changes in structural measures such as whole-brain volume, entorhinal and hippocampal volume, temporal lobe volume, and ventricular enlargement can be identified using MRI, and these measures may serve as potential biomarkers. To be used clinically, such biomarkers must be identifiable across all patients and provide clear distinctions between disease stages.
+
+In the asymptomatic stage, amyloid markers provide indirect evidence of disease pathology, whereas after the onset of Mild Cognitive Impairment (MCI), structural changes are more sensitive indicators \cite{frisoniClinicalUseStructural2010}.
+
+\section{Alzheimer Disease Criteria and MRI}
+
+The report from the International Working Group (IWG-2) Criteria for Alzheimer’s Disease defines a shift from viewing AD as a clinicopathological entity to a clinicobiological one. The new diagnostic framework requires both an appropriate clinical phenotype (typical or atypical) and the presence of a biomarker consistent with AD pathology.
+
+The criteria cover the full range of disease stages, including typical AD, atypical variants, mixed AD, and preclinical states (asymptomatic at-risk and presymptomatic AD).
+
+Pathophysiological markers are restricted to those that directly indicate amyloid or tau pathology and must be present for a diagnosis of AD.
+
+\subsection*{Specific Criteria}
+
+\begin{itemize}
+    \item A specific CSF signature (decreased $A\beta_{42}$ together with increased T-tau or P-tau concentrations).
+    \item Increased tracer retention on amyloid PET.
+    \item Presence of an autosomal dominant AD mutation.
+\end{itemize}
+
+Topographical biomarkers such as volumetric MRI (e.g., hippocampal atrophy) and FDG-PET have been removed from the core diagnostic algorithm, as they lack sufficient pathological specificity for AD detection. Their new role is to monitor disease progression over time \cite{duboisAdvancingResearchDiagnostic2014}.
+
+Despite this change, hippocampal atrophy remains one of the most established and validated MRI markers of AD. In vivo measurements correlate with Braak staging and neuronal counts, with volume reductions varying by disease stage (e.g., 15--30\% in mild dementia, 10--15\% in MCI with mild dementia) \cite{frisoniClinicalUseStructural2010}.
+
+\section{Computed Tomography (CT)}
+
+CT scans are a useful tool in the diagnosis of Alzheimer's disease (AD), providing images of anatomical structures in brain regions such as the medial temporal lobe, where atrophy is considered a marker for AD conversion. However, during the diagnostic process of cognitive complaints or deficiencies, MRI scans are generally preferred due to their superior soft-tissue contrast. CT scans are used primarily when MRI presents contraindications (e.g., pacemakers)~\cite{ferreiraNeuroimagingAlzheimersDisease2011}.
+
+The use of CT in combination with nuclear imaging techniques has increased, first with the introduction of PET/CT and later SPECT/CT in AD diagnosis. These combined modalities emerged because the anatomical localization of functional abnormalities in nuclear imaging alone was often imprecise. Adding CT provides accurate anatomical reference and resolves localization issues, provided the modalities are properly coregistered~\cite{townsendPETCTToday2004}.
+
+Given this context, the review of the basic principles of CT will remain brief, since this work does not focus on CT images directly, nor do CT scans provide structural detail comparable to MRI. Nevertheless, CT remains an important imaging method and should be acknowledged.
+
+\subsection{Mechanics of a CT Scan}
+
+\subsection{Historical Development of CT}
+
+The discovery of X-ray radiation is attributed to Wilhelm Conrad Röntgen, who performed the first cathode-tube experiments on November 8, 1895. X-rays possess special properties: they can energize atoms (producing photons via fluorescence), and they can penetrate opaque materials.
+
+Initially, X-ray projection imaging captured a two-dimensional image of a three-dimensional object. However, important structural information was lost due to overlapping tissues, while low-contrast regions were difficult to distinguish. Additionally, scattering produced noise and degraded image quality.
+
+The term \textit{computed tomography} reflects its two essential components: ``computed,'' referring to numerical reconstruction, and ``tomography,'' meaning cross-sectional slicing. Modern CT scanners use X-ray energies between 100--150~kV.
+
+Image reconstruction in CT relies on the mathematical foundations of the Radon transform and its inverse. Radon demonstrated that a 2D image can be reconstructed from a set of projections collected at multiple rotation angles.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/pmp-32-1-1-f1.png}
+    \caption{(a) The first CT image produced at Atkinson Hospital. (b) A modern CT scan from an advanced scanner \cite{jungBasicPhysicalPrinciples2021}.}
+\end{figure}
+
+\subsection{Basic Physical Principles of CT}
+
+\subsubsection{X-ray Attenuation}
+
+After X-rays pass through an object, some photons are absorbed while others reach the detector. X-ray attenuation follows the exponential law:
+\begin{equation}
+    I_{x} = I_{0} \, e^{-\mu x},
+\end{equation}
+where $I_{0}$ is the initial intensity, $I_{x}$ the transmitted intensity, $x$ the material thickness, and $\mu$ the linear attenuation coefficient.
+
+For multiple materials along the path:
+\begin{equation}
+    I = I_{0} \exp\left[-(\mu_{1}x_{1} + \mu_{2}x_{2} + \cdots)\right],
+\end{equation}
+known as the Lambert–Beer law.
+
+Attenuation can also be expressed as a line integral:
+\begin{equation}
+    \ln\left(\frac{I}{I_{0}}\right) = -\int \mu(s)\, ds.
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/pmp-32-1-1-f2.png}
+    \caption{Illustration of X-ray attenuation through a sample composed of multiple materials. The final intensity corresponds to the cumulative effect of all attenuation coefficients along the beam path.}
+\end{figure}
+
+\subsection{Data Acquisition}
+
+During a CT scan, the sample (e.g., a patient’s head) lies on a table while an X-ray source rotates around it. Opposite the source, detectors measure the transmitted X-ray intensity. These measurements are sent to the Data Acquisition System (DAS), which digitizes them and prepares them for reconstruction.
+
+Acquisition criteria:
+
+\begin{itemize}
+    \item Projections must be collected over many angles (typically 360° or 180° with symmetry).
+    \item Each projection must fully include the object.
+    \item The object must remain still.
+\end{itemize}
+
+\subsection{Image Reconstruction}
+
+The goal of CT reconstruction is to compute the 2D attenuation map from the measured 1D projections (line integrals).
+
+For an object described by a function $f(x,y)$, the Radon transform is:
+\begin{equation}
+    p(s, \varphi) = \mathcal{R}f(x,y).
+\end{equation}
+
+To convert $(x,y)$ to rotated coordinates $(s,u)$:
+\begin{equation}
+\begin{pmatrix}
+x \\ y
+\end{pmatrix}
+=
+\begin{pmatrix}
+\cos\varphi & -\sin\varphi \\
+\sin\varphi & \cos\varphi
+\end{pmatrix}
+\begin{pmatrix}
+s \\ u
+\end{pmatrix}.
+\end{equation}
+
+Thus, the projection data are given by:
+\begin{equation}
+    p(s,\varphi) = \int f(s\cos\varphi - u\sin\varphi,\; s\sin\varphi + u\cos\varphi)\, du.
+\end{equation}
+
+Early CT systems applied a high-pass filter to sharpen images. Today, reconstruction methods include:
+
+\begin{itemize}
+    \item matrix inversion,
+    \item iterative algorithms,
+    \item Fourier techniques,
+    \item filtered backprojection (FBP),
+    \item 3D Radon-based approaches.
+\end{itemize}
+
+The most common modern method is based on the \textit{central slice theorem}, which links the Radon transform to the 2D Fourier transform.
+
+\subsection{CT Numbers / Hounsfield Units}
+
+A CT image consists of voxels (3D volume elements). Each pixel’s intensity reflects the mean attenuation coefficient in its voxel. CT uses a 12-bit grayscale (4096 levels). The Hounsfield Unit (HU) scale normalizes attenuation values relative to water:
+
+\begin{equation}
+    \text{HU} = 1000 \cdot \frac{\mu_{\text{pixel}} - \mu_{\text{water}}}{\mu_{\text{water}}}.
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/pmp-32-1-1-f4.png}
+    \caption{Hounsfield scale and representative values for different tissues \cite{jungBasicPhysicalPrinciples2021}.}
+\end{figure}
+
+
+\section{PET / PET-CT}
+
+Positron Emission Tomography (PET) is an analytical process in which compounds labeled with radioisotopes are used as molecular probes to image and measure biochemical processes \textit{in vivo}.
+
+\subsection{Basic Physics}
+
+Positron emission is based on proton-rich nuclei, called ``emitters,'' which are unstable. To stabilize themselves, they may either release excess protons and gain neutrons, or capture electrons. The first process is known as \textit{positron emission}, and the second as \textit{electron capture (EC)}. Both processes are isobaric decays, meaning the mass number remains unchanged between the parent and daughter nuclei. In nuclei with low atomic weight, positron emission is more prevalent, while in heavier nuclei electron capture dominates.
+
+The process can be represented as:
+
+\[
+_{m}X^{n} \longrightarrow {}_{m-1}Y^{n} + \beta^{+} + \nu
+\]
+
+\[
+p \rightarrow n + e^{+} + \nu_{c}
+\]
+
+Because of the excess protons, a nuclear transmutation occurs, producing a daughter nucleus with the same mass number but an atomic number reduced by one. The emitted neutrino escapes without interacting with the surrounding material.
+
+The emitted positron is highly interactive due to its small mass and positive charge. It travels a short distance and is slowed by scattering in the surrounding tissue.
+
+The distance traveled (the \textit{range}) depends on its energy:
+
+\[
+E_{\text{positron}} + E_{\text{neutrino}} = \text{transition energy} - 1022 \ \text{MeV}
+\]
+
+As the positron slows, it eventually annihilates with an electron, producing either:
+\begin{itemize}
+    \item a pair of 511~keV photons (direct annihilation), or
+    \item a short-lived positronium, which also decays into two 511~keV photons.
+\end{itemize}
+
+These photons, called \textit{annihilation photons}, have energies corresponding to the rest mass of an electron and positron and are emitted nearly $180^\circ$ apart. However, due to residual momentum, the emission angle varies slightly around $180^\circ$.
+
+\subsection{Detection of Annihilation Radiation}
+
+To detect annihilation photons, the system uses a narrow coincidence timing window (3--15 ns). Both photons must be detected within this window for the event to be accepted. This method is called \textit{coincidence detection} or \textit{electronic collimation}.
+
+The interaction is assumed to have occurred somewhere along the straight line connecting the two detectors. This line is known as the \textit{line of response (LOR)} or \textit{coincidence line}.
+
+\subsection{Factors Limiting the Spatial Resolution of PET}
+
+\begin{enumerate}
+    \item \textbf{Positron Range:}  
+    Because the positron travels a finite distance before annihilation, the detected photons do not originate exactly where the positron was emitted. This introduces an intrinsic spatial uncertainty.
+
+    \item \textbf{Non-colinearity of Annihilation Photons:}  
+    The photons are not emitted at exactly $180^\circ$. Small deviations (typically $<0.5^\circ$) cause blurring. The effect depends on detector ring diameter—about 1 mm for a 50 cm ring and 2 mm for a 90 cm whole-body system.
+
+    \item \textbf{Detector Size:}  
+    The intrinsic spatial resolution depends on the size of the individual detector crystals used in modern PET scanners, which typically consist of small scintillator arrays coupled to larger photodetectors \cite{basuFundamentalsPETPET2011}.
+\end{enumerate}
+
+\subsection{PET-CT}
+
+\subsubsection{PET and Anatomic Imaging}
+
+A major limitation of PET imaging is its low spatial resolution and lack of anatomical detail, making it difficult to accurately localize lesions with abnormal radiotracer uptake. Distinguishing physiological from pathological uptake can be challenging.
+
+Initially, non-integrated scanners were used: PET and CT images were acquired separately and then aligned visually or using fusion algorithms. However, differences in patient position and organ motion significantly reduced accuracy. The dual-scan approach is also costly, time-consuming, and uncomfortable for patients.
+
+\subsubsection{Integrated PET/CT}
+
+In 1998, an integrated PET/CT scanner was proposed. This system produces accurate anatomical images alongside PET functional data, improving diagnostic accuracy and clinician confidence. It also improves patient convenience and reduces the cost compared to separate acquisitions \cite{townsendPETCTToday2004, basuFundamentalsPETPET2011}.
+
+\subsection{The Use of PET in Alzheimer's Disease}
+
+Alzheimer's disease (AD) is characterized by amyloid plaques, neurofibrillary tangles (intracellular hyperphosphorylated tau aggregates), activated microglia, neurotransmitter changes, and neuronal loss. Neuropathological changes appear many years before clinical symptoms.
+
+The criteria proposed by Dubois et al.\ (2007) emphasized cerebrospinal fluid analysis and brain imaging as early biomarkers of AD and useful tools to track disease progression \cite{duboisResearchCriteriaDiagnosis2007c, duboisAdvancingResearchDiagnostic2014}.
+
+New PET imaging technologies allow the identification of AD in prodromal stages and support the development and monitoring of disease-modifying treatments. PET enables measurement of multiple functional processes in the brain, including metabolism and neurotransmitter activity, providing region-specific insights that strengthen diagnostic accuracy and treatment evaluation.
+
+\subsection{Processes Assessed by PET}
+
+\subsubsection{Brain Glucose Metabolism}
+
+To measure glucose metabolism, PET uses the tracer 2-fluoro-2-deoxy-glucose (F-FDG). A decline in glucose metabolism occurs long before clinical symptoms appear. This decline is region-specific, most prominently affecting the parietotemporal, frontal, and posterior cortices \cite{mosconiBrainGlucoseMetabolism2005b}.
+
+Patients with AD can be diagnosed with up to 90\% sensitivity using FDG-PET \cite{smallApolipoproteinType41995a}. Differentiation from other dementias is more difficult.
+
+Longitudinal PET studies show:
+\begin{itemize}
+    \item Conversion from healthy to MCI is best predicted by \textbf{medial temporal} glucose hypometabolism.
+    \item Conversion from MCI to AD is best predicted by hypometabolism in the \textbf{posterior cingulate cortex}.
+\end{itemize}
+
+Functional MRI (fMRI) also helps distinguish patterns of brain activity. Its basis lies in the magnetic properties of deoxyhemoglobin and the fact that blood flow increases more than oxygen metabolism during neural activation. This produces a subtle MR signal increase known as the \textit{blood oxygenation level-dependent (BOLD)} effect. Modern fMRI achieves spatial resolution near 1~mm and temporal resolution around 1~s \cite{nordbergUsePETAlzheimer2010}.
+

@@ -1,0 +1,35 @@
+\chapter{Gaps in Current Literature and Future Research Directions}
+
+\section{Generalizability and Standardized Testing}
+
+Although AI is performing increasingly well in medical domains, it still lacks the generalizability testing required for wider adoption. This is due to researchers and clinicians having limited access to diverse data---different from the training data---which is needed to test model robustness and reliability. This article provides recommendations for creating ``standardized tests'' (benchmark datasets) to solve this problem \cite{sourlosRecommendationsCreationBenchmark2024}.
+
+Another article goes beyond validating models and proposes a framework that is standard across pre-processing and image acquisition protocols. In the case of Alzheimer’s disease, this is even more important, as different scanning protocols hinder the ability of models to generalize or limit the amount of training data. The work focuses on radiomics, but its broader implications for medical imaging and computer-aided diagnosis are relevant to Alzheimer’s and dementia \cite{coboEnhancingRadiomicsDeep2023}.
+
+Other studies in radiomics have demonstrated the impact that different acquisition protocols can have on diagnosis and model accuracy by extensively validating algorithms on diverse datasets. The findings highlight a significant decrease in performance when acquisition diversity is not properly addressed \cite{namdarOpenradiomicsCollectionStandardized2025}.
+
+\section{Interpretable Models}
+
+Taking influence from the pillars previously set for explainability, there is a need for better explanations of model decision-making, especially in domains that affect human life, such as medicine. The pillars discussed are three.
+
+\subsection{Trust and Clinical Adoption}
+
+The first pillar concerns the need to cultivate trust among patients and clinicians, who will be responsible for conducting computer-aided diagnosis. The ability to examine the decision-making process and access the model's reasoning will vastly enhance clinicians' trust in these systems. This, in turn, improves both the quality of diagnosis and the number of patients that clinicians can handle, while maintaining consistent performance across individuals.
+
+\subsection{Reducing Bias and Increasing Fairness}
+
+The second pillar focuses on reducing bias and improving fairness. As stated previously, models are constrained by the distribution of the data on which they are trained. The dataset defines the prior distribution and the upper limit of information captured by the model, even when accounting for generalization. If the data are skewed or do not represent a stratifiable distribution of the patient population, models may exhibit bias and lead to incorrect diagnoses. Explainable AI helps mitigate this by providing reasoning behind decisions for clinicians to assess.
+
+\subsection{Better Model Development and Debugging}
+
+The third pillar emphasizes improved model development and system debugging. Access to the model's reasoning allows developers to identify limitations and provide rigorous debugging to improve performance more broadly.
+
+These are the main pillars that make explainable AI crucial for the further development of systems, trust with end-users, and the avoidance of bias in decision-making. This is why explainability and interpretability remain major challenges in deploying deep learning for disease progression or classification outside research environments.
+
+\section{Detection at Different Stages}
+
+Based on the revised biomarker criteria \cite{jackNIAAAResearchFramework2018}, the integration of MRI and PET biomarkers---or their fusion---is of immense importance. Multimodal fusion can serve as the backbone of Alzheimer's disease (AD) detection and enhance the ability to track disease progression, which is vital for developing drugs aimed at slowing or curing neurodegeneration.
+
+AD is a complex pathology in which multiple factors contribute to neurodegeneration; early pathological signs, such as amyloid-beta ($A\beta_{42}$) deposition, can be observed up to 20 years prior to clinical symptoms \cite{batemanClinicalBiomarkerChanges2012a}. Nevertheless, \textbf{early prediction remains challenging due to subtle brain changes that are difficult to quantify} \cite{rathoreReviewNeuroimagingbasedClassification2017}.
+
+Deep learning and advanced methods---such as data augmentation, synthetic data generation, transfer learning, and multimodal fusion---can significantly enhance early disease classification, enable longitudinal patient monitoring, and help evaluate treatment efficacy.

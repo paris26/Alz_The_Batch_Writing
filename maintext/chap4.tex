@@ -1,0 +1,685 @@
+ \chapter{Pre-Processing and Feature Extraction Techniques}
+
+\section{Intensity Normalization}
+
+\subsection{Introduction}
+The accuracy of automated processing algorithms for Magnetic Resonance (MR) images is of immense importance for clinical diagnosis and disease evaluation in progressive diseases like Alzheimer's. However, the reliability of processing applications—such as registration, segmentation, and comparison—requires a standardized intensity value scale that accurately depicts the underlying tissue type. Variability is inherent in MR images, as scanner-related artifacts, noise, differing acquisition protocols, and other parameters can significantly affect the obtained intensity values. Additionally, challenges such as low contrast and partial volume effects degrade the performance of these algorithms \cite{goceriFullyAutomatedAdaptive2018}.
+
+To mitigate these issues, intensity normalization is employed as a critical pre-processing step. The goal is to create a standardized scale that accurately reflects the underlying tissue type by unifying the mean and variance within an MR image. The efficacy of this step directly influences the performance of longitudinal processes essential for tracking disease progression \cite{goceriFullyAutomatedAdaptive2018, sunHistogrambasedNormalizationTechnique2015, shahEvaluatingIntensityNormalization2011}.
+
+Its primary objective is to transform the intensities of a set of images to a standardized scale. Ideally, scanner-related differences should not depict the same tissue type with different intensity values; conversely, the same underlying biological value should yield consistent intensity values across all setups \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014}. This process addresses the inherent intensity variability in MR acquisition and is essential for the reliability and accuracy of downstream algorithms \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003}.
+
+\subsection{Necessity and Significance}
+The lack of tissue-specific intensity standardization for MR images creates variability, resulting in differences between two scans of the same subject, even when performed on the same scanner with the same pulse sequence \cite{goceriFullyAutomatedAdaptive2018}. As noted previously, this reduces the accuracy of subsequent processing algorithms. Key factors identified in the literature include:
+
+\begin{itemize}
+    \item \textbf{Scanner Related Artifacts and Noise:} Inherent scanner artifacts and noise must be addressed as they interfere with automated processing.
+    \item \textbf{Low Contrast and Partial Volume Effects:} Ideally, edges between brain tissues (e.g., Cerebrospinal Fluid (CSF), White Matter (WM), Gray Matter (GM)) should be distinct. However, low contrast and partial volume effects—where multiple tissue types within a single voxel are averaged—blur these boundaries \cite{shahEvaluatingIntensityNormalization2011a}. 
+    \item \textbf{Intensity Variations:} Different acquisition protocols, scanner differences, and heterogeneity of data sources contribute to intensity variations \cite{salomeMRIntensityNormalization2023}. These variations occur both between different subjects and within sequential scans of the same patient \cite{kociolekDoesImageNormalization2020}.
+    \item \textbf{Lack of Specific Tissue Meaning:} Unlike Computed Tomography (CT), which uses standardized Hounsfield Units, MRI intensity values are arbitrary and dependent on the specific scanner setup. This severely affects longitudinal and quantitative analysis \cite{nyulMethodStandardizingMR2003}.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/IntensityNormalization1.png} % Replace with actual filename
+    \caption{Brain image depicting artifacts present in MR images and different tissue types. Adapted from \cite{goceriFullyAutomatedAdaptive2018}.}
+    \label{fig:brain_artifacts}
+\end{figure}
+
+\subsection{Goals and Principles}
+The normalization protocol adheres to the SPIN principles introduced by Shinohara et al. \cite{shinoharaStatisticalNormalizationTechniques2014}. Unlike methods that transform images based on a learned standardized histogram \cite{nyulNewVariantsMethod2000}, this approach proposes transforming images based on the white matter variance unique to every scan. The primary goals are:
+
+\begin{enumerate}
+    \item \textbf{Standardized Interpretation:} To create an accurate representation of tissue types across multiple setups and acquisition protocols.
+    \item \textbf{Reduced Variability:} To minimize the discrepancy between intensity distributions across subjects and visits within tissue classes.
+    \item \textbf{Biological Interpretability:} To yield biologically interpretable units, facilitating quantitative studies.
+    \item \textbf{Robustness to Pathology and Artifacts:} To perform reliably even in the presence of pathology (e.g., lesions) or imaging artifacts.
+\end{enumerate}
+
+\subsection{Categories of Intensity Normalization Methods}
+Methods can be broadly categorized into:
+\begin{enumerate}
+    \item Classical/Statistical Methods
+    \item Feature-Based Harmonization
+    \item Deep Learning-Based Approaches
+\end{enumerate}
+
+\subsubsection{Classical Methods}
+
+\paragraph{1. Min-Max Normalization}
+This technique utilizes the full range of intensity values to reduce variance and implement a standard range, typically between 0 and 1 \cite{pandeyComparativeAnalysisKNN2017, patroNormalizationPreprocessingStage2015}.
+\begin{equation}
+    v' = \frac{v - \min(A)}{\max(A) - \min(A)}
+\end{equation}
+Where $v'$ is the normalized value, $v$ is the original data point, and $\min(A)$ and $\max(A)$ are the minimum and maximum feature values, respectively.
+
+\paragraph{2. Z-Score Normalization}
+This method transforms each intensity value by subtracting the mean and dividing by the standard deviation (excluding background). It represents how many standard deviations a score is from the mean \cite{salomeMRIntensityNormalization2023}. A disadvantage is that high intensities (e.g., contrast agents or artifacts) may be attenuated, risking information loss.
+\begin{align}
+    \mu &= \frac{1}{|B|} \sum_{b \in B} I(b) \\
+    \sigma &= \sqrt{\frac{\sum_{b \in B} (I(b) - \mu)^2}{|B| - 1}} \\
+    I_{\text{norm}}(x) &= \frac{I(x) - \mu}{\sigma}
+\end{align}
+
+\paragraph{3. Mean and Standard Deviation Setting ($\mu \pm 3\sigma$ / M-std)}
+This approach sets the mean and standard deviation to fixed values (e.g., $\mu=0, \sigma=1$) \cite{albertComparisonImageNormalization2023}. Alternatively, it limits intensity dynamics to $\mu \pm 3\sigma$ \cite{collewetInfluenceMRIAcquisition2004}. This is effective when the underlying distribution is Gaussian; however, non-Gaussian distributions may suffer from gray value truncation \cite{kociolekDoesImageNormalization2020}.
+
+\paragraph{4. Percentile Method}
+A robust method using specific percentiles (e.g., 5th and 95th) as minimum and maximum values to remove outliers \cite{albertComparisonImageNormalization2023}.
+
+\paragraph{5. Histogram Matching}
+Widely used, this transforms the image histogram to match a reference histogram \cite{nyulNewVariantsMethod2000}.
+\begin{itemize}
+    \item \textbf{Nyul and Udupa's Method:} Involves a \textit{Training Step}, where landmarks (percentiles, modes) are learned from a training set to form a standard histogram, and a \textit{Transformation Step}, where new images are mapped to this scale using piecewise linear transformation.
+    \item \textbf{Joint Histogram Matching:} Uses information-centric criteria to analyze pixel pair relationships between input and reference images. While potentially more precise, it is computationally intensive \cite{sunHistogrambasedNormalizationTechnique2015}.
+\end{itemize}
+
+\paragraph{6. Homomorphic Filtering}
+This technique leverages the illumination-reflectance model, where intensity $I(x,y)$ is the product of illumination $L$ and reflectance $R$:
+\begin{equation}
+    I(x,y) = L(x,y) \cdot R(x,y)
+\end{equation}
+By applying a logarithmic transform, the multiplication becomes addition:
+\begin{equation}
+    \ln(I) = \ln(L) + \ln(R)
+\end{equation}
+Fourier transform and high-pass filtering are then used to remove low-frequency illumination inconsistencies while preserving high-frequency reflectance components (edges) \cite{goceriFullyAutomatedAdaptive2018}.
+
+\paragraph{7. Gaussian Filtering}
+Used for smoothing, this requires careful selection of the $\sigma$ parameter. A small $\sigma$ may be inefficient for normalization, while a large $\sigma$ can cause loss of edge information.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/IntensityNormalization2.png}
+    \caption{Original image (a); Image obtained by Gaussian filtering with increasing $\sigma$ values (b-d).}
+    \label{fig:gaussian_filtering}
+\end{figure}
+
+\paragraph{8. White Stripe Normalization}
+Proposed by Shinohara et al. \cite{shinoharaStatisticalNormalizationTechniques2014}, this method normalizes based on Normal-Appearing White Matter (NAWM). It identifies the NAWM distribution ("white stripe") and matches its moments (mean and standard deviation) across subjects, providing biologically interpretable units robust to pathology.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/IntensityNormalization3.png}
+    \caption{White Stripe Normalization concept.}
+    \label{fig:white_stripe}
+\end{figure}
+
+\paragraph{9. Fuzzy C-Means (FCM) and Kernel Density Estimation (KDE)}
+Fuzzy clustering assigns data points a membership function (0 to 1) indicating proximity to a cluster center. Normalization uses tissue segmentation to scale intensity relative to tissue means.
+
+\textit{Single-Tissue Normalization:} Normalize voxel $x$ by the mean intensity of tissue $T$:
+\begin{equation}
+    I_{\text{norm}}(x) = \frac{I(x)}{\mu_T}
+\end{equation}
+
+\textit{Two-Tissue (Min-Max) Normalization:}
+Using two tissue means $\mu_1$ and $\mu_2$, define $a = \min(\mu_1, \mu_2)$ and $b = \max(\mu_1, \mu_2)$. The image is rescaled via:
+\begin{equation}
+    I_{\text{norm}}(x) = \frac{I(x) - a}{b - a}
+\end{equation}
+
+\textit{Kernel Density Estimation (KDE):}
+KDE approximates the probability distribution function to smooth the histogram and locate peaks (e.g., white matter peak $\pi$) for normalization:
+\begin{equation}
+    p(x) = \frac{1}{NMLh} \sum_{i=1}^{NML} K\left(\frac{x - x_i}{h}\right)
+\end{equation}
+The image is then normalized as $I_{\text{norm}}(x) = c \cdot \frac{I(x)}{\pi}$.
+
+\subsubsection{Feature-Based Harmonization}
+\paragraph{ComBat}
+Originally for gene expression, ComBat is a feature-based method applied to imaging to eliminate batch effects \cite{orlhacGuideComBatHarmonization2022}. It assumes feature similarity and allows only for shift or spread in the data.
+
+\subsubsection{Deep Learning Methods}
+Deep learning has emerged as a powerful tool for normalization, particularly in multi-site analysis.
+
+
+\paragraph{1. Autoencoders (AEs) and Generative Adversarial Networks (GANs)}
+An autoencoder is an algorithm designed to learn an informative representation of data by reconstructing input observations \cite{michelucciIntroductionAutoencoders2022}. It encodes input $x_i$ into a latent representation $h_i = g(x_i)$ and reconstructs it via $X_i = f(h_i)$. Training minimizes the reconstruction error:
+\begin{equation}
+    \operatorname*{arg\,min}_{f,g} \Delta(X_i, f(g(x_i)))
+\end{equation}
+
+GANs consist of two networks: a Generator that creates data and a Discriminator that evaluates it. In the context of normalization, authors have proposed using an autoencoder as the generator within a GAN framework. Through adversarial training, the model optimizes to reconstruct images that preserve anatomical features while obscuring scanner-specific biases (detected by the discriminator), improving multi-site generalization \cite{delisleRealisticImageNormalization2021, xuStainNormalizationHistopathological2025}.
+
+\paragraph{2. Adversarial and Task-Driven Normalization}
+This approach generates images optimized not just for visual similarity, but for specific downstream tasks like segmentation. Delisle et al. \cite{delisleRealisticImageNormalization2021} utilize two 3D CNNs: a normalization generator and a segmentation network. A discriminator acts as a domain classifier. By integrating the specific task (segmentation) into the loss function, the pipeline can often outperform generic domain adaptation, as the normalization is tailored to maximize segmentation accuracy rather than just histogram matching.
+
+\paragraph{3. Disentanglement Networks}
+Unsupervised image-to-image translation often assumes a one-to-one mapping. To address limitations, frameworks like MUNIT decompose image distribution into a \textit{content code} (domain-invariant structure) and a \textit{style code} (domain-specific appearance). By disentangling these, the network can normalize content across arbitrary source domains \cite{xuStainNormalizationHistopathological2025}.
+
+\subsection{Impact of Intensity Normalization}
+
+\paragraph{Image Registration}
+Normalization enhances similarity metrics used in registration by ensuring consistent intensity values for similar tissues, leading to improved alignment accuracy \cite{sunHistogrambasedNormalizationTechnique2015, bagciRoleIntensityStandardization2010}.
+
+\paragraph{Image Segmentation}
+Intensity variation undermines segmentation and volume measurement. Homogeneous intensities acquired via normalization result in better tissue separation and more robust segmentation, particularly for multi-site data \cite{shahEvaluatingIntensityNormalization2011a}.
+
+
+\paragraph{Texture Classification/Radiomics}
+Texture analysis quantifies spatial gray-level variations. Normalization is critical here, as these variations are highly sensitive to acquisition protocols. However, care must be taken, as normalization methods themselves can be sequence-dependent \cite{kociolekDoesImageNormalization2020}.
+
+\paragraph{Brain Template Construction}
+Normalization facilitates the efficient calculation of volume statistics for GM, WM, and CSF. Post-normalization brain templates show clearer tissue separation, making anatomical definitions more distinct \cite{sunHistogrambasedNormalizationTechnique2015}.
+
+\subsection{Challenges and Considerations}
+While critical, intensity normalization faces challenges. The choice of method is often sequence-dependent \cite{salomeMRIntensityNormalization2023}. Furthermore, deep learning methods, while promising, are limited by the availability of diverse training datasets. As noted by Albert et al. \cite{albertComparisonImageNormalization2023}, deep learning outperformed classical methods only in specific cases, likely due to data scarcity. The selection of an appropriate strategy remains pivotal for any MR analysis pipeline.
+
+\section{Denoising}
+
+Denoising is an important step in the pre-processing of images with the goal of using them as training data for a learning algorithm. Noise and artifacts can significantly impact the performance of such algorithms, which is why denoising is often included as a standard pre-processing step---especially when the quality of the raw images varies or when data come from multiple scanners (inherent variability).
+
+In denoising, we assume there exists an ``ideal'' clean image represented as a vector $x \in \mathbb{R}^{N}$. However, what we observe is a noisy measurement $y$, which contains noise.
+
+The most common mathematical noise model, due to the Central Limit Theorem and ease of use, is Additive White Gaussian Noise (AWGN). The relationship is:
+\[
+y = x + v.
+\]
+
+In this model, the noise is assumed to be drawn from a Gaussian distribution with mean zero and variance $\sigma^2$:
+\[
+v \sim \mathcal{N}(0, \sigma^2 I).
+\]
+This means that each pixel is corrupted by a random value sampled from that distribution.
+
+The goal is to find a function $D$ such that $\hat{x} = D(y, \sigma)$, producing an estimate as close as possible to the original $x$.
+
+Since we know the noisy image and the noise distribution, we can formulate the problem using Bayesian inference. We aim to maximize the posterior probability:
+\[
+p(x \mid y) = \frac{p(y \mid x) \, p(x)}{p(y)}.
+\]
+
+Taking the negative logarithm turns the product into a sum, resulting in the minimization objective:
+\[
+-\log p(x \mid y) \propto 
+\underbrace{-\log p(y \mid x)}_{\text{Data Fidelity}} 
++ 
+\underbrace{-\log p(x)}_{\text{Prior}}.
+\]
+
+Because of the Gaussian noise model, the likelihood is:
+\[
+p(y \mid x) \propto 
+\exp\left(
+    -\frac{\|y - x\|^2}{2\sigma^2}
+\right).
+\]
+
+Taking the negative log removes the exponential:
+\[
+-\log p(y \mid x) = \frac{1}{2\sigma^2} \|y - x\|^2.
+\]
+
+The second term, $-\log p(x)$, serves as a prior and becomes a regularization term. The denoising objective becomes:
+\[
+\hat{x} = 
+\arg\min_x 
+\underbrace{\|y - x\|^2}_{\text{Match the Data}}
++ 
+\lambda \cdot 
+\underbrace{\rho(x)}_{\text{Be a Real Image}}.
+\]
+
+This formulation motivated the field’s ``evolution of priors,'' producing many classical denoising approaches.
+
+Two of the most important classical algorithms are NLM and BM3D.
+
+\subsection{Non-Local Means (NLM)}
+
+NLM grew from the idea of \emph{spatial smoothness}. Earlier algorithms assumed images should be spatially homogeneous, so averaging pixels in local neighborhoods could remove noise while preserving signal. These methods often produced blurry results, especially near edges.
+
+NLM instead uses neighborhoods (patches) of pixels and the concept of \emph{self-similarity} across the entire image. For each pixel $p$, a patch $P$ surrounding it is compared to patches $Q$ around every other pixel $q$, using a similarity measure such as Euclidean distance $\|P - Q\|^2$.
+
+The denoised estimate averages all pixels, but with weights proportional to patch similarity:
+\[
+\hat{x}(p) = 
+\frac{\sum_q w(p,q)\, y(q)}{\sum_q w(p,q)}.
+\]
+
+\subsection{BM3D}
+
+After NLM, the creation of algorithms such as BM3D improved denoising performance so dramatically that researchers questioned whether denoising had reached a theoretical limit.
+
+BM3D stands for \emph{Block-Matching and 3D Filtering}. Like NLM, it finds similar patches, but instead of averaging them directly, it stacks them into a 3D group. A transform (3D wavelet or DCT) is applied so that signal becomes concentrated in a few large coefficients while noise spreads into many small ones. Thresholding the small coefficients and inverting the transform yields high-quality results.
+
+\subsection{Deep Learning Era}
+
+Before deep learning, humans designed the transforms (e.g., DCT) used to enforce sparsity. With deep learning, the network learns the appropriate transform directly from data.
+
+We define a parametric function $f_\theta$ (a neural network) with parameters $\theta$. The network takes a noisy image $y$ and outputs a clean estimate $x$.
+
+For supervised learning with an MSE loss:
+\[
+\min_\theta \sum_{i=1}^N 
+\| f_\theta(y_i) - x_i \|^2.
+\]
+
+Since clean images are not always available, a common strategy is to corrupt clean images with Gaussian noise and train the model to recover them.
+
+No single architecture is universally best; much progress arises from empirical experimentation to identify the best-performing denoiser.
+
+A recently expanding research direction, highlighted in \cite{eladImageDenoisingDeep2023}, uses denoising network priors as generative models capable of synthesizing new images. Using iterative methods such as Langevin dynamics, these priors can generate realistic images from noise. While not the primary focus of this work, such techniques can be beneficial in domains like medical imaging, where data scarcity is a major challenge.
+
+
+
+% \section{Skull Stripping}
+% 
+% High-resolution MRI images contain non-brain tissues such as skin, fat, muscle, neck structures, and eyeballs, unlike other modalities such as PET scans. The presence of these non-brain tissues can severely impact automated processing algorithms such as image segmentation and analysis techniques. Therefore, quantitative morphometric studies of MR brain images—such as those used in Alzheimer's disease research—commonly require a preprocessing step to remove non-brain and extra-cranial tissues \cite{kalavathiMethodsSkullStripping2016}.
+% 
+% The MRI system produces brain images as 3D volumetric data composed of 2D slices. Further computer-aided processing is essential in order to extract meaningful information, whether for research, diagnostic, or clinical purposes.
+% 
+% As noted earlier, quantitative morphometric studies require isolating brain tissue from non-brain tissue, a process referred to as \emph{skull stripping}. Automated skull-stripping enhances segmentation accuracy, making manual or automated segmentation methods more reliable. Examples from \cite{kalavathiMethodsSkullStripping2016} are shown in Figure~\ref{fig:skullstrip_example}.
+% 
+% \begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.8\linewidth]{images/Skull Stripping image.png}
+% \caption{Examples of automated skull stripping from \cite{kalavathiMethodsSkullStripping2016}.}
+% \label{fig:skullstrip_example}
+% \end{figure}
+% 
+% Voxel-based morphometry (VBM) results also showed significant improvements after skull stripping was applied \cite{rehmanConventionalDeepLearning2020}. Many brain imaging applications benefit from the precise segmentation of the brain from surrounding tissues.
+% 
+% Skull-stripping algorithms are typically evaluated by their speed and their impact on downstream automated tasks such as segmentation.
+% 
+% Multiple skull-stripping techniques have been developed due to their success and effectiveness in improving diagnostic and prognostic accuracy \cite{kalavathiMethodsSkullStripping2016}.
+% 
+% Manual brain segmentation is considered the most robust and accurate approach, but it is extremely laborious, time-consuming, and subject to inter-clinician variability. Manual masks are often treated as the ground truth against which automated methods are validated \cite{rehmanConventionalDeepLearning2020}. This has led to a strong need for automated skull stripping.
+% 
+% Despite significant progress, many skull-stripping approaches still perform well only on specific datasets and often require tuning of hyperparameters. According to \cite{rehmanConventionalDeepLearning2020}, skull-stripping methods fall into three primary categories:
+% 
+% \begin{enumerate}
+% \item Manual skull stripping
+% \item Classical approaches
+% \item Deep learning–based approaches
+% \end{enumerate}
+% 
+% \begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.8\linewidth]{images/Skull Stripping Techniques.png}
+% \caption{Overview of skull-stripping categories \cite{rehmanConventionalDeepLearning2020}.}
+% \end{figure}
+% 
+% \subsection{Skull Stripping Methods}
+% 
+% Based on \cite{kalavathiMethodsSkullStripping2016}, skull-stripping techniques can be grouped as follows:
+% 
+% \begin{itemize}
+% \item Mathematical morphology-based methods
+% \item Intensity-based methods
+% \item Deformable surface-based methods
+% \item Atlas-based methods
+% \item Hybrid methods
+% \item Deep learning–based methods
+% \end{itemize}
+% 
+% \subsection{Morphology-Based Methods}
+% 
+% These methods use morphological erosion and dilation operations—combined with thresholding and edge detection—to estimate the initial region of interest (ROI) and separate brain from non-brain tissues.
+% 
+% A key drawback is that performance depends heavily on empirically tuned parameters related to the shape and size of the morphological structuring elements.
+% \subsubsection{\textit{Examples}}
+% \begin{enumerate}
+%     \item \textbf{Brain Surface Extraction (BSE).}\\
+%     Uses anisotropic diffusion filtering, Marr–Hildreth edge detection, and morphological operations such as erosion and dilation. BSE is fast (=3.5 seconds) \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{Brain Extraction Algorithm.}\\
+%     Uses diffusion, morphological operations, and connected component analysis for T1W and T2W MRI \cite{rehmanConventionalDeepLearning2020}.
+% 
+%     \item \textbf{SMHASS (2012).}\\
+%     Combines deformable models with histogram analysis and morphological preprocessing \cite{kalavathiMethodsSkullStripping2016}.
+% \end{enumerate}
+% 
+% 
+% \subsection{Intensity-Based Methods}
+% 
+% These methods classify brain vs.\ non-brain regions using pixel intensities. Examples include histogram-based, region-growing, and edge-based methods. Their primary limitation is sensitivity to MRI noise, low contrast, and bias field artifacts.
+% 
+% \subsubsection{\textit{Examples}}
+% \begin{enumerate}
+%     \item \textbf{Graph Cuts (GCUT, 2010).}\\
+%     Uses graph-theoretic segmentation to isolate brain tissue from dura, beginning with thresholding followed by connected submask selection \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{Region Growing (RG).}\\
+%     Forms connected regions based on local intensity similarity. Variants include 2D approaches for coronal slices and MARGA for axial views and low-quality images \cite{kalavathiMethodsSkullStripping2016}.
+% \end{enumerate}
+% 
+% 
+% \subsection{Deformable Surface-Based Methods}
+% 
+% These methods employ active contours (snakes) that evolve iteratively according to an energy functional. The contour adapts—shrinking or expanding—to match the brain boundary. Level-set formulations provide a robust mathematical framework.
+% 
+% Their performance depends strongly on the initial contour and image quality, especially the clarity of edges.
+% 
+% \textit{Examples}
+% 
+% \begin{enumerate}
+%     \item \textbf{BET (Brain Extraction Tool, 2002).}\\
+%     Widely used, fast, and freely available. It expands a tessellated sphere to match brain edges using adaptive forces \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{Model-Based Level Set (MLS, 2006).}\\
+%     Uses curvature and intensity-derived forces to evolve an active contour \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{3dSkullStrip (AFNI, 2005).}\\
+%     BET-like but includes improvements to avoid eyes and ventricles \cite{kalavathiMethodsSkullStripping2016}.
+% \end{enumerate}
+% 
+% 
+% \subsection{Atlas / Template-Based Methods}
+% 
+% These methods register the subject MRI to one or more anatomical atlases, enabling the transfer of brain masks to the subject.
+% 
+% \subsubsection{\textit{Examples}}
+% \begin{enumerate}
+%     \item \textbf{MAPS (2011).}\\
+%     Combines multiple atlas registrations to produce a consensus segmentation \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{BEaST (2012).}\\
+%     Uses nonlocal segmentation with multi-resolution priors \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{Pincram (2015).}\\
+%     Employs iterative refinement to propagate labels from multiple atlases \cite{kalavathiMethodsSkullStripping2016}.
+% \end{enumerate}
+% 
+% \subsection{Hybrid Methods}
+% 
+% Hybrid approaches combine multiple algorithms or features to improve robustness and accuracy.
+% 
+% \subsubsection{\textit{Examples}}
+% 
+% \begin{enumerate}
+%     \item \textbf{SPECTRE (2011).}\\
+%     Integrates elastic registration, tissue segmentation, and morphological watershed operations \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{HWA (Hybrid Watershed Algorithm, 2004).}\\
+%     Combines watershed segmentation with deformable surface models \cite{kalavathiMethodsSkullStripping2016}.
+% 
+%     \item \textbf{BEMA (2004).}\\
+%     Runs multiple extractors (BET, BSE, Watershed, etc.) in parallel and merges the results \cite{rehmanConventionalDeepLearning2020}.
+% \end{enumerate}
+% 
+% \subsection{Deep Learning-Based Methods}
+% Deep learning approaches include 2D and 3D CNNs. While 3D CNNs capture 3D context, they require much higher computational resources. DL methods are generally categorized as:
+% 
+% \begin{itemize}
+% \item Patch-based CNNs
+% \item Encoder–decoder CNNs (e.g., U-Net)
+% \end{itemize}
+% 
+% Encoder–decoder architectures typically perform better, are faster, and can capture global and local features.
+% 
+% However despite their performance , deep learning mehods showcase several limitations, such as : 
+% \begin{itemize}
+% \item The requirement of large annotated datasets
+% \item The inability of hyperparameter tuning due to the black-box behavior of the networks
+% \item The sensitivity that emerges when trained on healthy individuals
+% \end{itemize}
+% 
+% \subsection{Comparative Analysis}
+% 
+% \subsection{Automated vs.\ Manual Approaches}
+% 
+% \begin{itemize}
+% \item Automated methods are faster but may require parameter tuning.
+% \item Semi-automated methods are accurate but slow and user-dependent.
+% \end{itemize}
+% 
+% \subsection{Evaluation Metrics}
+% 
+% \begin{itemize}
+% \item Dice coefficient
+% \item Jaccard Index
+% \item Sensitivity / Specificity
+% \item False Positive Rate / False Negative Rate
+% \item Hausdorff Distance
+% \item Average Symmetric Surface Distance (ASSD)
+% \end{itemize}
+% 
+% Common metrics include:
+% 
+% \begin{itemize}
+% \item Dice coefficient
+% \item Jaccard Index
+% \item Sensitivity / Specificity
+% \item False Positive Rate / False Negative Rate
+% \item Hausdorff Distance
+% \item Average Symmetric Surface Distance (ASSD)
+% \end{itemize}
+% 
+% Comparative findings from \cite{kalavathiMethodsSkullStripping2016,rehmanConventionalDeepLearning2020} include:
+% 
+% \begin{itemize}
+% \item McStrip (hybrid) outperforms BET and BSE.
+% \item HWA shows high sensitivity and robustness.
+% \item Deep learning achieves highest Dice and specificity; 3D U-Net has highest sensitivity.
+% \end{itemize}
+% 
+% \subsection{Strengths and Weaknesses of Skull Stripping Approaches}
+% 
+% \begin{table}[h!]
+% \centering
+% \begin{tabularx}{\linewidth}{|X|X|X|}
+% \hline
+% \textbf{Methodology} & \textbf{Strengths} & \textbf{Weaknesses} \\
+% \hline
+% Mathematical Morphology & Simple to implement; fast & Parameter-dependent; noise-sensitive; risk of over/under-segmentation \\
+% \hline
+% Intensity-Based & Uses fundamental image properties & Sensitive to noise, bias field, threshold choice; watershed over-segmentation \\
+% \hline
+% Deformable Surface & Accurate and robust; boundary-aware & Sensitive to initialization; noise-sensitive; may fail in non-standard cases \\
+% \hline
+% Atlas-Based & Leverages anatomical priors; good when intensities are unreliable & Dependent on registration quality; computationally intensive \\
+% \hline
+% Hybrid & Combines strengths of multiple methods; often fully automatic & Complex; inherits weaknesses of contributing methods \\
+% \hline
+% Deep Learning & State-of-the-art performance; learns features automatically & Requires large datasets; expensive; black-box behavior \\
+% \hline
+% \end{tabularx}
+% \caption{Comparative strengths and weaknesses of skull-stripping methodologies.}
+% \end{table}
+% 
+% \subsection{Primary Challenges}
+% 
+% Major difficulties arise from:
+% 
+% \begin{itemize}
+% \item MRI artifacts (noise, intensity bias, motion)
+% \item Anatomical complexity and overlapping tissue intensities
+% \item Presence of pathology (e.g., tumors) affecting segmentation accuracy
+% \end{itemize}
+
+\input{maintext/chapter4_fully_cited}
+
+
+\section{Voxel-Based Morphometry (VBM)}
+
+VBM is a whole-brain statistical technique that replaced the manual procedure in which clinicians had to track a specific brain structure, such as the hippocampus, across sequential slices. This technique frees the user from being confined to a single region of interest and instead enables analysis of the entire brain, detecting even subtle structural changes.
+
+The VBM pipeline consists of several key steps:
+
+\begin{enumerate}
+    \item \textbf{Image Acquisition} \\
+    This typically involves acquiring a high-resolution T1-weighted MRI scan.
+
+    \item \textbf{Spatial Alignment (Normalization)} \\
+    All images must be aligned to a common template to allow voxel-wise statistical comparison.
+
+    \item \textbf{Tissue Segmentation} \\
+    Tissues are automatically classified into gray matter (GM), white matter (WM), and cerebrospinal fluid (CSF). 
+    This relies on spatial priors and voxel intensities. Formally:
+    \[
+        P(\text{Tissue Class} \mid \text{Intensity}, \text{Location})
+    \]
+
+    \item \textbf{Modulation} \\
+    Modulation preserves the total amount of tissue after spatial transformations using the Jacobian determinant.  
+    The choice to use modulation depends on the research question:
+
+    \begin{itemize}
+        \item Without modulation: analysis reflects \emph{concentration} (e.g., GM density per unit volume).
+        \item With modulation: analysis reflects \emph{absolute volume}.
+    \end{itemize}
+    
+    Modulation may miss microscopic changes, and it is suggested that modulation should not be used to detect mesoscopic abnormalities such as cortical thinning \cite{raduaValidityModulationOptimal2014}.
+
+
+    \item  \textbf{Smoothing} \\
+    An isotropic Gaussian kernel is applied to:
+
+    \begin{enumerate}
+        \item Increase signal-to-noise ratio by averaging neighboring voxels.
+        \item Compensate for minor spatial misalignments after normalization.
+        \item Render the data more normally distributed for parametric statistics.
+    \end{enumerate}
+
+    \item \textbf{Statistical Analysis} \\
+    Voxel-wise statistical tests are typically performed using the General Linear Model (GLM).  
+    A t-value map (Statistical Parametric Map) is created by comparing group means and accounting for variance.
+    
+    To control false positives:
+    \begin{itemize}
+        \item \textbf{Family-Wise Error (FWE)} correction
+        \item \textbf{False Discovery Rate (FDR)}
+    \end{itemize}
+
+    
+\end{enumerate}
+
+
+\subsection{Evolution of VBM}
+
+VBM initially faced criticism regarding registration and segmentation accuracy. Two major improvements emerged:
+
+\begin{itemize}
+    \item \textbf{Optimized VBM} \\
+        Introduced study-specific templates and better skull-stripping to improve normalization accuracy.
+    \item  \textbf{DARTEL} \\ 
+        A diffeomorphic algorithm using exponentiated Lie algebra for high-dimensional registration.
+
+        The algorithm iteratively computes an increasingly accurate group average and stores subject-specific deformations as \emph{individual flow fields}.
+\end{itemize}
+
+
+\subsection{Alzheimer's Disease and Atrophy Patterns}
+
+\begin{enumerate}
+
+    \item \textbf{Medial Temporal Lobe} \\
+    The earliest and most critical changes occur here, involving structures essential for episodic memory.
+
+    \item \textbf{Temporoparietal Association Cortex} \\
+    Includes the temporal lobe, parietal lobe, and angular gyrus—responsible for memory, spatial cognition, and language processing.
+
+    \item \textbf{Posterior Cingulate Cortex and Precuneus} \\
+    Key nodes of the Default Mode Network (DMN), implicated in self-referential thought and autobiographical memory.
+
+    \item \textbf{Frontal Lobe Involvement} \\
+    VBM helped demonstrate that the frontal lobe is also affected, which has significant clinical implications for symptoms such as apathy and disinhibition.
+
+    \item \textbf{Unaffected Regions} \\
+    The primary visual cortex, primary sensorimotor cortex, and the cerebellum remain largely intact.
+
+    \item \textbf{VBM and Braak Staging} \\
+    Braak staging describes the sequential spread of neurofibrillary tangles (NFTs).  
+    VBM-detected atrophy patterns mirror those found in post-mortem studies, suggesting VBM can track macroscopic consequences of NFT accumulation.
+    
+    \item \textbf{Structural Integrity vs. Metabolism} \\
+    Hypometabolism may precede structural loss, meaning that VBM cannot always capture early dysfunction \cite{duongHypometabolicMismatchAtrophy2025, chetelatDirectVoxelbasedComparison2008}.
+
+\end{enumerate}
+
+\subsection{VBM as a Prognostic Tool}
+
+Mild Cognitive Impairment (MCI) is heterogeneous.  
+VBM can distinguish:
+
+\begin{itemize}
+    \item \textbf{MCI converters}: likely to progress to AD
+    \item \textbf{MCI non-converters}: may remain stable or revert
+\end{itemize}
+
+\cite{bozzaliContributionVoxelbasedMorphometry2006}
+
+\subsection{Differences Between Converters}
+
+MCI converters show atrophy patterns similar to mild AD, involving:
+
+\begin{itemize}
+    \item Entorhinal cortex
+    \item Hippocampus
+    \item Temporal lobe
+    \item Parietal lobe
+    \item Posterior cingulate cortex
+\end{itemize}
+
+Non-converters show more limited and localized GM loss \cite{apostolovaMappingProgressiveBrain2008}.
+
+\subsection{Meta-Analytic Power of VBM}
+
+A major meta-analysis identified the \textbf{left hippocampus and parahippocampal gyrus} as the most consistent predictors of conversion to AD \cite{ferreiraNeurostructuralPredictorsAlzheimers2011}.  
+Another found robust atrophy in the \textbf{left amygdala} and \textbf{right hippocampus}.
+
+Rate of Decline in AD
+
+Longitudinal VBM shows that ``fast decliners'' have greater GM loss at baseline, demonstrating that initial atrophy predicts future trajectory \cite{VBMAnticipatesRate}.
+
+Clinical Utility
+
+Tools such as VSRAD provide clinicians with voxel-wise z-scores derived from large normative datasets, similar to how blood test references are used.
+
+Accuracy
+
+VBM often achieves an AUC exceeding 0.90 in distinguishing AD from controls \cite{ishiiVoxelBasedMorphometricComparison2005}, demonstrating high diagnostic accuracy.
+
+\subsection{Subtypes of AD}
+
+VBM helps distinguish:
+
+\begin{itemize}
+    \item \textbf{Early-Onset AD (EOAD)} – more parietal and posterior cingulate atrophy
+    \item \textbf{Late-Onset AD (LOAD)} – more medial temporal atrophy
+\end{itemize}
+
+\cite{ishiiVoxelBasedMorphometricComparison2005a}
+
+Structure–Clinical Correlations
+
+VBM correlates brain atrophy with clinical features:
+
+\begin{itemize}
+    \item Frontal atrophy correlates with impaired daily living activities.
+    \item Apathy correlates with atrophy in anterior cingulate and orbitofrontal cortex.
+    \item Disinhibition correlates with orbitofrontal atrophy.
+\end{itemize}
+
+\subsection{Limitations of VBM}
+
+\begin{enumerate}
+    \item \textbf{Multiple Comparisons}\\
+    Strict corrections (FWE) reduce false positives but may reduce sensitivity.
+
+    \item \textbf{Preprocessing Sensitivity}\\
+    Results depend heavily on choices in normalization, segmentation, and statistical thresholds.
+
+    \item \textbf{Registration Problems}\\
+    Even DARTEL may misalign regions due to individual variability.
+
+    \item \textbf{Segmentation Errors}\\
+    Artifacts, low SNR, and partial volume effects can misclassify tissue.
+
+    \item \textbf{Ambiguity}\\
+    A decrease in voxel intensity could reflect thinning, reduced surface area, or folding changes.
+\end{enumerate}
+
+
+\subsection{Machine Learning and VBM}
+
+\begin{enumerate}
+    \item Supervised methods (SVM, Random Forests) classify AD vs.\ controls and predict cognitive decline.
+    \item Feature importance can reveal novel biomarkers.
+\end{enumerate}
+
+\subsection{Deep Learning}
+
+CNNs can classify AD and MCI without hand-crafted features, achieving high accuracy (e.g., 80.9\% for MCI identification) \cite{huangVoxelbasedMorphometryDeep2023}.
+

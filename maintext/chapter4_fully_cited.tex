@@ -1,0 +1,246 @@
+\section{Skull Stripping}
+
+High-resolution MRI images contain non-brain tissues such as skin, fat, muscle, neck structures, and eyeballs, unlike other modalities such as PET scans. The presence of these non-brain tissues can severely impact automated processing algorithms such as image segmentation and analysis techniques. Therefore, quantitative morphometric studies of MR brain images—such as those used in Alzheimer's disease research—commonly require a preprocessing step to remove non-brain and extra-cranial tissues \cite{kalavathiMethodsSkullStripping2016, fatimaStateoftheArtTraditionalMachine2020}.
+
+The MRI system produces brain images as 3D volumetric data composed of 2D slices. Further computer-aided processing is essential in order to extract meaningful information, whether for research, diagnostic, or clinical purposes.
+
+As noted earlier, quantitative morphometric studies require isolating brain tissue from non-brain tissue, a process referred to as \emph{skull stripping}. Automated skull-stripping enhances segmentation accuracy, making manual or automated segmentation methods more reliable \cite{rehmanConventionalDeepLearning2020}. Examples from \cite{kalavathiMethodsSkullStripping2016} are shown in Figure~\ref{fig:skullstrip_example}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/Skull Stripping image.png}
+	\caption{Examples of automated skull stripping from \cite{kalavathiMethodsSkullStripping2016}.}
+	\label{fig:skullstrip_example}
+\end{figure}
+
+Voxel-based morphometry (VBM) results also showed significant improvements after skull stripping was applied \cite{rehmanConventionalDeepLearning2020}. Many brain imaging applications benefit from the precise segmentation of the brain from surrounding tissues, including cortical surface reconstruction, tissue classification, and registration to standard templates \cite{segonneHybridApproachSkull2004, novosadAccurateRobustSegmentation2019}.
+
+Skull-stripping algorithms are typically evaluated by their speed and their impact on downstream automated tasks such as segmentation \cite{souzaOpenMultivendorMultifieldstrength2018}.
+
+Multiple skull-stripping techniques have been developed due to their success and effectiveness in improving diagnostic and prognostic accuracy \cite{kalavathiMethodsSkullStripping2016, fatimaStateoftheArtTraditionalMachine2020}.
+
+Manual brain segmentation is considered the most robust and accurate approach, but it is extremely laborious, time-consuming, and subject to inter-clinician variability \cite{eskildsenBEaSTBrainExtraction2012}. Manual masks are often treated as the ground truth against which automated methods are validated \cite{rehmanConventionalDeepLearning2020}. This has led to a strong need for automated skull stripping.
+
+Despite significant progress, many skull-stripping approaches still perform well only on specific datasets and often require tuning of hyperparameters \cite{souzaOpenMultivendorMultifieldstrength2018, iglesiasRobustBrainExtraction2011}. According to \cite{rehmanConventionalDeepLearning2020}, skull-stripping methods fall into three primary categories:
+
+\begin{enumerate}
+	\item Manual skull stripping
+	\item Classical approaches
+	\item Deep learning–based approaches
+\end{enumerate}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/Skull Stripping Techniques.png}
+	\caption{Overview of skull-stripping categories \cite{rehmanConventionalDeepLearning2020}.}
+\end{figure}
+
+\subsection{Skull Stripping Methods}
+
+Based on \cite{kalavathiMethodsSkullStripping2016}, skull-stripping techniques can be grouped as follows:
+
+\begin{itemize}
+	\item Mathematical morphology-based methods
+	\item Intensity-based methods
+	\item Deformable surface-based methods
+	\item Atlas-based methods
+	\item Hybrid methods
+	\item Deep learning–based methods
+\end{itemize}
+
+\subsection{Morphology-Based Methods}
+
+These methods use morphological erosion and dilation operations—combined with thresholding and edge detection—to estimate the initial region of interest (ROI) and separate brain from non-brain tissues \cite{kalavathiMethodsSkullStripping2016, shattuckMagneticResonanceImage2001}.
+
+A key drawback is that performance depends heavily on empirically tuned parameters related to the shape and size of the morphological structuring elements \cite{fatimaStateoftheArtTraditionalMachine2020}.
+
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+	\item \textbf{Brain Surface Extraction (BSE).}\\
+	Uses anisotropic diffusion filtering, Marr–Hildreth edge detection, and morphological operations such as erosion and dilation. BSE is fast ($\approx$3.5 seconds) \cite{shattuckMagneticResonanceImage2001, kalavathiMethodsSkullStripping2016}.
+	
+	\item \textbf{Brain Extraction Algorithm.}\\
+	Uses diffusion, morphological operations, and connected component analysis for T1W and T2W MRI \cite{rehmanConventionalDeepLearning2020}.
+	
+	\item \textbf{SMHASS (2012).}\\
+	Combines deformable models with histogram analysis and morphological preprocessing \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Intensity-Based Methods}
+
+These methods classify brain vs.\ non-brain regions using pixel intensities. Examples include histogram-based, region-growing, and edge-based methods. Their primary limitation is sensitivity to MRI noise, low contrast, and bias field artifacts \cite{kalavathiMethodsSkullStripping2016, souzaOpenMultivendorMultifieldstrength2018}.
+
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+	\item \textbf{Graph Cuts (GCUT, 2010).}\\
+	Uses graph-theoretic segmentation to isolate brain tissue from dura, beginning with thresholding followed by connected submask selection \cite{kalavathiMethodsSkullStripping2016}.
+	
+	\item \textbf{Region Growing (RG).}\\
+	Forms connected regions based on local intensity similarity. Variants include 2D approaches for coronal slices and MARGA for axial views and low-quality images \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Deformable Surface-Based Methods}
+
+These methods employ active contours (snakes) that evolve iteratively according to an energy functional. The contour adapts—shrinking or expanding—to match the brain boundary. Level-set formulations provide a robust mathematical framework \cite{kalavathiMethodsSkullStripping2016, segonneHybridApproachSkull2004}.
+
+Their performance depends strongly on the initial contour and image quality, especially the clarity of edges \cite{smithFastRobustAutomated2002}.
+
+\subsubsection{\textit{Examples}}
+
+\begin{enumerate}
+	\item \textbf{BET (Brain Extraction Tool, 2002).}\\
+	Widely used, fast, and freely available. It expands a tessellated sphere to match brain edges using adaptive forces. BET supports T1-weighted, T2-weighted, and proton density images, processing in 5–20 seconds \cite{smithFastRobustAutomated2002, isenseeAutomatedBrainExtraction2019 ,}.
+	
+	\item \textbf{Model-Based Level Set (MLS, 2006).}\\
+	Uses curvature and intensity-derived forces to evolve an active contour \cite{kalavathiMethodsSkullStripping2016}.
+	
+	\item \textbf{3dSkullStrip (AFNI, 2005).}\\
+	BET-like but includes improvements to avoid eyes and ventricles \cite{coxAFNISoftwareAnalysis1996, kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+
+\subsection{Atlas / Template-Based Methods}
+
+These methods register the subject MRI to one or more anatomical atlases, enabling the transfer of brain masks to the subject \cite{kalavathiMethodsSkullStripping2016, novosadAccurateRobustSegmentation2018}.
+
+\subsubsection{\textit{Examples}}
+\begin{enumerate}
+	\item \textbf{MAPS (2011).}\\
+	Combines multiple atlas registrations to produce a consensus segmentation \cite{kalavathiMethodsSkullStripping2016}.
+	
+	\item \textbf{BEaST (2012).}\\
+	Uses nonlocal segmentation with multi-resolution priors. BEaST achieves high accuracy through patch-based label fusion from a library of pre-labelled atlases \cite{eskildsenBEaSTBrainExtraction2012, isenseeAutomatedBrainExtraction2019,}.
+	
+	\item \textbf{Pincram (2015).}\\
+	Employs iterative refinement to propagate labels from multiple atlases \cite{kalavathiMethodsSkullStripping2016}.
+\end{enumerate}
+
+\subsection{Hybrid Methods}
+
+Hybrid approaches combine multiple algorithms or features to improve robustness and accuracy \cite{kalavathiMethodsSkullStripping2016, fatimaStateoftheArtTraditionalMachine2020}.
+
+\subsubsection{\textit{Examples}}
+
+\begin{enumerate}
+	\item \textbf{SPECTRE (2011).}\\
+	Integrates elastic registration, tissue segmentation, and morphological watershed operations \cite{kalavathiMethodsSkullStripping2016}.
+	
+	\item \textbf{HWA (Hybrid Watershed Algorithm, 2004).}\\
+	Combines watershed segmentation with deformable surface models. HWA showed the highest sensitivity among compared methods and appeared more robust to parameter changes \cite{segonneHybridApproachSkull2004, isenseeAutomatedBrainExtraction2019}.
+	
+	\item \textbf{BEMA (2004).}\\
+	Runs multiple extractors (BET, BSE, Watershed, etc.) in parallel and merges the results \cite{rehmanConventionalDeepLearning2020}.
+	
+	\item \textbf{ROBEX (2011).}\\
+	Combines a Random Forest classifier with a point distribution model to ensure anatomically plausible results. The key advantage is parameter-free operation with consistent performance across datasets—achieving Dice scores of 95.6–97.0\% on IBSR, LPBA40, and OASIS without tuning \cite{iglesiasRobustBrainExtraction2011, isenseeAutomatedBrainExtraction2019}.
+\end{enumerate}
+
+\subsection{Deep Learning-Based Methods}
+Deep learning approaches include 2D and 3D CNNs. While 3D CNNs capture volumetric context, they require higher computational resources. DL methods are generally categorized as \cite{rehmanConventionalDeepLearning2020, kleesiekDeepMRIBrain2016}:
+
+\begin{itemize}
+	\item Patch-based CNNs
+	\item Encoder–decoder CNNs (e.g., U-Net)
+\end{itemize}
+
+Encoder–decoder architectures typically perform better, are faster, and can capture global and local features \cite{isenseeAutomatedBrainExtraction2019}.
+
+However despite their performance, deep learning methods showcase several limitations \cite{rehmanConventionalDeepLearning2020, fatimaStateoftheArtTraditionalMachine2020}:
+\begin{itemize}
+	\item The requirement of large annotated datasets
+	\item The inability of hyperparameter tuning due to the black-box behavior of the networks
+	\item The sensitivity that emerges when trained on healthy individuals
+\end{itemize}
+
+\subsubsection{State-of-the-Art Deep Learning Methods}
+
+\textbf{SynthStrip} represents a paradigm shift through synthetic training data. The method trains a 3D U-Net entirely on synthetically generated images, randomising intensity distributions, artifacts, and deformations. This yields contrast-agnostic generalisation—a single model processes T1w, T2w, FLAIR, DWI, MRA, CT, and PET images with Dice scores of 96–98\%. Processing takes under 2 seconds on GPU \cite{hoopesSynthStripSkullstrippingAny2022}.
+
+\textbf{HD-BET (High Definition Brain Extraction Tool)} was designed for clinical heterogeneity. Training used 6,586 MRI sequences from 372 patients across 37 European institutions, including brain tumours and resection cavities. The ensemble of five 3D U-Net models with test-time augmentation outperforms BET, 3dSkullStrip, BSE, ROBEX, BEaST, and MONSTR \cite{isenseeAutomatedBrainExtraction2019}.
+
+\textbf{deepbet} achieves the highest reported accuracy for T1-weighted images using a two-stage 3D LinkNet architecture. Trained on 7,837 images from 191 OpenNeuro datasets, deepbet achieves median Dice of 99.0\% with processing times of only 0.5 seconds on GPU \cite{fischDeepbetFastBrain2023}.
+
+\textbf{Deep MRI Brain Extraction} by Kleesiek et al.\ pioneered CNN-based skull stripping, demonstrating that deep learning could handle pathological brains better than classical methods \cite{kleesiekDeepMRIBrain2016}.
+
+\subsection{Comparative Analysis}
+
+\subsubsection{Automated vs.\ Manual Approaches}
+
+\begin{itemize}
+	\item Automated methods are faster but may require parameter tuning \cite{souzaOpenMultivendorMultifieldstrength2018}.
+	\item Semi-automated methods are accurate but slow and user-dependent \cite{kalavathiMethodsSkullStripping2016}.
+\end{itemize}
+
+\subsubsection{Evaluation Metrics}
+
+Common metrics include \cite{rehmanConventionalDeepLearning2020, isenseeAutomatedBrainExtraction2019}:
+
+\begin{itemize}
+	\item Dice coefficient
+	\item Jaccard Index
+	\item Sensitivity / Specificity
+	\item False Positive Rate / False Negative Rate
+	\item Hausdorff Distance
+	\item Average Symmetric Surface Distance (ASSD)
+\end{itemize}
+
+Comparative findings from the literature include \cite{kalavathiMethodsSkullStripping2016, rehmanConventionalDeepLearning2020, isenseeAutomatedBrainExtraction2019, schulzSkullStrippingTools2025 }:
+
+\begin{itemize}
+	\item McStrip (hybrid) outperforms BET and BSE.
+	\item HWA shows high sensitivity and robustness.
+	\item Deep learning achieves highest Dice and specificity; 3D U-Net has highest sensitivity.
+	\item SynthStrip performs best on pediatric T2-weighted scans, with accuracy increasing with age.
+	\item HD-BET outperformed all classical methods by +1.16 to +2.50 Dice points on the CC-359 multi-vendor dataset.
+\end{itemize}
+
+\subsection{Multi-Site Dataset Considerations}
+
+Large-scale studies aggregate data from numerous imaging sites with different scanners, protocols, and field strengths. Souza et al.\ created the CC-359 dataset specifically to evaluate vendor and field-strength effects, comparing BET, 3dSkullStrip, FreeSurfer, BSE, ROBEX, BEaST, and OptiBET across 359 acquisitions from GE, Philips, and Siemens scanners at 1.5T and 3.0T. Results revealed statistically significant effects ($p<0.001$) for both vendor and field strength \cite{souzaOpenMultivendorMultifieldstrength2018}.
+
+\subsection{Implications for Alzheimer's Disease Research}
+
+The application of skull stripping in neurodegeneration research introduces domain-specific challenges. Brain atrophy—the hallmark of Alzheimer's disease—alters the anatomical relationships that skull stripping algorithms exploit \cite{novosadAccurateRobustSegmentation2019, tinauerSkullstrippingInducesShortcut2025}.
+
+Recent research by Tinauer et al.\ analysed 990 matched ADNI images and discovered that skull stripping introduces shortcut learning. CNNs trained on skull-stripped images learned brain contours introduced through preprocessing rather than clinically relevant atrophy markers—a ``Clever Hans effect'' inflating apparent classification accuracy \cite{tinauerSkullstrippingInducesShortcut2025}.
+
+Novosad and Collins evaluated skull stripping on ADNI subjects and found that brain masks include more subarachnoid CSF in atrophied brains, failure to remove non-brain tissue causes over-estimation of cortical thickness, and poor skull stripping propagates errors to regional volume and atrophy estimates \cite{novosadAccurateRobustSegmentation2019}.
+
+It is also important to note that variability of anatomy, age, and extent of brain atrophy impacts skull stripping for volumetric Alzheimer's analysis \cite{iglesiasRobustBrainExtraction2011}.
+
+\subsection{Strengths and Weaknesses of Skull Stripping Approaches}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabularx}{\linewidth}{|X|X|X|}
+		\hline
+		\textbf{Methodology} & \textbf{Strengths} & \textbf{Weaknesses} \\
+		\hline
+		Mathematical Morphology & Simple to implement; fast \cite{shattuckMagneticResonanceImage2001} & Parameter-dependent; noise-sensitive; risk of over/under-segmentation \cite{kalavathiMethodsSkullStripping2016} \\
+		\hline
+		Intensity-Based & Uses fundamental image properties & Sensitive to noise, bias field, threshold choice; watershed over-segmentation \cite{kalavathiMethodsSkullStripping2016} \\
+		\hline
+		Deformable Surface & Accurate and robust; boundary-aware \cite{smithFastRobustAutomated2002} & Sensitive to initialization; noise-sensitive; may fail in non-standard cases \cite{souzaOpenMultivendorMultifieldstrength2018} \\
+		\hline
+		Atlas-Based & Leverages anatomical priors; good when intensities are unreliable \cite{eskildsenBEaSTBrainExtraction2012} & Dependent on registration quality; computationally intensive \cite{novosadAccurateRobustSegmentation2019} \\
+		\hline
+		Hybrid & Combines strengths of multiple methods; often fully automatic \cite{iglesiasRobustBrainExtraction2011} & Complex; inherits weaknesses of contributing methods \cite{kalavathiMethodsSkullStripping2016} \\
+		\hline
+		Deep Learning & State-of-the-art performance; learns features automatically \cite{isenseeAutomatedBrainExtraction2019, hoopesSynthStripSkullstrippingAny2022} & Requires large datasets; expensive; black-box behavior \cite{rehmanConventionalDeepLearning2020} \\
+		\hline
+	\end{tabularx}
+	\caption{Comparative strengths and weaknesses of skull-stripping methodologies.}
+\end{table}
+
+\subsection{Primary Challenges}
+
+Major difficulties arise from \cite{kalavathiMethodsSkullStripping2016, fatimaStateoftheArtTraditionalMachine2020, novosadAccurateRobustSegmentation2019}:
+
+\begin{itemize}
+	\item MRI artifacts (noise, intensity bias, motion)
+	\item Anatomical complexity and overlapping tissue intensities
+	\item Presence of pathology (e.g., tumors) affecting segmentation accuracy
+	\item Brain atrophy in neurodegeneration creating ambiguous tissue boundaries
+\end{itemize}

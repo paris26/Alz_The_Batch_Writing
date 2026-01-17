@@ -1,0 +1,85 @@
+\chapter{Classification Performance and Accuracy Metrics}
+
+\section{Evaluation Metrics}
+
+\subsection{Accuracy, Sensitivity, Specificity}
+
+Evaluation metrics allow the visualization of the performance of a classifier and the comparison between different classifiers.
+
+In Alzheimer's disease research, imbalanced data are extremely common. Imbalanced data occur when one class is significantly overrepresented or underrepresented.
+
+To understand these metrics, we introduce the \textbf{confusion matrix}, which visualizes the relationship between predicted labels and actual labels:
+
+\begin{table}[h!]
+\centering
+\caption{Confusion Matrix showing Actual vs. Predicted values}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Total Population = P + N} & \textbf{Predicted Positive} & \textbf{Predicted Negative} \\
+\midrule
+\textbf{Actual Positive} & True Positive (TP) & False Negative (FN) \\
+\textbf{Actual Negative} & False Positive (FP) & True Negative (TN) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Accuracy in machine learning is the proportion of correct classifications over the total number of classifications.  
+However, accuracy can be misleading, especially when dealing with imbalanced datasets. Its weaknesses include lower informativeness, discriminability, distinctiveness, and a bias toward the majority class \cite{mReviewEvaluationMetrics2015}.
+
+Accuracy is defined as:
+\[
+\text{Accuracy} = \frac{TP + TN}{TP + FP + TN + FN}
+\]
+
+Sensitivity is the ability of a classifier to detect actual positives. In medical applications, a sensitivity of 0.8 means that the method correctly identifies positive cases 80\% of the time.
+
+\[
+\text{Sensitivity} = \text{TPR} = \frac{TP}{TP + FN}
+\]
+
+Specificity measures the ability to correctly identify actual negatives:
+\[
+\text{Specificity} = \frac{TN}{TN + FP}
+\]
+
+\subsection{Precision and Recall}
+
+Precision (Positive Predictive Value) quantifies how many predicted positives are actually positive:
+
+\[
+\text{Precision} = \frac{TP}{TP + FP}
+\]
+
+Recall is equivalent to sensitivity:
+
+\[
+\text{Recall} = \frac{TP}{TP + FN}
+\]
+
+\subsection{Model Validation Techniques}
+
+Model validation ensures that the model can generalize to unseen data. To improve robustness, methods such as \textbf{cross-validation} and \textbf{leave-one-out validation (LOOV)} are used.
+
+\begin{itemize}
+    \item \textbf{Cross-validation}: Splits the dataset into $k$ folds and trains the model $k$ times, each time using one fold for testing and the rest for training.
+    \item \textbf{Leave-One-Out Validation}: A special case where each data point is treated as a fold. Maximizes data usage but is computationally expensive.
+    \item \textbf{Bootstrap Validation}: Repeatedly samples with replacement, trains on each sample, and tests on the remaining data. Effective for small or uncertain datasets \cite{raschkaModelEvaluationModel2020}.
+\end{itemize}
+
+\subsection{ROC Curve}
+
+The Receiver Operating Characteristic (ROC) curve plots the True Positive Rate (TPR) against the False Positive Rate (FPR) at various threshold settings. The Area Under the Curve (AUC) reflects classifier performance: the larger the AUC, the better the classifier.
+
+AUC is robust to class imbalance \cite{keEffectResamplingTechniques2024, richardsonReceiverOperatingCharacteristic2024}.
+
+\subsection{Matthews Correlation Coefficient}
+
+The Matthews Correlation Coefficient (MCC) is considered one of the most informative evaluation metrics \cite{chiccoAdvantagesMatthewsCorrelation2020}. Other related metrics include:
+
+\begin{itemize}
+    \item Markedness
+    \item Informedness (Bookmaker Informedness, BM)
+    \item Balanced Accuracy (BA)
+\end{itemize}
+
+

@@ -1,0 +1,114 @@
+\chapter{Classification Techniques for Dementia Image Analysis}
+
+\section{Foundational Machine Learning Paradigms in Dementia Classification}
+
+Before the widespread adoption of deep learning, classical machine learning pipelines followed a multi-step process consisting of:
+\begin{enumerate}
+    \item feature extraction,
+    \item feature selection and dimensionality reduction,
+    \item classification using a machine learning model.
+\end{enumerate}
+
+This pipeline formed the basis of early computational dementia research
+\cite{joDeepLearningAlzheimers2019, islamBrainMRIAnalysis2018}.
+
+\subsection{Support Vector Machines (SVM)}
+Support Vector Machines (SVMs) were among the earliest and most widely used algorithms for binary classification. An SVM works by identifying an optimal hyperplane that separates data from different classes while maximizing the margin---the distance between the hyperplane and the nearest data points. For non-linearly separable data, SVMs employ the \textit{kernel trick}, using polynomial or radial basis function (RBF) kernels to implicitly map data into a higher-dimensional space where linear separation becomes possible.
+
+In dementia research, SVMs were extensively applied for classifying Alzheimer's disease (AD) versus healthy controls (HC). Input features were typically derived from structural MRI, often by dividing the brain into regions of interest (ROIs) and computing measurements such as grey matter (GM) volume, cortical thickness, or voxel-based morphometry (VBM) values.
+
+Several studies reported high accuracies. For example, one study using whole-brain MRI-derived features achieved a mean classification accuracy of 94.5\% (96.6\% specificity, 91.5\% sensitivity) for AD vs.\ controls \cite{PDFSupportVector}. Another reported an accuracy of 99.06\% using 2D MRI slices \cite{niranjankumarSVMBasedClassifierEarly2024}.
+
+However, performance degraded significantly when distinguishing more subtle clinical categories, such as healthy controls (HC), mild cognitive impairment (MCI), and in particular predicting MCI converters (MCI-C) versus non-converters (MCI-NC) \cite{pellegriniMachineLearningNeuroimaging2018}.
+
+The limitation lies not in the SVM algorithm itself, but in the nature of the disease and the constraints of manual feature engineering. Structural changes in late-stage AD---such as GM atrophy---are large and consistent across subjects, making the classes easily separable. MCI, however, is heterogeneous: not all MCI patients convert to AD, and subtle pathological differences are often not captured by handcrafted features such as ROI-based volumes.
+
+This limitation highlighted the dependence of classical machine learning on high-quality engineered features, motivating the shift toward deep learning, where feature extraction is learned directly from the data.
+
+\subsection{Ensemble Methods: Decision Trees and Random Forests}
+
+Random Forests (RFs) emerged as a strong alternative to SVMs. An RF builds an ensemble of decision trees, each trained on a bootstrap sample of the data. At each node, splits consider only a subset of features, which reduces overfitting and is well-suited for high-dimensional, low-sample-size neuroimaging data \cite{saricaRandomForestAlgorithm2017}.
+
+The stability of RFs has been demonstrated in studies showing that even after substantial feature reduction, RF accuracy decreases less and remains more stable compared to multilayer perceptrons (MLPs) and convolutional neural networks (CNNs) \cite{dimitriadisHowRandomRandom2018}.
+
+A key advantage of RFs is their ability to compute feature importance via decreases in Gini impurity. This has repeatedly highlighted brain regions such as the hippocampus, amygdala, and inferior lateral ventricles as major contributors in NC/MCI/AD classification tasks \cite{songDiagnosticClassificationBiomarker2021}.
+
+RFs have achieved strong performance, including:
+\begin{itemize}
+    \item 93.6\% accuracy for predicting MCI-to-AD conversion from clinical data \cite{velazquezRandomForestModel},
+    \item 90.2\% accuracy in three-class MRI-based classification (NC, MCI, AD) \cite{songDiagnosticClassificationBiomarker2021}.
+\end{itemize}
+
+However, Gini-based importance scores may be biased toward continuous or high-cardinality features and can be misleading in the presence of correlated predictors \cite{stroblBiasRandomForest2007}. In neuroanatomy, many structures (e.g., left/right hippocampus) are strongly correlated, meaning RF importance rankings require careful interpretation.
+
+\subsection{The Curse of Dimensionality: PCA and LDA}
+
+A major challenge in neuroimaging machine learning is the \textit{curse of dimensionality} \cite{PDFComparativeStudy}. When the number of features $p$ greatly exceeds the number of subjects, models tend to overfit and generalize poorly. Dimensionality reduction methods help mitigate this issue.
+
+\subsubsection{Principal Component Analysis (PCA)}
+PCA is an unsupervised method that identifies orthonormal components capturing directions of maximal variance \cite{PDFComparativeStudy, lazliImprovedAlzheimerDisease2025}. Retaining only the top components reduces noise and redundancy \cite{millerSupportVectorMachine2014}. PCA has been used to compress VBM maps and ROI volumes before feeding them into classifiers, often improving performance.
+
+\subsubsection{Linear Discriminant Analysis (LDA)}
+LDA is a supervised method that seeks projections maximizing the ratio of between-class to within-class variance \cite{m.dessoukySelectingExtractingEffective2013}. Unlike PCA, which is label-agnostic, LDA explicitly optimizes separability among classes such as NC, MCI, and AD.
+
+Studies consistently show LDA outperforming PCA for dementia classification \cite{PDFComparativeStudy}. However, as a supervised method, it may overfit if distributions shift between train and test sets.
+
+\section{The Deep Learning Revolution}
+
+Deep learning disrupted the traditional feature-engineering workflow by enabling end-to-end learning from raw or minimally processed images \cite{ozkanDeepLearningTechniques2024}.
+
+\subsection{Convolutional Neural Networks (CNNs)}
+
+CNNs form the backbone of most imaging-based dementia classification systems \cite{ebrahimiConvolutionalNeuralNetworks2021}. Their strength lies in hierarchical feature extraction: early layers detect low-level patterns (edges, textures), while deeper layers capture structural patterns associated with neurodegeneration \cite{ebrahimiConvolutionalNeuralNetworks2021a}.
+
+\subsubsection{2D vs.\ 3D CNN Designs}
+
+Choosing between 2D and 3D architectures involves trade-offs:
+
+\paragraph{2D CNNs.}
+These operate on slice-based inputs, enabling computational efficiency and transfer learning from natural-image models such as VGG, ResNet, Inception, and DenseNet \cite{sm.DeepLearningDrivenAlzheimers2025, PDFImprovedClassification}. However, slice-wise inputs discard 3D anatomical continuity \cite{aliEnhancingAlzheimersDisease2024}.
+
+\paragraph{3D CNNs.}
+3D CNNs preserve volumetric structure using 3D kernels \cite{khagi3DCNNDesign2020}. They achieve strong performance on AD/NC and multi-class tasks but require large datasets and memory, making them susceptible to overfitting \cite{xuReviewApplicationThreedimensional2023}.
+
+Hybrid approaches include:
+\begin{itemize}
+    \item 2.5D slices (central slice plus neighbors) \cite{linConvolutionalNeuralNetworksBased2018},
+    \item CNN+RNN architectures for sequential slice modeling \cite{ebrahimiConvolutionalNeuralNetworks2021b}.
+\end{itemize}
+
+\subsubsection{Multimodal Fusion}
+
+Structural MRI (T1) and FDG-PET offer complementary structural and metabolic information. CNNs can fuse these modalities using multi-stream architectures, where early layers learn modality-specific features before being merged for joint classification \cite{huangDiagnosisAlzheimersDisease2019, zhaoConventionalMachineLearning2023}.
+
+\subsubsection{Interpretability: Grad-CAM}
+
+Deep models face adoption challenges due to limited interpretability. Grad-CAM provides visual explanations by generating heatmaps indicating which regions contributed most to the model's decision \cite{selvarajuGradCAMVisualExplanations2020, wangInterpretable2D3D}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/Grad-CAMVBM.png}
+    \caption{Example Grad-CAM heatmap highlighting salient regions \cite{selvarajuGradCAMVisualExplanations2020}.}
+\end{figure}
+
+Such maps enable researchers and clinicians to verify that models rely on plausible neuroanatomical biomarkers rather than noise or artifacts.
+
+\subsection{Generative Models: GANs}
+
+Deep learning is limited by the scarcity of large, annotated medical datasets \cite{zhaoConventionalMachineLearning2023, marcusDeepLearningCritical}. Generative Adversarial Networks (GANs) address this by producing synthetic yet realistic MRI or PET images \cite{konidarisGenerativeAdversarialNetworks2019}.
+
+GAN-generated images can augment training datasets, alleviating class imbalance and improving classifier performance, with gains up to 11.68\% reported \cite{konidarisGenerativeAdversarialNetworks2019}. GANs are also explored for:
+\begin{itemize}
+    \item resolution enhancement (e.g., 1.5T $\rightarrow$ 3T MRI) \cite{zhouEnhancingMagneticResonance2021},
+    \item cross-modality synthesis (e.g., MRI-to-PET).
+\end{itemize}
+
+\subsection{Vision Transformers (ViTs)}
+
+Transformers, originally developed for NLP, now challenge CNN dominance in medical imaging \cite{PDFVisionTransformers}. ViTs model long-range spatial dependencies using self-attention, enabling global context reasoning from the first layer \cite{VisionTransformerArchitecture}. This is appealing for dementia, where pathology is subtle and spatially distributed.
+
+ViTs treat an image as a sequence of patches, which are embedded, combined with positional encodings, and processed through transformer layers \cite{PDFVisionTransformers}. Studies show ViTs achieving state-of-the-art AD classification performance \cite{krishnanEnhancingBrainTumor2024}.
+
+\section{Hybrid Classification Approaches}
+
+Hybrid methods combine CNNs for feature extraction with classical machine learning classifiers such as SVMs. These models leverage deep feature representations while benefiting from the robustness and theoretical properties of traditional classifiers. Such approaches have achieved up to 90\% accuracy for AD vs.\ HC and up to 98\% in four-class dementia classification tasks \cite{HybridCNNSVMAlzheimers2018}.
