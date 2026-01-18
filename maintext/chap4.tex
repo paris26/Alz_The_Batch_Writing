@@ -3,20 +3,22 @@
 \section{Intensity Normalization}
 
 \subsection{Introduction}
-The accuracy of automated processing algorithms for Magnetic Resonance (MR) images is of immense importance for clinical diagnosis and disease evaluation in progressive diseases like Alzheimer's. However, the reliability of processing applications—such as registration, segmentation, and comparison—requires a standardized intensity value scale that accurately depicts the underlying tissue type. Variability is inherent in MR images, as scanner-related artifacts, noise, differing acquisition protocols, and other parameters can significantly affect the obtained intensity values. Additionally, challenges such as low contrast and partial volume effects degrade the performance of these algorithms \cite{goceriFullyAutomatedAdaptive2018}.
+Many processing steps rely on the foundational quality of the underlying image and the standardization of them across a dataset. Techniques such as registration, segmentation, and comparison or classification can be impacted significanlty by variability in the intensity scale of the underlying image. Variability is inherent in MRI images , as scanner-related artifacts , different types of noise , acquisition protocols , and other parameters. \cite{goceriFullyAutomatedAdaptive2018}
 
-To mitigate these issues, intensity normalization is employed as a critical pre-processing step. The goal is to create a standardized scale that accurately reflects the underlying tissue type by unifying the mean and variance within an MR image. The efficacy of this step directly influences the performance of longitudinal processes essential for tracking disease progression \cite{goceriFullyAutomatedAdaptive2018, sunHistogrambasedNormalizationTechnique2015, shahEvaluatingIntensityNormalization2011}.
+To eliminate these issues and provide a standardized quality and scale across all images intensity normalization is employed as a critical pre-processing step. The main goal is to create a standardized scale that accurately represents the underlying tissue, by unifying the mean and variance withiin an image. The performance of this step directly influences the performance of processes responsible for tracking longitudinal disease progression.  \cite{goceriFullyAutomatedAdaptive2018, sunHistogrambasedNormalizationTechnique2015, shahEvaluatingIntensityNormalization2011}.
 
-Its primary objective is to transform the intensities of a set of images to a standardized scale. Ideally, scanner-related differences should not depict the same tissue type with different intensity values; conversely, the same underlying biological value should yield consistent intensity values across all setups \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014}. This process addresses the inherent intensity variability in MR acquisition and is essential for the reliability and accuracy of downstream algorithms \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003}.
+The goal is to standardize the scale so that the same tissue type will not be depicted in different values because of scanner-related differences and the same tissue should be depicted with the same intensity values across all images. \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014 } . Overall this process is essential for downstream algorithms and reliability of further processing. \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003
 
 \subsection{Necessity and Significance}
 The lack of tissue-specific intensity standardization for MR images creates variability, resulting in differences between two scans of the same subject, even when performed on the same scanner with the same pulse sequence \cite{goceriFullyAutomatedAdaptive2018}. As noted previously, this reduces the accuracy of subsequent processing algorithms. Key factors identified in the literature include:
 
+Without a standardized intensity scale for specific tissue differences can occur even between two scans of the same subject , performed on the same scanner with the same pulse sequence \cite{goceriFullyAutomatedAdaptive2018} . As was also noted previously , this reduces the accuracy of any subsequent algorithm . Several contributing factors are identified in the literature : 
+
 \begin{itemize}
-    \item \textbf{Scanner Related Artifacts and Noise:} Inherent scanner artifacts and noise must be addressed as they interfere with automated processing.
-    \item \textbf{Low Contrast and Partial Volume Effects:} Ideally, edges between brain tissues (e.g., Cerebrospinal Fluid (CSF), White Matter (WM), Gray Matter (GM)) should be distinct. However, low contrast and partial volume effects—where multiple tissue types within a single voxel are averaged—blur these boundaries \cite{shahEvaluatingIntensityNormalization2011a}. 
-    \item \textbf{Intensity Variations:} Different acquisition protocols, scanner differences, and heterogeneity of data sources contribute to intensity variations \cite{salomeMRIntensityNormalization2023}. These variations occur both between different subjects and within sequential scans of the same patient \cite{kociolekDoesImageNormalization2020}.
-    \item \textbf{Lack of Specific Tissue Meaning:} Unlike Computed Tomography (CT), which uses standardized Hounsfield Units, MRI intensity values are arbitrary and dependent on the specific scanner setup. This severely affects longitudinal and quantitative analysis \cite{nyulMethodStandardizingMR2003}.
+	\item  \textbf{Scanner Related Artifacts} Noise and scanner related artifacts interfere with subsequent processing tasks and must be addressed 
+	\item \textbf{Low Contrast and Partial Volume Effects} Different brain tissues should be ideally distinguishable - white matter (WM) , gray matter (GM) , cerebrospinal fluid (CSF) - . In practice , inside a voxel when two types of tissue exist boundaries are usually blurred  \cite{shahEvaluatingIntensityNormalization2011} .
+	\item \textbf{Intensity Variability} Differences in scanner hardware, acquisition protocols and data source can also create variations \cite{salomeMRIntensityNormalization2023}. Those variations can occur either between different subjects or withing subsequent scans of the ame patient \cite{kociolekDoesImageNormalization2020}. 
+	\item \textbf{Lack of Tissue-Specific Meaning} Unlike CT , which uses standardized Hounsfield units , MRI intensities lack a physical meaning and so they depend on scanner specific settings. This limitation significantly affects longitudinal and quantitative analyses \cite{nyulMethodStandardizingMR2003}
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -27,14 +29,16 @@ The lack of tissue-specific intensity standardization for MR images creates vari
 \end{figure}
 
 \subsection{Goals and Principles}
-The normalization protocol adheres to the SPIN principles introduced by Shinohara et al. \cite{shinoharaStatisticalNormalizationTechniques2014}. Unlike methods that transform images based on a learned standardized histogram \cite{nyulNewVariantsMethod2000}, this approach proposes transforming images based on the white matter variance unique to every scan. The primary goals are:
+The normalization protocol follows the SPIN principles from Shinohara et. al \cite{shinoharaStatisticalNormalizationTechniques2014}. Instead of using a reference histogram as \cite{nyulNewVariantsMethod2000} proposed, this method normalizes each scan based on the white matter intensities and characteristics of its own. The main goals are: 
 
+ The primary goals are:
 \begin{enumerate}
-    \item \textbf{Standardized Interpretation:} To create an accurate representation of tissue types across multiple setups and acquisition protocols.
-    \item \textbf{Reduced Variability:} To minimize the discrepancy between intensity distributions across subjects and visits within tissue classes.
-    \item \textbf{Biological Interpretability:} To yield biologically interpretable units, facilitating quantitative studies.
-    \item \textbf{Robustness to Pathology and Artifacts:} To perform reliably even in the presence of pathology (e.g., lesions) or imaging artifacts.
+    \item \textbf{Consistent measurements} across different scanners
+    \item \textbf{Reduced Variability} between subjects and scanning sessions 
+    \item \textbf{Meaningful units} that relate to actual biology 
+    \item \textbf{Reliable Peformance} even with lesions or imaging artifacts
 \end{enumerate}
+
 
 \subsection{Categories of Intensity Normalization Methods}
 Methods can be broadly categorized into:
@@ -47,14 +51,16 @@ Methods can be broadly categorized into:
 \subsubsection{Classical Methods}
 
 \paragraph{1. Min-Max Normalization}
-This technique utilizes the full range of intensity values to reduce variance and implement a standard range, typically between 0 and 1 \cite{pandeyComparativeAnalysisKNN2017, patroNormalizationPreprocessingStage2015}.
+This technique tries to squeeze all data values into a standard range, usually betweeen 0 and 1 . The smallest value becomes zero and the largest value becomes one, and everything else gets proportionately scaled. \cite{pandeyComparativeAnalysisKNN2017, patroNormalizationPreprocessingStage2015}
+
 \begin{equation}
     v' = \frac{v - \min(A)}{\max(A) - \min(A)}
 \end{equation}
 Where $v'$ is the normalized value, $v$ is the original data point, and $\min(A)$ and $\max(A)$ are the minimum and maximum feature values, respectively.
 
 \paragraph{2. Z-Score Normalization}
-This method transforms each intensity value by subtracting the mean and dividing by the standard deviation (excluding background). It represents how many standard deviations a score is from the mean \cite{salomeMRIntensityNormalization2023}. A disadvantage is that high intensities (e.g., contrast agents or artifacts) may be attenuated, risking information loss.
+This method adjusts each intensity value by subtracting from the voxel the average intensity value and dividing by the standard deviation (without background). The result is a value that showcases how far it is from the average, measured in standard deviation units \cite{salomeMRIntensityNormalization2023} . An important drawback of the technique can be that bright regions may be compressed towards the average , potentially losing information. 
+
 \begin{align}
     \mu &= \frac{1}{|B|} \sum_{b \in B} I(b) \\
     \sigma &= \sqrt{\frac{\sum_{b \in B} (I(b) - \mu)^2}{|B| - 1}} \\
@@ -62,28 +68,30 @@ This method transforms each intensity value by subtracting the mean and dividing
 \end{align}
 
 \paragraph{3. Mean and Standard Deviation Setting ($\mu \pm 3\sigma$ / M-std)}
-This approach sets the mean and standard deviation to fixed values (e.g., $\mu=0, \sigma=1$) \cite{albertComparisonImageNormalization2023}. Alternatively, it limits intensity dynamics to $\mu \pm 3\sigma$ \cite{collewetInfluenceMRIAcquisition2004}. This is effective when the underlying distribution is Gaussian; however, non-Gaussian distributions may suffer from gray value truncation \cite{kociolekDoesImageNormalization2020}.
+This technique adjusts images in a certain way in order to fix their statistical value, typically set the mean to $\mu$ and the standard deviation $\sigma$ to 1 \cite{collewetInfluenceMRIAcquisition2004 , albertComparisonImageNormalization2023}. Some implementations confine intensity values within 3 standard deviations of the mean $\mu \pm \sigma$, This can work really well for pictures that follow a normal distribution $N(\mu , \sigma)$ , but images that do not follow one may lose information due to value clippping \cite{kociolekDoesImageNormalization2020}. 
 
 \paragraph{4. Percentile Method}
-A robust method using specific percentiles (e.g., 5th and 95th) as minimum and maximum values to remove outliers \cite{albertComparisonImageNormalization2023}.
+This technique uses specific percentiles ( usually the 5th and 95th percentiles ) to define the range of the intensity values , which removes all the edge outliers \cite{albertComparisonImageNormalization2023}. 
 
 \paragraph{5. Histogram Matching}
-Widely used, this transforms the image histogram to match a reference histogram \cite{nyulNewVariantsMethod2000}.
+One of the most widely-used approaches , which works by trying to match the image to a reference histogram \cite{nyulNewVariantsMethod2000}
+
 \begin{itemize}
-    \item \textbf{Nyul and Udupa's Method:} Involves a \textit{Training Step}, where landmarks (percentiles, modes) are learned from a training set to form a standard histogram, and a \textit{Transformation Step}, where new images are mapped to this scale using piecewise linear transformation.
-    \item \textbf{Joint Histogram Matching:} Uses information-centric criteria to analyze pixel pair relationships between input and reference images. While potentially more precise, it is computationally intensive \cite{sunHistogrambasedNormalizationTechnique2015}.
+	\item \textbf{Nyul and Udupa's Method:} At first the statistical landmarks of the training images are learnd to create a standard distribution. Then , new images are transformed to match the standard using piecewise linear mapping. 
+	\item \textbf{Joint Histogram Matching:} Take pixel pairs and considers the relation of the input to the reference image. While it can potentially be more accurate it requires more computation cite{sunHistogrambasedNormalizationTechnique2015}.  
 \end{itemize}
 
 \paragraph{6. Homomorphic Filtering}
-This technique leverages the illumination-reflectance model, where intensity $I(x,y)$ is the product of illumination $L$ and reflectance $R$:
+This technique tries to adress uneven lighting that exists in images by separating the tissue from the illumination. The intensity of an image $I(x, y)$ can be represented as 
 \begin{equation}
-    I(x,y) = L(x,y) \cdot R(x,y)
+I(x,y) = L(x,y) \cdot R(x,y)
 \end{equation}
-By applying a logarithmic transform, the multiplication becomes addition:
+where $L$ represents illumination ( ligthing variations) and $R$ reprents the tissue reflectance. 
+Taking the logarithm turns multiplication into addition:
 \begin{equation}
-    \ln(I) = \ln(L) + \ln(R)
+	\ln(I) = \ln(L) + \ln(R) 
 \end{equation}
-Fourier transform and high-pass filtering are then used to remove low-frequency illumination inconsistencies while preserving high-frequency reflectance components (edges) \cite{goceriFullyAutomatedAdaptive2018}.
+Turning the image into the frequency domain help remove slow-varying illumination ( low frequencies ) and keep tissue boundaries and details ( high frequencies )  \cite{goceriFullyAutomatedAdaptive2018}
 
 \paragraph{7. Gaussian Filtering}
 Used for smoothing, this requires careful selection of the $\sigma$ parameter. A small $\sigma$ may be inefficient for normalization, while a large $\sigma$ can cause loss of edge information.
@@ -140,13 +148,15 @@ An autoencoder is an algorithm designed to learn an informative representation o
     \operatorname*{arg\,min}_{f,g} \Delta(X_i, f(g(x_i)))
 \end{equation}
 
-GANs consist of two networks: a Generator that creates data and a Discriminator that evaluates it. In the context of normalization, authors have proposed using an autoencoder as the generator within a GAN framework. Through adversarial training, the model optimizes to reconstruct images that preserve anatomical features while obscuring scanner-specific biases (detected by the discriminator), improving multi-site generalization \cite{delisleRealisticImageNormalization2021, xuStainNormalizationHistopathological2025}.
+GANs consist of two networks: a Generator that creates data and a Discriminator that evaluates it. In the context of normalization, authors have proposed using an autoencoder as the generator within a GAN framework. By utilizing adversarial training, the model learns to produce images that keep the structural integrity of brain anatomy while removing scanner related artifacts which the discriminator network identifies and flags , which improves its ability to work across different imaging sites \cite{delisleRealisticImageNormalization2021, xuStainNormalizationHistopathological2025}. 
+
 
 \paragraph{2. Adversarial and Task-Driven Normalization}
-This approach generates images optimized not just for visual similarity, but for specific downstream tasks like segmentation. Delisle et al. \cite{delisleRealisticImageNormalization2021} utilize two 3D CNNs: a normalization generator and a segmentation network. A discriminator acts as a domain classifier. By integrating the specific task (segmentation) into the loss function, the pipeline can often outperform generic domain adaptation, as the normalization is tailored to maximize segmentation accuracy rather than just histogram matching.
+This approach uses two networks , one is a normalization network and the second a segmentation network. By combining the adversarial loss function with the loss function of the segmentation network it allows for a pipeline that can outperform generic domain adaptation as the normalization is made in order to maximize the segmentation of the tissue. \cite{delisleRealisticImageNormalization2021}
+
 
 \paragraph{3. Disentanglement Networks}
-Unsupervised image-to-image translation often assumes a one-to-one mapping. To address limitations, frameworks like MUNIT decompose image distribution into a \textit{content code} (domain-invariant structure) and a \textit{style code} (domain-specific appearance). By disentangling these, the network can normalize content across arbitrary source domains \cite{xuStainNormalizationHistopathological2025}.
+Disentaglement networks split the image content code ( shapes , layout, geometry ) with the style code ( colors , textures ) , where the first one is domain independent whereas the second one domain specific. This helps evade the assumption that unsupervised image-to-image translation has that there is a one to one mapping. This allows frameworks like MUNIT to normalize content across different source domains. \cite{xuStainNormalizationHistopathological2025} 
 
 \subsection{Impact of Intensity Normalization}
 
