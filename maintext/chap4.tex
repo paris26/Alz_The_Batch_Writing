@@ -7,7 +7,7 @@ Many processing steps rely on the foundational quality of the underlying image a
 
 To eliminate these issues and provide a standardized quality and scale across all images intensity normalization is employed as a critical pre-processing step. The main goal is to create a standardized scale that accurately represents the underlying tissue, by unifying the mean and variance withiin an image. The performance of this step directly influences the performance of processes responsible for tracking longitudinal disease progression.  \cite{goceriFullyAutomatedAdaptive2018, sunHistogrambasedNormalizationTechnique2015, shahEvaluatingIntensityNormalization2011}.
 
-The goal is to standardize the scale so that the same tissue type will not be depicted in different values because of scanner-related differences and the same tissue should be depicted with the same intensity values across all images. \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014 } . Overall this process is essential for downstream algorithms and reliability of further processing. \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003
+The goal is to standardize the scale so that the same tissue type will not be depicted in different values because of scanner-related differences and the same tissue should be depicted with the same intensity values across all images. \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014 } . Overall this process is essential for downstream algorithms and reliability of further processing. \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003}
 
 \subsection{Necessity and Significance}
 The lack of tissue-specific intensity standardization for MR images creates variability, resulting in differences between two scans of the same subject, even when performed on the same scanner with the same pulse sequence \cite{goceriFullyAutomatedAdaptive2018}. As noted previously, this reduces the accuracy of subsequent processing algorithms. Key factors identified in the literature include:
@@ -161,17 +161,16 @@ Disentaglement networks split the image content code ( shapes , layout, geometry
 \subsection{Impact of Intensity Normalization}
 
 \paragraph{Image Registration}
-Normalization enhances similarity metrics used in registration by ensuring consistent intensity values for similar tissues, leading to improved alignment accuracy \cite{sunHistogrambasedNormalizationTechnique2015, bagciRoleIntensityStandardization2010}.
+Intensity normalization can improve the performance of algorithmic registration because its goal is to ensure that similar tissue will have the same values. This in turn increases the reliability of similarity metrics and leads to better image alignment \cite{sunHistogrambasedNormalizationTechnique2015, bagciRoleIntensityStandardization2010}.
 
 \paragraph{Image Segmentation}
-Intensity variation undermines segmentation and volume measurement. Homogeneous intensities acquired via normalization result in better tissue separation and more robust segmentation, particularly for multi-site data \cite{shahEvaluatingIntensityNormalization2011a}.
-
+One other subsequent task that benefits with intensity normalization is image segmentation. Since variations in tissue can negatively affect segmentation and volume estimation it greatly enhances performance the use of intensity normalization to reduce the variations within an image, even more so at multi-site datasets\cite{shahEvaluatingIntensityNormalization2011a}.
 
 \paragraph{Texture Classification/Radiomics}
-Texture analysis quantifies spatial gray-level variations. Normalization is critical here, as these variations are highly sensitive to acquisition protocols. However, care must be taken, as normalization methods themselves can be sequence-dependent \cite{kociolekDoesImageNormalization2020}.
+In texture analysis spatial gray-variations , are highly sensitive to acquisition protocols and the technique relies on them. Intensity normalization therefore is essential to ensure meaningful features. However they should be applied carefully , since their effects may depend on the imaging sequence \cite{kociolekDoesImageNormalization2020}. 
 
 \paragraph{Brain Template Construction}
-Normalization facilitates the efficient calculation of volume statistics for GM, WM, and CSF. Post-normalization brain templates show clearer tissue separation, making anatomical definitions more distinct \cite{sunHistogrambasedNormalizationTechnique2015}.
+Normalization can enable the calculation of different brain volume statistics for GM , WM and CSF. Post-Normalization brain templates show clearer tissue separation , making the boundaries between different types of tissue more distinct \cite{sunHistogrambasedNormalizationTechnique2015}.
 
 \subsection{Challenges and Considerations}
 While critical, intensity normalization faces challenges. The choice of method is often sequence-dependent \cite{salomeMRIntensityNormalization2023}. Furthermore, deep learning methods, while promising, are limited by the availability of diverse training datasets. As noted by Albert et al. \cite{albertComparisonImageNormalization2023}, deep learning outperformed classical methods only in specific cases, likely due to data scarcity. The selection of an appropriate strategy remains pivotal for any MR analysis pipeline.
