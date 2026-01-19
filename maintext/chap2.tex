@@ -127,10 +127,11 @@ The term \textit{computed tomography} reflects its two essential components: ``c
 
 Image reconstruction in CT relies on the mathematical foundations of the Radon transform and its inverse. Radon demonstrated that a 2D image can be reconstructed from a set of projections collected at multiple rotation angles.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\linewidth]{images/pmp-32-1-1-f1.png}
     \caption{(a) The first CT image produced at Atkinson Hospital. (b) A modern CT scan from an advanced scanner \cite{jungBasicPhysicalPrinciples2021}.}
+    \label{fig:ct_history}
 \end{figure}
 
 \subsection{Basic Physical Principles of CT}
@@ -154,10 +155,11 @@ Attenuation can also be expressed as a line integral:
     \ln\left(\frac{I}{I_{0}}\right) = -\int \mu(s)\, ds.
 \end{equation}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\linewidth]{images/pmp-32-1-1-f2.png}
     \caption{Illustration of X-ray attenuation through a sample composed of multiple materials. The final intensity corresponds to the cumulative effect of all attenuation coefficients along the beam path.}
+    \label{fig:xray_attenuation}
 \end{figure}
 
 \subsection{Data Acquisition}
@@ -221,10 +223,11 @@ A CT image consists of voxels (3D volume elements). Each pixel’s intensity ref
     \text{HU} = 1000 \cdot \frac{\mu_{\text{pixel}} - \mu_{\text{water}}}{\mu_{\text{water}}}.
 \end{equation}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth]{images/pmp-32-1-1-f4.png}
     \caption{Hounsfield scale and representative values for different tissues \cite{jungBasicPhysicalPrinciples2021}.}
+    \label{fig:hounsfield_scale}
 \end{figure}
 
 

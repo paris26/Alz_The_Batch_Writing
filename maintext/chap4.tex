@@ -7,7 +7,7 @@ Many processing steps rely on the foundational quality of the underlying image a
 
 To eliminate these issues and provide a standardized quality and scale across all images intensity normalization is employed as a critical pre-processing step. The main goal is to create a standardized scale that accurately represents the underlying tissue, by unifying the mean and variance withiin an image. The performance of this step directly influences the performance of processes responsible for tracking longitudinal disease progression.  \cite{goceriFullyAutomatedAdaptive2018, sunHistogrambasedNormalizationTechnique2015, shahEvaluatingIntensityNormalization2011}.
 
-The goal is to standardize the scale so that the same tissue type will not be depicted in different values because of scanner-related differences and the same tissue should be depicted with the same intensity values across all images. \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014 } . Overall this process is essential for downstream algorithms and reliability of further processing. \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003}
+The goal is to standardize the scale so that the same tissue type will not be depicted in different values because of scanner-related differences and the same tissue should be depicted with the same intensity values across all images. \cite{bagciRoleIntensityStandardization2010, shinoharaStatisticalNormalizationTechniques2014} . Overall this process is essential for downstream algorithms and reliability of further processing. \cite{nyulNewVariantsMethod2000, nyulMethodStandardizingMR2003}
 
 \subsection{Necessity and Significance}
 The lack of tissue-specific intensity standardization for MR images creates variability, resulting in differences between two scans of the same subject, even when performed on the same scanner with the same pulse sequence \cite{goceriFullyAutomatedAdaptive2018}. As noted previously, this reduces the accuracy of subsequent processing algorithms. Key factors identified in the literature include:
@@ -55,6 +55,7 @@ This technique tries to squeeze all data values into a standard range, usually b
 
 \begin{equation}
     v' = \frac{v - \min(A)}{\max(A) - \min(A)}
+    \label{eq:minmax}
 \end{equation}
 Where $v'$ is the normalized value, $v$ is the original data point, and $\min(A)$ and $\max(A)$ are the minimum and maximum feature values, respectively.
 
@@ -65,10 +66,11 @@ This method adjusts each intensity value by subtracting from the voxel the avera
     \mu &= \frac{1}{|B|} \sum_{b \in B} I(b) \\
     \sigma &= \sqrt{\frac{\sum_{b \in B} (I(b) - \mu)^2}{|B| - 1}} \\
     I_{\text{norm}}(x) &= \frac{I(x) - \mu}{\sigma}
+    \label{eq:zscore}
 \end{align}
 
 \paragraph{3. Mean and Standard Deviation Setting ($\mu \pm 3\sigma$ / M-std)}
-This technique adjusts images in a certain way in order to fix their statistical value, typically set the mean to $\mu$ and the standard deviation $\sigma$ to 1 \cite{collewetInfluenceMRIAcquisition2004 , albertComparisonImageNormalization2023}. Some implementations confine intensity values within 3 standard deviations of the mean $\mu \pm \sigma$, This can work really well for pictures that follow a normal distribution $N(\mu , \sigma)$ , but images that do not follow one may lose information due to value clippping \cite{kociolekDoesImageNormalization2020}. 
+This technique adjusts images in a certain way in order to fix their statistical value, typically set the mean to $\mu$ and the standard deviation $\sigma$ to 1 \cite{collewetInfluenceMRIAcquisition2004, albertComparisonImageNormalization2023}. Some implementations confine intensity values within 3 standard deviations of the mean $\mu \pm \sigma$, This can work really well for pictures that follow a normal distribution $N(\mu , \sigma)$ , but images that do not follow one may lose information due to value clippping \cite{kociolekDoesImageNormalization2020}. 
 
 \paragraph{4. Percentile Method}
 This technique uses specific percentiles ( usually the 5th and 95th percentiles ) to define the range of the intensity values , which removes all the edge outliers \cite{albertComparisonImageNormalization2023}. 
@@ -597,6 +599,69 @@ VBM initially faced criticism regarding registration and segmentation accuracy. 
 
 \end{enumerate}
 
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.1cm}}
+\hline
+\textbf{Brain Region} & \textbf{Functional Role} & \textbf{Atrophy Pattern in AD} & \textbf{Supporting Imaging Reference} & \textbf{Figure Link} \\
+\hline
+Medial Temporal Lobe (hippocampus, entorhinal cortex) & Episodic memory encoding \& consolidation & \textbf{Earliest and most severe atrophy} on MRI/VBM; hallmark of typical AD progression. & VBM \& MRI studies document significant grey matter loss here. & Fig.~\ref{fig:vbm-mtl} \\
+Temporoparietal Cortex (posterior temporal \& parietal lobes, angular gyrus) & Memory integration, spatial cognition, language & \textbf{Substantial atrophy} in typical AD; also key to posterior cortical involvement. & Typical AD shows loss in these regions relative to controls. & Fig.~\ref{fig:vbm-tp} \\
+Posterior Cingulate Cortex \& Precuneus & Default Mode Network (DMN), self-referential processing & \textbf{Significant atrophy}, often seen with hypometabolism even before volume loss. & Posterior midline atrophy linked to DMN disruption. & Fig.~\ref{fig:vbm-pcc} \\
+Frontal Lobes & Executive function, behavior regulation & \textbf{Later-stage involvement} with more diffuse atrophy; less prominent early. & Atrophy spreads later toward frontal regions in AD. & Fig.~\ref{fig:vbm-frontal} \\
+Primary Visual, Sensorimotor Cortex, Cerebellum & Sensory/motor processing & \textbf{Relatively spared} compared to associative and memory networks in early/mild AD. & Primary regions less affected in typical AD. & Fig.~\ref{fig:vbm-primary} \\
+Structural vs Metabolic Changes & -- & Hypometabolism can occur before detectable grey matter loss. & FDG PET shows metabolic changes preceding volume loss. & Fig.~\ref{fig:vbm-metabolic} \\
+\hline
+\end{tabularx}
+\caption{Summary of regional atrophy patterns in AD and linked VBM-related figures.}
+\label{tab:vbm-atrophy-summary}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms154848f1.jpg}
+    \caption{"Results of the VBM comparisons of typical AD, atypical AD and FTLD groups with controls. Results are shown on 3D renderings of the brain and representative coronal slices through the customized template." \cite{whitwellTemporoparietalAtrophyMarker2011}}
+    \label{fig:vbm-mtl}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms154848f2.jpg}
+    \caption{"Results of the conjunction analyses shown on 3D renderings of the brain. Two conjunction analyses are shown: 1) conjunction of “atypical AD versus controls” and “typical AD versus controls”, and 2) conjunction using the three clinical variants of atypical AD: “aphasic dementia versus controls”, “CBS versus controls”, and “bvFTD versus controls” \cite{whitwellTemporoparietalAtrophyMarker2011}}
+    \label{fig:vbm-tp}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms154848f3.jpg}
+    \caption{"Results of VBM direct comparisons between the typical and atypical AD groups, and between the atypical AD and FTLD groups. The typical AD and FTLD groups showed greater grey matter loss in the hippocampi than the atypical AD group. Conversely, the atypical AD group showed greater loss in the left putamen than the typical AD group, and greater loss in the temporoparietal cortex than the FTLD group. \cite{whitwellTemporoparietalAtrophyMarker2011}}
+    \label{fig:vbm-pcc}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms154848f4.jpg}
+    \caption{"Regions of grey matter loss in each of the different atypical clinical diagnosis groups (aphasic dementia, corticobasal syndrome and behavioral variant frontotemporal dementia) when compared to controls." \cite{whitwellTemporoparietalAtrophyMarker2011}}
+    \label{fig:vbm-frontal}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms-137059-f0004.jpg}
+    \caption{"Patterns of grey matter loss identified in the aMCI-P group compared to controls (corrected for multiple comparisons, p<0.05). The patterns of cortical atrophy are shown on a 3D surface render (top). In addition the results are shown on a sagittal and coronal slice through the customized template, selected to highlight changes in the cingulate cortex and the medial temporal lobes (bottom). L = left; R = right" \cite{whitwellMRIPatternsAtrophy2008}}
+    \label{fig:vbm-primary}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nihms-137059-f0005.jpg}
+    \caption{Regions that show greater grey matter loss in the aMCI-P group compared to the aMCI-S group (corrected for multiple comparisons, p<0.05). The patterns of cortical atrophy are shown on a 3D surface render (top). In addition the results are shown on a sagittal and coronal slice through the customized template, selected to highlight changes in the cingulate cortex and the medial temporal lobes (bottom). L = left; R = right \cite{whitwellMRIPatternsAtrophy2008}.}
+    \label{fig:vbm-metabolic}
+\end{figure}
+
+
 \subsection{VBM as a Prognostic Tool}
 
 Mild Cognitive Impairment (MCI) is heterogeneous.  
@@ -691,4 +756,3 @@ VBM correlates brain atrophy with clinical features:
 \subsection{Deep Learning}
 
 CNNs can classify AD and MCI without hand-crafted features, achieving high accuracy (e.g., 80.9\% for MCI identification) \cite{huangVoxelbasedMorphometryDeep2023}.
-

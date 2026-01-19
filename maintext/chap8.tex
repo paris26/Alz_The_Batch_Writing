@@ -55,6 +55,7 @@ In LIME, the goal is to produce a function $g$ that approximates the output of t
 
 \begin{equation}
     \xi(x) = \operatorname*{argmin}_{g \in G} \ \mathcal{L}(f,g,\pi_{x}) + \Omega(g)
+    \label{eq:lime}
 \end{equation}
 
 Where $\mathcal{L}$ represents the \textbf{Loss} (fidelity of the surrogate model) and $\Omega$ represents the \textbf{Complexity} of the explanation model.
@@ -64,6 +65,7 @@ This technique borrows characteristics from Game Theory (specifically Shapley Va
 
 \begin{equation}
     g(z') = \phi_0 + \sum_{j=1}^{M} \phi_j \cdot z'_j
+    \label{eq:shap}
 \end{equation}
 
 Where $z'$ is the simplified feature (coalition vector) and $\phi$ is the attribution score assigned to that feature. By aggregating the scores across different examples, SHAP can provide a holistic view of the importance of each feature in the network.
