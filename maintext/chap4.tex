@@ -161,19 +161,19 @@ Disentaglement networks split the image content code ( shapes , layout, geometry
 \subsection{Impact of Intensity Normalization}
 
 \paragraph{Image Registration}
-Intensity normalization can improve the performance of algorithmic registration because its goal is to ensure that similar tissue will have the same values. This in turn increases the reliability of similarity metrics and leads to better image alignment \cite{sunHistogrambasedNormalizationTechnique2015, bagciRoleIntensityStandardization2010}.
+Intensity normalization can improve the performance of algorithmic registration because its goal is to ensure that similar tissue will have the same intensity values. This in turn increases the reliability of similarity metrics and leads to better image alignment \cite{sunHistogrambasedNormalizationTechnique2015, bagciRoleIntensityStandardization2010}.
 
 \paragraph{Image Segmentation}
-One other subsequent task that benefits with intensity normalization is image segmentation. Since variations in tissue can negatively affect segmentation and volume estimation it greatly enhances performance the use of intensity normalization to reduce the variations within an image, even more so at multi-site datasets\cite{shahEvaluatingIntensityNormalization2011a}.
+One other subsequent task that benefits with intensity normalization is image segmentation. Since variations in tissue can negatively affect segmentation and volume estimation, normalization greatly enhances performance to reduce the variations within an image, even more so at multi-site datasets \cite{shahEvaluatingIntensityNormalization2011a}.
 
 \paragraph{Texture Classification/Radiomics}
-In texture analysis spatial gray-variations , are highly sensitive to acquisition protocols and the technique relies on them. Intensity normalization therefore is essential to ensure meaningful features. However they should be applied carefully , since their effects may depend on the imaging sequence \cite{kociolekDoesImageNormalization2020}. 
+In texture analysis spatial gray-variations , are highly sensitive to acquisition protocols and the technique relies on them. Intensity normalization therefore is essential to ensure meaningful features. However they should be applied carefully , since their effects may depend on the imaging sequence (e.g. T1, T2 , FLAIR)  \cite{kociolekDoesImageNormalization2020}. 
 
 \paragraph{Brain Template Construction}
 Normalization can enable the calculation of different brain volume statistics for GM , WM and CSF. Post-Normalization brain templates show clearer tissue separation , making the boundaries between different types of tissue more distinct \cite{sunHistogrambasedNormalizationTechnique2015}.
 
 \subsection{Challenges and Considerations}
-While critical, intensity normalization faces challenges. The choice of method is often sequence-dependent \cite{salomeMRIntensityNormalization2023}. Furthermore, deep learning methods, while promising, are limited by the availability of diverse training datasets. As noted by Albert et al. \cite{albertComparisonImageNormalization2023}, deep learning outperformed classical methods only in specific cases, likely due to data scarcity. The selection of an appropriate strategy remains pivotal for any MR analysis pipeline.
+Even though its use can be critical for many subsequent tasks there are still challenges in the use of intensity normalization as a pre-processing step. FIrst of all the choice of method is mostly sequence-dependent \cite{salomeMRIntensityNormalization2023}. Additionally deep learning frameworks outperform classical methods only in some specific cases , probably because of data scarcity , since deep learning even though very promisisng is upper limited by the existence of diverse and large quanitty datasets \cite{albertComparisonImageNormalization2023} . Overall the selection of an algorithm and an appropriate strategy remains one of the pivotal steps for an MR pipeline.  
 
 \section{Denoising}
 
@@ -236,7 +236,7 @@ Two of the most important classical algorithms are NLM and BM3D.
 
 \subsection{Non-Local Means (NLM)}
 
-NLM grew from the idea of \emph{spatial smoothness}. Earlier algorithms assumed images should be spatially homogeneous, so averaging pixels in local neighborhoods could remove noise while preserving signal. These methods often produced blurry results, especially near edges.
+NLM \cite{buadesReviewImageDenoising2005} grew from the idea of \emph{spatial smoothness}. Earlier algorithms assumed images should be spatially homogeneous, so averaging pixels in local neighborhoods could remove noise while preserving signal. These methods often produced blurry results, especially near edges.
 
 NLM instead uses neighborhoods (patches) of pixels and the concept of \emph{self-similarity} across the entire image. For each pixel $p$, a patch $P$ surrounding it is compared to patches $Q$ around every other pixel $q$, using a similarity measure such as Euclidean distance $\|P - Q\|^2$.
 
@@ -250,7 +250,7 @@ The denoised estimate averages all pixels, but with weights proportional to patc
 
 After NLM, the creation of algorithms such as BM3D improved denoising performance so dramatically that researchers questioned whether denoising had reached a theoretical limit.
 
-BM3D stands for \emph{Block-Matching and 3D Filtering}. Like NLM, it finds similar patches, but instead of averaging them directly, it stacks them into a 3D group. A transform (3D wavelet or DCT) is applied so that signal becomes concentrated in a few large coefficients while noise spreads into many small ones. Thresholding the small coefficients and inverting the transform yields high-quality results.
+BM3D stands for \emph{Block-Matching and 3D Filtering}. Like NLM, it finds similar patches, but instead of averaging them directly, it stacks them into a 3D group. A transform (3D wavelet or DCT) is applied so that signal becomes concentrated in a few large coefficients while noise spreads into many small ones. Thresholding the small coefficients and inverting the transform yields high-quality results. \cite{danielyanBM3DFramesVariational2011} 
 
 \subsection{Deep Learning Era}
 
