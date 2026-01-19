@@ -14,7 +14,7 @@ Even though the scope of this work is not to review or examine works in data fus
     \item Co-Learning
 \end{enumerate}
 
-In one study, they integrated modalities from MRI, genetic (Single Nucleotide Polymorphisms (SNP)), and clinical test data to build a deep learning network by fusing these. The network was composed of stacked denoising auto-encoders to extract features from clinical and genetic data, and a 3D Convolutional Neural Network (CNN) for imaging data. Using data from the ADNI dataset, they demonstrated that deep models outperformed shallow models (SVM, Decision Trees, Random Forests, KNN). In addition, they demonstrated that multi-modality outperforms single modality in metrics such as accuracy, precision, recall, and F1 score. The models also identified the hippocampus and other brain areas as distinguishing features, consistent with AD literature \cite{venugopalanMultimodalDeepLearning2021a}.
+In one study, they integrated modalities from MRI, genetic (Single Nucleotide Polymorphisms (SNP)), and clinical test data to build a deep learning network by fusing these. The network was composed of stacked denoising auto-encoders to extract features from clinical and genetic data, and a 3D Convolutional Neural Network (CNN) for imaging data. Using data from the ADNI dataset, they demonstrated that deep models outperformed shallow models (SVM, Decision Trees, Random Forests, KNN). In addition, they demonstrated that multi-modality outperforms single modality in metrics such as accuracy, precision, recall, and F1 score. The models also identified the hippocampus and other brain areas as distinguishing features, consistent with AD literature \cite{venugopalanMultimodalDeepLearning2021}.
 
 Another study tried to predict MCI from AD using a deep learning approach of a multimodal recurrent neural network. The modalities were composed of cross-sectional neuroimaging biomarkers, longitudinal cerebrospinal fluid biomarkers, and cognitive performance biomarkers also obtained by the ADNI dataset. The results showed a significant performance boost of about 6\% in accuracy ($75\% \to 81\%$), while the authors also note that multi-modal approaches seem promising in predicting the MCI stage regarding who will benefit the most from a clinical trial or as a stratification approach within clinical trials \cite{leePredictingAlzheimersDisease2019}.
 
@@ -93,7 +93,7 @@ Additionally, in a systematic review on explainable AI in Alzheimer's research, 
 
 \section{Data Augmentation \& Transfer Learning}
 
-Even though Deep Learning has performed tremendously in many computer vision tasks and has become a methodology of choice for analyzing medical images \cite{litjensSurveyDeepLearning2017}, these large networks usually require vast amounts of data in order to avoid overfitting. 
+Even though Deep Learning has performed tremendously in many computer vision tasks and has become a methodology of choice for analyzing medical images \cite{geertlitjensSurveyDeepLearning2017}, these large networks usually require vast amounts of data in order to avoid overfitting. 
 
 Overfitting refers to the process where a model learns a function $f$ with very high variance, perfectly modelling the training data and not being able to generalize to new instances that do not belong to the prior distribution of the training data. In many applications, such as medical imaging, data is limited due to a multitude of factors, but mainly due to the scarcity of datasets annotated by specialists, which is labor-intensive and has a high cost.
 
