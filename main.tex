@@ -125,29 +125,41 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage[table]{xcolor}
+\usepackage{array}
+
+\definecolor{wikiGreen}{RGB}{230, 255, 230}
+\definecolor{wikiRed}{RGB}{255, 230, 230}
+\definecolor{wikiGrey}{RGB}{240, 240, 240}
+\definecolor{wikiLightGrey}{RGB}{250, 250, 250}
 
 % ============================================
 % CODE LISTINGS
 % ============================================
 \usepackage{listings}
 \lstset{
-    captionpos=b,
-    frame=tb,
-    basicstyle=\scriptsize\ttfamily,
-    showstringspaces=false,
-    keepspaces=true
+	captionpos=b,
+	frame=tb,
+	basicstyle=\scriptsize\ttfamily,
+	showstringspaces=false,
+	keepspaces=true
 }
 \lstdefinestyle{matlab}{
-    language=Matlab,
-    keywordstyle=\color{blue},
-    commentstyle=\color[rgb]{0.13,0.55,0.13}\em,
-    stringstyle=\color[rgb]{0.7,0,0}
+	language=Matlab,
+	keywordstyle=\color{blue},
+	commentstyle=\color[rgb]{0.13,0.55,0.13}\em,
+	stringstyle=\color[rgb]{0.7,0,0}
 }
 \lstdefinestyle{python}{
-    language=Python,
-    keywordstyle=\color{blue},
-    commentstyle=\color[rgb]{0.13,0.55,0.13}\em,
-    stringstyle=\color[rgb]{0.7,0,0}
+	language=Python,
+	keywordstyle=\color{blue},
+	commentstyle=\color[rgb]{0.13,0.55,0.13}\em,
+	stringstyle=\color[rgb]{0.7,0,0}
 }
 
 % ============================================
@@ -159,27 +171,27 @@
 % HYPERLINKS
 % ============================================
 \usepackage[
-    pdfpagemode={UseOutlines},
-    bookmarks=true,
-    bookmarksopen=true,
-    bookmarksopenlevel=0,
-    bookmarksnumbered=true,
-    hypertexnames=false,
-    colorlinks=true,
-    linkcolor={blue},
-    citecolor={blue},
-    urlcolor={red},
-    pdfstartview={FitV},
-    unicode,
-    breaklinks=true
+pdfpagemode={UseOutlines},
+bookmarks=true,
+bookmarksopen=true,
+bookmarksopenlevel=0,
+bookmarksnumbered=true,
+hypertexnames=false,
+colorlinks=true,
+linkcolor={blue},
+citecolor={blue},
+urlcolor={red},
+pdfstartview={FitV},
+unicode,
+breaklinks=true
 ]{hyperref}
 
 % PDF metadata
 \hypersetup{
-    pdftitle={AI Alzheimer And Dementia Classification},
-    pdfauthor={Gavriilidis Paraskevas},
-    pdfsubject={MSc Thesis},
-    pdfkeywords={Alzheimer's Disease, Dementia, Deep Learning, MRI, Neuroimaging, Classification}
+	pdftitle={AI Alzheimer And Dementia Classification},
+	pdfauthor={Gavriilidis Paraskevas},
+	pdfsubject={MSc Thesis},
+	pdfkeywords={Alzheimer's Disease, Dementia, Deep Learning, MRI, Neuroimaging, Classification}
 }
 
 % ============================================
@@ -196,94 +208,94 @@
 % DOCUMENT BEGINS
 % ============================================
 \begin{document}
-
-% Blank page command
-\newcommand\blankpage{
-    \null
-    \thispagestyle{empty}
-    \addtocounter{page}{-1}
-    \newpage
-}
-
-% ============================================
-% FRONT MATTER
-% ============================================
-\frontmatter  % Roman numerals (i, ii, iii...)
-
-% Title Page - English
-\include{titlepage_en}
-\afterpage{\blankpage}
-\clearpage
-
-% Plagiarism Declaration
-\input{abstract_acknowledgement_preface/plagiarism}
-
-% Abstract - English (Primary)
-\input{abstract_acknowledgement_preface/abstract}
-
-% Abstract - Greek (Secondary)
-\input{abstract_acknowledgement_preface/abstract_gr}
-\clearpage
-
-% Acknowledgements
-\input{abstract_acknowledgement_preface/acknowledgements}
-
-% Table of Contents
-\renewcommand\contentsname{\LARGE Contents}
-\tableofcontents
-\addtocontents{toc}{\protect\thispagestyle{fancy}}
-\noindent
-\clearpage
-
-% List of Figures
-\renewcommand{\listfigurename}{\LARGE List of Figures}
-\listoffigures{\protect\thispagestyle{fancy}}
-\noindent \hrulefill
-\clearpage
-
-% List of Tables
-\renewcommand{\listtablename}{\LARGE List of Tables}
-\listoftables{\protect\thispagestyle{fancy}}
-\noindent \hrulefill
-\clearpage
-
-% ============================================
-% MAIN MATTER - CHAPTERS
-% ============================================
-\mainmatter  % Arabic numerals (1, 2, 3...)
-\pagestyle{fancy}
-
-\include{maintext/chap1}   % Introduction
-\include{maintext/chap2}   % Overview of Dementia and Alzheimer's disease imaging
-\include{maintext/chap3}   % Key Image Datasets
-\include{maintext/chap4}   % Methods
-\include{maintext/chap5}   % Experiments
-\include{maintext/chap6}   % Results and Discussion
-\include{maintext/chap7}   % Conclusion
-\include{maintext/chap8}   % Additional content
-\include{maintext/chap9}   % Gaps in Current Literature and Future Research Directions
-\include{maintext/chap_limitations}  % Limitations
-\include{maintext/chap10}  % Conclusion
-
-% ============================================
-% BACK MATTER - APPENDICES AND BIBLIOGRAPHY
-% ============================================
-\backmatter
-
-\begin{appendices}
-
-\include{appendix/app_pathophysiology}  % Pathophysiology of Alzheimer
-\include{appendix/app_supplementary}    % Supplementary materials
-
-% Bibliography
-\renewcommand\bibname{Bibliography}
-\bibliographystyle{ieeetr}
-\bibliography{references}
-
-% Abbreviations
-\input{appendix/abbreviations}
-\addcontentsline{toc}{section}{Abbreviations and Acronyms}
-
-\end{appendices}
-
+	
+	% Blank page command
+	\newcommand\blankpage{
+		\null
+		\thispagestyle{empty}
+		\addtocounter{page}{-1}
+		\newpage
+	}
+	
+	% ============================================
+	% FRONT MATTER
+	% ============================================
+	\frontmatter  % Roman numerals (i, ii, iii...)
+	
+	% Title Page - English
+	\include{titlepage_en}
+	\afterpage{\blankpage}
+	\clearpage
+	
+	% Plagiarism Declaration
+	\input{abstract_acknowledgement_preface/plagiarism}
+	
+	% Abstract - English (Primary)
+	\input{abstract_acknowledgement_preface/abstract}
+	
+	% Abstract - Greek (Secondary)
+	\input{abstract_acknowledgement_preface/abstract_gr}
+	\clearpage
+	
+	% Acknowledgements
+	\input{abstract_acknowledgement_preface/acknowledgements}
+	
+	% Table of Contents
+	\renewcommand\contentsname{\LARGE Contents}
+	\tableofcontents
+	\addtocontents{toc}{\protect\thispagestyle{fancy}}
+	\noindent
+	\clearpage
+	
+	% List of Figures
+	\renewcommand{\listfigurename}{\LARGE List of Figures}
+	\listoffigures{\protect\thispagestyle{fancy}}
+	\noindent \hrulefill
+	\clearpage
+	
+	% List of Tables
+	\renewcommand{\listtablename}{\LARGE List of Tables}
+	\listoftables{\protect\thispagestyle{fancy}}
+	\noindent \hrulefill
+	\clearpage
+	
+	% ============================================
+	% MAIN MATTER - CHAPTERS
+	% ============================================
+	\mainmatter  % Arabic numerals (1, 2, 3...)
+	\pagestyle{fancy}
+	
+	\include{maintext/chap1}   % Introduction
+	\include{maintext/chap2}   % Overview of Dementia and Alzheimer's disease imaging
+	\include{maintext/chap3}   % Key Image Datasets
+	\include{maintext/chap4}   % Methods
+	\include{maintext/chap5}   % Experiments
+	\include{maintext/chap6}   % Results and Discussion
+	\include{maintext/chap7}   % Conclusion
+	\include{maintext/chap8}   % Additional content
+	\include{maintext/chap9}   % Gaps in Current Literature and Future Research Directions
+	\include{maintext/chap_limitations}  % Limitations
+	\include{maintext/chap10}  % Conclusion
+	
+	% ============================================
+	% BACK MATTER - APPENDICES AND BIBLIOGRAPHY
+	% ============================================
+	\backmatter
+	
+	\begin{appendices}
+		
+		\include{appendix/app_pathophysiology}  % Pathophysiology of Alzheimer
+		\include{appendix/app_supplementary}    % Supplementary materials
+		
+		% Bibliography
+		\renewcommand\bibname{Bibliography}
+		\bibliographystyle{ieeetr}
+		\bibliography{references}
+		
+		% Abbreviations
+		\input{appendix/abbreviations}
+		\addcontentsline{toc}{section}{Abbreviations and Acronyms}
+		
+	\end{appendices}
+	
 \end{document}

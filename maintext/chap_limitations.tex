@@ -8,13 +8,13 @@ The primary limitation that has been researched in the field of medical imaging 
 
 The most common cause of data leakage seems to happen through ``slice-level'' splitting, where MRI slices from the same patient are distributed across both sets (training, testing). This leads to model overfitting, a poor indicator of clinical performance and generalization or broader pattern recognition.
 
-Pulido-Salalgado et al. (2025) \cite{youngDataLeakageDeep2025} demonstrated this effect empirically within a single study, showing a 28-percentage-point accuracy drop when switching from slice-wise to subject-wise splitting. The magnitude of this drop---equivalent to the difference between a highly promising diagnostic tool and one barely exceeding chance---illustrates why methodological rigor is non-negotiable.
+In \cite{youngDataLeakageDeep2025} demonstrated this effect empirically within a single study, showing a 28-percentage-point accuracy drop when switching from slice-wise to subject-wise splitting. The magnitude of this drop---equivalent to the difference between a highly promising diagnostic tool and one barely exceeding chance---illustrates why methodological rigor is non-negotiable.
 
-Furthermore, data contamination can persist in other forms. Longitudinal studies usually include data from the same subject at different disease stages, and if these visits are not carefully tracked, temporal correlations can produce data leakage. Similarly, datasets that aggregate data from multiple acquisition sites may include the same patient scanned at different facilities. In Young (2025) \cite{youngDataLeakageDeep2025}, it was found that only 4.5\% of published studies implemented the complete ``methodological triad'' of subject-wise splitting, external validation, and confounder control, suggesting that the field's reported performance metrics are systematically optimistic.
+Furthermore, data contamination can persist in other forms. Longitudinal studies usually include data from the same subject at different disease stages, and if these visits are not carefully tracked, temporal correlations can produce data leakage. Similarly, datasets that aggregate data from multiple acquisition sites may include the same patient scanned at different facilities. In  \cite{youngDataLeakageDeep2025}, it was found that only 4.5\% of published studies implemented the complete ``methodological triad'' of subject-wise splitting, external validation, and confounder control, suggesting that the field's reported performance metrics are systematically optimistic.
 
 \section{The Accuracy Paradox and Class Imbalance}
 
-The dataset employed in this study, drawn from the Alzheimer's Disease Neuroimaging Initiative (ADNI), exhibits significant class imbalance typical of clinical populations. Healthy Controls (HC) and Mild Cognitive Impairment (MCI) cases substantially outnumber confirmed Alzheimer's Disease cases. This imbalance renders overall accuracy an unreliable and potentially misleading performance metric, a phenomenon termed the ``accuracy paradox'' by Dubray et al. (2024) \cite{tongClassBalancedDeepLearning2024}.
+The dataset employed in this study, drawn from the Alzheimer's Disease Neuroimaging Initiative (ADNI), exhibits significant class imbalance typical of clinical populations. Healthy Controls (HC) and Mild Cognitive Impairment (MCI) cases substantially outnumber confirmed Alzheimer's Disease cases. This imbalance renders overall accuracy an unreliable and potentially misleading performance metric, a phenomenon termed the ``accuracy paradox'' by  \cite{tongClassBalancedDeepLearning2024}.
 
 The dataset employed in this study also exhibits significant class imbalance as can be seen in Figure~\ref{fig:class_imbalance}.
 
@@ -25,7 +25,7 @@ The dataset employed in this study also exhibits significant class imbalance as 
     \label{fig:class_imbalance}
 \end{figure}
 
-This imbalance, as has already been mentioned, renders accuracy as an unreliable metric and more precise and robust metrics have been proposed (F1-score, AUC, MCC, etc.). The phenomenon of imbalance leading to misleading performance has been termed as ``accuracy paradox'' in Dubray et al. (2024) \cite{tongClassBalancedDeepLearning2024}.
+This imbalance, as has already been mentioned, renders accuracy as an unreliable metric and more precise and robust metrics have been proposed (F1-score, AUC, MCC, etc.). The phenomenon of imbalance leading to misleading performance has been termed as ``accuracy paradox'' in \cite{tongClassBalancedDeepLearning2024}.
 
 To frame this in practical terms, imagine a medical test that correctly identifies 9 out of 10 people, but only because it tells everyone they are healthy. The 1 in 10 patients with Alzheimer's Disease would receive false reassurance, potentially delaying critical interventions during the narrow window when treatments are most effective. This scenario illustrates why clinical AI systems must be evaluated on metrics beyond raw accuracy.
 
@@ -43,7 +43,7 @@ Magnetic field strength significantly impacts image resolution and for higher-fi
 
 Acquisition sequence parameters---including echo time, repetition time, flip angle, and slice thickness---vary across institutions and protocols. What constitutes a ``standard'' T1-weighted sequence differs between research consortia and clinical departments. The model has learned one version of normal and may misinterpret technically valid but differently acquired images.
 
-Diogo et al. (2022) \cite{diogoEarlyDiagnosisAlzheimers2022} documented that models trained on research-grade images from one set frequently fail when applied to clinical-grade images from hospital settings. Dinsdale et al. (2024) \cite{turrisiDeepLearningbasedAlzheimers2024a} found that accuracy dropped to 71\% when models were tested on external datasets with different scanner configurations, compared to training data performance.
+In this study \cite{diogoEarlyDiagnosisAlzheimers2022} they documented that models trained on research-grade images from one set frequently fail when applied to clinical-grade images from hospital settings. Dinsdale et al. (2024) \cite{turrisiDeepLearningbasedAlzheimers2024} found that accuracy dropped to 71\% when models were tested on external datasets with different scanner configurations, compared to training data performance.
 
 Critically, we did not perform external validation on a completely independent cohort (such as training on ADNI and testing on OASIS), meaning our reported metrics almost certainly overestimate real-world clinical performance.
 
@@ -53,7 +53,7 @@ Another critical limitation is that deep learning models can learn shortcuts tha
 
 \subsection{Skull-Stripping Artifacts}
 
-Preprocessing pipelines usually include a step for non-brain tissue (skull stripping) to focus the model directly on the brain tissue and its structure. However, as noted in Wen et al. (2020) \cite{wenConvolutionalNeuralNetworks2020}, imperfect skull stripping can leave informative artifacts. If there is a difference in the stripping algorithm between healthy brains and atrophic brains---for example, leaving more residual scalp on atrophic brains where the boundary of brain-skull is less distinct---then it is likely that the model may learn to classify images based on preprocessing residuals rather than brain tissue characteristics.
+Preprocessing pipelines usually include a step for non-brain tissue (skull stripping) to focus the model directly on the brain tissue and its structure. However, as noted in \cite{wenConvolutionalNeuralNetworks2020}, imperfect skull stripping can leave informative artifacts. If there is a difference in the stripping algorithm between healthy brains and atrophic brains---for example, leaving more residual scalp on atrophic brains where the boundary of brain-skull is less distinct---then it is likely that the model may learn to classify images based on preprocessing residuals rather than brain tissue characteristics.
 
 The gap between brain surface and inner skull table increases with cortical atrophy, a hallmark of Alzheimer's Disease. If skull-stripping is incomplete, this enlarged cerebrospinal fluid space becomes visible as a classification cue. The model correctly identifies Alzheimer's cases, but for the wrong reason---it has learned to detect atrophy artifacts rather than analyze hippocampal or cortical tissue directly.
 
@@ -61,7 +61,7 @@ The gap between brain surface and inner skull table increases with cortical atro
 
 In our experiments, we used Gradient-weighted Class Activation Mapping (Grad-CAM) for model interpretability, generating heatmaps indicating image regions that influenced the model's decision. However, it should be noted that interpretability methods are not validation methods, since a model can focus on ventricular enlargement which is a secondary issue but ignore the primary underlying pathology while still classifying a majority of samples correctly.
 
-Young et al. (2025) \cite{youngDataLeakageDeep2025} found that while 18.2\% of studies used interpretability methods, only 12.5\% of Grad-CAM implementations validated that highlighted regions corresponded to known neuropathological sites. This interpretability-validation chasm means that impressive heatmaps clustering around ``reasonable'' brain regions do not confirm that the model has learned disease-relevant features. Clinicians cannot trust explanations that lack rigorous validation against established pathological patterns. Figure~\ref{fig:gradcam_implementation} shows a Grad-CAM implementation along with the code.
+In \cite{youngDataLeakageDeep2025} it was  found that while 18.2\% of studies used interpretability methods, only 12.5\% of Grad-CAM implementations validated that highlighted regions corresponded to known neuropathological sites. This interpretability-validation chasm means that impressive heatmaps clustering around ``reasonable'' brain regions do not confirm that the model has learned disease-relevant features. Clinicians cannot trust explanations that lack rigorous validation against established pathological patterns. Figure~\ref{fig:gradcam_implementation} shows a Grad-CAM implementation along with the code.
 
 \begin{figure}[htbp]
     \centering
@@ -107,13 +107,13 @@ def visualize_gradcam(model, img_tensor, true_label, target_layer):
 
 \section{Ground Truth Uncertainty and Diagnostic Heterogeneity}
 
-Another important limitation is the reliability of diagnostic labels that are used for training. Machine learning models are upper-limited by the labels and data they are given, and it seems that clinical diagnosis of Alzheimer's Disease is imperfect. Wang et al. (2025) found that 71\% of patients with dementia at autopsy had multiple coexisting pathologies, but only 67\% had been clinically diagnosed with AD alone.
+Another important limitation is the reliability of diagnostic labels that are used for training. Machine learning models are upper-limited by the labels and data they are given, and it seems that clinical diagnosis of Alzheimer's Disease is imperfect. In \cite{wangDeepLearningReveals2025} found that 71\% of patients with dementia at autopsy had multiple coexisting pathologies, but only 67\% had been clinically diagnosed with AD alone.
 
 The same study demonstrated that when models were trained only on confirmed neuropathologically diagnoses instead of clinical labels, accuracy changed substantially---both for AD (84.4\%) and vascular dementia (83.9\%) but lower for Lewy body dementia (62.3\%). This suggests that for different dementia subtypes there are different challenges for classification and that incorporating them under imprecise clinical labels degrades performance for all categories.
 
 \section{Disease Heterogeneity as an Intrinsic Limitation}
 
-Alzheimer's disease itself shows substantial phenotypic heterogeneity. In Young et al. (2018) \cite{youngUncoveringHeterogeneityTemporal2018}, at least three distinct disease progression patterns were identified. Patients may present with predominantly hippocampal atrophy, predominantly cortical atrophy, or mixed patterns, with different sequences of regional involvement over time.
+Alzheimer's disease itself shows substantial phenotypic heterogeneity. In  \cite{youngUncoveringHeterogeneityTemporal2018}, at least three distinct disease progression patterns were identified. Patients may present with predominantly hippocampal atrophy, predominantly cortical atrophy, or mixed patterns, with different sequences of regional involvement over time.
 
 In another study, Kumar et al. (2024) \cite{kumarAlzheimerDisease2025} showed that even greater heterogeneity was found at more severe disease stages. Patients showcased distinct patterns of neurodegeneration, tau accumulation, and amyloid deposition. This presents a limitation where a binary classification between AD and control subjects might be inadequate since the disease manifests through multiple pathways with patient-specific trajectories.
 
@@ -121,13 +121,13 @@ In another study, Kumar et al. (2024) \cite{kumarAlzheimerDisease2025} showed th
 
 Deep learning models operate as ``black boxes,'' extracting features through millions of parameters without providing human-interpretable explanations for their decisions. Jo et al. (2019) emphasized that this opacity is particularly problematic for medical applications, where clinicians must justify diagnostic decisions to patients, families, and institutional review processes.
 
-Reproducibility presents a related challenge. Dinsdale et al. (2024) \cite{turrisiDeepLearningbasedAlzheimers2024} documented that none of the state-of-the-art studies they examined were fully reproducible. Authors rarely provide complete code, and critical implementation details---data augmentation strategies, exact model architectures, hyperparameter values, random seeds---are inconsistently reported. Sample sizes vary from 170 to 1,662 participants across studies, making cross-study benchmarking nearly impossible. Our own results, while documented as thoroughly as practical, may prove difficult to reproduce exactly due to inherent stochasticity in neural network training.
+Reproducibility presents a related challenge. \cite{turrisiDeepLearningbasedAlzheimers2024} documented that none of the state-of-the-art studies they examined were fully reproducible. Authors rarely provide complete code, and critical implementation details---data augmentation strategies, exact model architectures, hyperparameter values, random seeds---are inconsistently reported. Sample sizes vary from 170 to 1,662 participants across studies, making cross-study benchmarking nearly impossible. Our own results, while documented as thoroughly as practical, may prove difficult to reproduce exactly due to inherent stochasticity in neural network training.
 
 \section{Limitations of Single-Modality Analysis}
 
-This study relies exclusively on structural MRI data, yet clinical diagnosis of AD integrates multiple information sources. In Leming et al. (2023) \cite{lemingChallengesImplementingComputeraided2023}, it is mentioned that at least five modalities exist: structural imaging, functional imaging (PET, fMRI), cerebrospinal fluid biomarkers, genetic testing, and neuropsychological assessment. Relying solely on MRI can negatively impact information that can be leveraged for better model predictions.
+This study relies exclusively on structural MRI data, yet clinical diagnosis of AD integrates multiple information sources. In  \cite{lemingChallenges2023}, it is mentioned that at least five modalities exist: structural imaging, functional imaging (PET, fMRI), cerebrospinal fluid biomarkers, genetic testing, and neuropsychological assessment. Relying solely on MRI can negatively impact information that can be leveraged for better model predictions.
 
-However, even though the potential benefits of integrating multiple sources of information are documented \cite{razaAdvancementsDeepLearning2025, golrizkhatamiChallengesIntegrativeDisease2020} and the combination of more modalities could improve accuracy, this can also introduce other complications. Data missingness, variable protocols, and dataset interoperability can increase model complexity and might compromise interpretability.
+However, even though the potential benefits of integrating multiple sources of information are documented \cite{razaAdvancements2025, golrizkhatamiChallenges2020} and the combination of more modalities could improve accuracy, this can also introduce other complications. Data missingness, variable protocols, and dataset interoperability can increase model complexity and might compromise interpretability.
 
 \section{Summary of Limitations}
 

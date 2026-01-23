@@ -33,28 +33,36 @@ Accuracy is defined as:
 
 Sensitivity is the ability of a classifier to detect actual positives. In medical applications, a sensitivity of 0.8 means that the method correctly identifies positive cases 80\% of the time.
 
-\[
-\text{Sensitivity} = \text{TPR} = \frac{TP}{TP + FN}
-\]
+
+\begin{equation}
+	\text{Sensitivity} = \frac{TP}{TP + FN}
+	\label{eq:sensitivity}
+\end{equation}
 
 Specificity measures the ability to correctly identify actual negatives:
-\[
-\text{Specificity} = \frac{TN}{TN + FP}
-\]
+
+\begin{equation}
+	\text{Specificity} = \frac{TN}{TN + FP}
+	\label{eq:specificity}
+\end{equation}
 
 \subsection{Precision and Recall}
 
 Precision (Positive Predictive Value) quantifies how many predicted positives are actually positive:
+\begin{equation}
+	\text{Precision} = \frac{TP}{TP + FP}
+	\label{precision}
+\end{equation}
 
-\[
-\text{Precision} = \frac{TP}{TP + FP}
-\]
 
-Recall is equivalent to sensitivity:
 
-\[
-\text{Recall} = \frac{TP}{TP + FN}
-\]
+Recall is defined as the ratio of the actual positives ( TP and FN ). 
+\begin{equation}
+	\text{Recall} = \frac{TP}{TP + FN}
+	\label{recall}
+\end{equation}
+
+
 
 \subsection{Model Validation Techniques}
 
@@ -83,3 +91,104 @@ The Matthews Correlation Coefficient (MCC) is considered one of the most informa
 \end{itemize}
 
 
+
+
+
+\begin{table}[h!]
+	\centering
+	\renewcommand{\arraystretch}{2} % Generous vertical spacing
+	\setlength{\tabcolsep}{4pt}
+	\caption{Part 1: The Confusion Matrix and Row-based Rates (Sensitivity/Specificity)}
+	
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\cline{3-6}
+			\multicolumn{2}{c|}{} & \multicolumn{2}{c|}{\textbf{Predicted condition}} & \multicolumn{2}{c|}{} \\
+			\cline{3-4}
+			\multicolumn{2}{c|}{} & \cellcolor{wikiGrey} Predicted Positive & \cellcolor{wikiGrey} Predicted Negative & \multicolumn{2}{c|}{} \\
+			\hline
+			
+			\multirow{6}{*}{\rotatebox[origin=c]{90}{\textbf{Actual condition}}} & 
+			\cellcolor{wikiGrey} & 
+			\cellcolor{wikiGreen}\textbf{True Positive (TP)} & 
+			\cellcolor{wikiRed}\textbf{False Negative (FN)} & 
+			\cellcolor{wikiLightGrey} \textbf{True Positive Rate (TPR)} & 
+			\cellcolor{wikiLightGrey} \textbf{False Negative Rate (FNR)} \\
+			
+			& \cellcolor{wikiGrey} & 
+			\cellcolor{wikiGreen}\textit{Hit} & 
+			\cellcolor{wikiRed}\textit{Miss, Type II Error} & 
+			\cellcolor{wikiLightGrey} Sensitivity, Recall & 
+			\cellcolor{wikiLightGrey} Miss Rate \\
+			
+			& \multirow{-3}{*}{\cellcolor{wikiGrey}\shortstack{Total P}} & 
+			\cellcolor{wikiGreen}$TP$ & 
+			\cellcolor{wikiRed}$FN$ & 
+			\cellcolor{wikiLightGrey}$\frac{TP}{P} = 1 - FNR$ & 
+			\cellcolor{wikiLightGrey}$\frac{FN}{P} = 1 - TPR$ \\
+			\cline{2-6}
+			
+			& \cellcolor{wikiGrey} & 
+			\cellcolor{wikiRed}\textbf{False Positive (FP)} & 
+			\cellcolor{wikiGreen}\textbf{True Negative (TN)} & 
+			\cellcolor{wikiLightGrey} \textbf{False Positive Rate (FPR)} & 
+			\cellcolor{wikiLightGrey} \textbf{True Negative Rate (TNR)} \\
+			
+			& \cellcolor{wikiGrey} & 
+			\cellcolor{wikiRed}\textit{False Alarm, Type I Error} & 
+			\cellcolor{wikiGreen}\textit{Correct Rejection} & 
+			\cellcolor{wikiLightGrey} Fall-out & 
+			\cellcolor{wikiLightGrey} Specificity \\
+			
+			& \multirow{-3}{*}{\cellcolor{wikiGrey}\shortstack{Total N}} & 
+			\cellcolor{wikiRed}$FP$ & 
+			\cellcolor{wikiGreen}$TN$ & 
+			\cellcolor{wikiLightGrey}$\frac{FP}{N} = 1 - TNR$ & 
+			\cellcolor{wikiLightGrey}$\frac{TN}{N} = 1 - FPR$ \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+\vspace{1cm} % Space between tables
+
+% ==========================================
+% TABLE 2: DERIVED METRICS
+% ==========================================
+\begin{table}[h!]
+	\centering
+	\renewcommand{\arraystretch}{2}
+	\setlength{\tabcolsep}{4pt}
+	\caption{Part 2: Derived Performance Metrics (Precision, Accuracy, etc.)}
+	
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\cellcolor{wikiLightGrey}\textbf{Prevalence} & 
+			\cellcolor{wikiLightGrey}\textbf{Precision (PPV)} & 
+			\cellcolor{wikiLightGrey}\textbf{False Omission Rate (FOR)} & 
+			\cellcolor{wikiLightGrey}\textbf{Positive Likelihood Ratio} & 
+			\cellcolor{wikiLightGrey}\textbf{Negative Likelihood Ratio} \\
+			
+			\cellcolor{wikiLightGrey}$\frac{P}{P+N}$ & 
+			\cellcolor{wikiLightGrey}$\frac{TP}{TP+FP} = 1 - FDR$ & 
+			\cellcolor{wikiLightGrey}$\frac{FN}{FN+TN} = 1 - NPV$ & 
+			\cellcolor{wikiLightGrey}$LR+ = \frac{TPR}{FPR}$ & 
+			\cellcolor{wikiLightGrey}$LR- = \frac{FNR}{TNR}$ \\
+			\hline
+			
+			\cellcolor{wikiLightGrey}\textbf{Accuracy (ACC)} & 
+			\cellcolor{wikiLightGrey}\textbf{False Discovery Rate (FDR)} & 
+			\cellcolor{wikiLightGrey}\textbf{Neg. Predictive Value (NPV)} & 
+			\cellcolor{wikiLightGrey}\textbf{Markedness (MK)} & 
+			\cellcolor{wikiLightGrey}\textbf{Diagnostic Odds Ratio} \\
+			
+			\cellcolor{wikiLightGrey}$\frac{TP+TN}{P+N}$ & 
+			\cellcolor{wikiLightGrey}$\frac{FP}{TP+FP} = 1 - PPV$ & 
+			\cellcolor{wikiLightGrey}$\frac{TN}{TN+FN} = 1 - FOR$ & 
+			\cellcolor{wikiLightGrey}$PPV + NPV - 1$ & 
+			\cellcolor{wikiLightGrey}$DOR = \frac{LR+}{LR-}$ \\
+			\hline
+		\end{tabular}
+	}
+\end{table}

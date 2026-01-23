@@ -55,11 +55,11 @@ Studies consistently show LDA outperforming PCA for dementia classification \cit
 
 \section{The Deep Learning Revolution}
 
-Deep learning disrupted the traditional feature-engineering workflow by enabling end-to-end learning from raw or minimally processed images \cite{ozkanDeepLearningTechniques2024}.
+Deep learning disrupted the traditional feature-engineering workflow by enabling end-to-end learning from raw or minimally processed images \cite{ozkanDeep2024}.
 
 \subsection{Convolutional Neural Networks (CNNs)}
 
-CNNs form the backbone of most imaging-based dementia classification systems \cite{ebrahimiConvolutionalNeuralNetworks2021}. Their strength lies in hierarchical feature extraction: early layers detect low-level patterns (edges, textures), while deeper layers capture structural patterns associated with neurodegeneration \cite{ebrahimiConvolutionalNeuralNetworks2021a}.
+CNNs form the backbone of most imaging-based dementia classification systems \cite{ebrahimiConvolutionalNeuralNetworks2021}. Their strength lies in hierarchical feature extraction: early layers detect low-level patterns (edges, textures), while deeper layers capture structural patterns associated with neurodegeneration \cite{ebrahimiConvolutionalNeuralNetworks2021}.
 
 \subsubsection{2D vs.\ 3D CNN Designs}
 
@@ -69,17 +69,17 @@ Choosing between 2D and 3D architectures involves trade-offs:
 These operate on slice-based inputs, enabling computational efficiency and transfer learning from natural-image models such as VGG, ResNet, Inception, and DenseNet \cite{sm.DeepLearningDrivenAlzheimers2025, PDFImprovedClassification}. However, slice-wise inputs discard 3D anatomical continuity \cite{aliEnhancingAlzheimersDisease2024}.
 
 \paragraph{3D CNNs.}
-3D CNNs preserve volumetric structure using 3D kernels \cite{khagi3DCNNDesign2020}. They achieve strong performance on AD/NC and multi-class tasks but require large datasets and memory, making them susceptible to overfitting \cite{xuReviewApplicationThreedimensional2023}.
+3D CNNs preserve volumetric structure using 3D kernels \cite{khagi3DCNNDesign2020}. They achieve strong performance on AD/NC and multi-class tasks but require large datasets and memory, making them susceptible to overfitting \cite{xuReview2023}.
 
 Hybrid approaches include:
 \begin{itemize}
     \item 2.5D slices (central slice plus neighbors) \cite{linConvolutionalNeuralNetworksBased2018},
-    \item CNN+RNN architectures for sequential slice modeling \cite{ebrahimiConvolutionalNeuralNetworks2021b}.
+    \item CNN+RNN architectures for sequential slice modeling \cite{ebrahimiConvolutionalNeuralNetworks2021}.
 \end{itemize}
 
 \subsubsection{Multimodal Fusion}
 
-Structural MRI (T1) and FDG-PET offer complementary structural and metabolic information. CNNs can fuse these modalities using multi-stream architectures, where early layers learn modality-specific features before being merged for joint classification \cite{huangDiagnosisAlzheimersDisease2019, zhaoConventionalMachineLearning2023}.
+Structural MRI (T1) and FDG-PET offer complementary structural and metabolic information. CNNs can fuse these modalities using multi-stream architectures, where early layers learn modality-specific features before being merged for joint classification \cite{huangDiagnosisAlzheimersDisease2019, zhaoConventional2023}.
 
 \subsubsection{Interpretability: Grad-CAM}
 
@@ -96,7 +96,7 @@ Such maps enable researchers and clinicians to verify that models rely on plausi
 
 \subsection{Generative Models: GANs}
 
-Deep learning is limited by the scarcity of large, annotated medical datasets \cite{zhaoConventionalMachineLearning2023, marcusDeepLearningCritical}. Generative Adversarial Networks (GANs) address this by producing synthetic yet realistic MRI or PET images \cite{konidarisGenerativeAdversarialNetworks2019}.
+Deep learning is limited by the scarcity of large, annotated medical datasets \cite{zhaoConventional2023, marcusDeepLearningCritical}. Generative Adversarial Networks (GANs) address this by producing synthetic yet realistic MRI or PET images \cite{konidarisGenerativeAdversarialNetworks2019}.
 
 GAN-generated images can augment training datasets, alleviating class imbalance and improving classifier performance, with gains up to 11.68\% reported \cite{konidarisGenerativeAdversarialNetworks2019}. GANs are also explored for:
 \begin{itemize}

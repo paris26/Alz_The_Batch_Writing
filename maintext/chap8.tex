@@ -2,7 +2,7 @@
 
 \section{Multi-Modal Integration}
 
-Most of the current research on Alzheimer's Disease (AD) classification relies on single modality data. A modality, as defined in \cite{missing_definition}, is an experience like sound, image, or touch.
+Most of the current research on Alzheimer's Disease (AD) classification relies on single modality data. A modality, as defined in \cite{cuiDeep2023}, is an experience like sound, image, or touch.
 
 Even though the scope of this work is not to review or examine works in data fusion, in order to provide a clearer understanding we should mention the challenges that are provided in one of the recent taxonomies of the field. The main challenges are:
 
@@ -51,21 +51,19 @@ The \textbf{taxonomy} of techniques can be described as:
 For a more concise approach, the most noteworthy techniques are \textbf{LIME} and \textbf{SHAP}. Both are primarily considered local approaches; however, SHAP can also be considered a global technique because it produces a sum of all feature attributions, allowing for a holistic view of the dataset.
 
 \subsection{LIME}
-In LIME, the goal is to produce a function $g$ that approximates the output of the neural network $f$. It utilizes a weighting variable that is higher for small perturbations (where we want high fidelity to the original input) and lower for distant, random samples. The algorithm aims to minimize both the error of the surrogate model and its complexity. Therefore, we define the explanation as the argument that minimizes the following objective:
+In LIME, the goal is to produce a function $g$ that approximates the output of the neural network $f$. It utilizes a weighting variable that is higher for small perturbations ( samples that are closer to the original input are weighed more while those that are not are weighed less). The goal of the algorithm is to find a simpler and accurate surrogate model. 
 
 \begin{equation}
     \xi(x) = \operatorname*{argmin}_{g \in G} \ \mathcal{L}(f,g,\pi_{x}) + \Omega(g)
-    \label{eq:lime}
 \end{equation}
 
 Where $\mathcal{L}$ represents the \textbf{Loss} (fidelity of the surrogate model) and $\Omega$ represents the \textbf{Complexity} of the explanation model.
 
 \subsection{SHAP}
-This technique borrows characteristics from Game Theory (specifically Shapley Values). It attempts to assign a score to each feature based on how much it "cooperates" with other features to change the output. The mathematical formulation for the explanation model $g$ is described as:
+This technique comes from Shapley Values from Game Theory. It works by assigning a score to each feature that reflects how much that feature contributes to the output when combined with all other features. 
 
 \begin{equation}
     g(z') = \phi_0 + \sum_{j=1}^{M} \phi_j \cdot z'_j
-    \label{eq:shap}
 \end{equation}
 
 Where $z'$ is the simplified feature (coalition vector) and $\phi$ is the attribution score assigned to that feature. By aggregating the scores across different examples, SHAP can provide a holistic view of the importance of each feature in the network.
@@ -89,11 +87,11 @@ In this work, the authors tried to create a network by combining a predictor wit
 
 In another study, researchers used data-level fusion of clinical data, MRI segmentation data, and psychological data. They employed many algorithms with Random Forest being the best and achieving the highest score value. They also used SHAP explanations for further explainability \cite{jahanExplainableAIbasedAlzheimers2023}.
 
-Additionally, in a systematic review on explainable AI in Alzheimer's research, it can be seen that most of the approaches contain post-hoc and model-agnostic approaches. Techniques such as SHAP, LIME, Grad-CAM, and LRP are shown to dominate the field. Also interesting are novel approaches using other modalities (speech \& text), along with the current trade-off between accuracy and explainability in the domain of XAI \cite{viswanExplainableArtificialIntelligence2024}.
+Additionally, in a systematic review on explainable AI in Alzheimer's research, it can be seen that most of the approaches contain post-hoc and model-agnostic approaches. Techniques such as SHAP, LIME, Grad-CAM, and LRP are shown to dominate the field. Also interesting are novel approaches using other modalities (speech \& text), along with the current trade-off between accuracy and explainability in the domain of XAI \cite{viswanExplainable2024}.
 
 \section{Data Augmentation \& Transfer Learning}
 
-Even though Deep Learning has performed tremendously in many computer vision tasks and has become a methodology of choice for analyzing medical images \cite{geertlitjensSurveyDeepLearning2017}, these large networks usually require vast amounts of data in order to avoid overfitting. 
+Even though Deep Learning has performed tremendously in many computer vision tasks and has become a methodology of choice for analyzing medical images \cite{geertlitjensSurvey2017}, these large networks usually require vast amounts of data in order to avoid overfitting. 
 
 Overfitting refers to the process where a model learns a function $f$ with very high variance, perfectly modelling the training data and not being able to generalize to new instances that do not belong to the prior distribution of the training data. In many applications, such as medical imaging, data is limited due to a multitude of factors, but mainly due to the scarcity of datasets annotated by specialists, which is labor-intensive and has a high cost.
 
@@ -119,11 +117,11 @@ Data Augmentation is a collection of techniques used to increase both the qualit
     \bottomrule
     \endlastfoot
 
-    \textbf{1. Geometric transformations} & This category encompasses simple transformations such as flipping, cropping, rotation, and translation. These methods are generally easy to implement and effectively address positional biases in the training data. However, practitioners must ensure transformations are "safe" and preserve the label (e.g., rotating a '6' might turn it into a '9'). \\
-    \textbf{2. Color space augmentations} & Also called photometric transformations, these techniques manipulate pixel values in the RGB color channels or image histograms. Common methods include adjusting brightness, contrast, or isolating color channels to help models overcome lighting biases present in testing data. \\
-    \textbf{3. Kernel filters} & This technique involves sliding an $n \times n$ matrix across an image to sharpen or blur it. Blurring can improve resistance to motion blur, while sharpening emphasizes details. A specific variation called PatchShuffle Regularization randomly swaps pixel values within a window to improve robust feature learning. \\
-    \textbf{4. Mixing images} & This counterintuitive approach mixes multiple images to create new training instances. Methods include SamplePairing (averaging pixel values of two images) or concatenating random crops. Despite producing unnatural-looking images, this method has proven effective at reducing error rates. \\
-    \textbf{5. Random erasing} & Inspired by dropout regularization, this technique randomly selects an $n \times m$ patch of an image and masks it with 0s, 255s, or random values. By removing parts of the input, it forces the model to pay attention to the entire image rather than just a subset, helping address occlusion challenges. \\
+    \textbf{1. Geometric transformations} & This category includes basic operations like flipping , cropping , rotation, and translation. They are quite easy to apply and are especially beneficial in reducing positional biases. However transformation of this kind can change the labelr (e.g rotating a 6 can produce a 9 ) so care is needed on examples where the labels can change. \\
+    \textbf{2. Color space augmentations} & These transformations change pixel values in their respective color channels or histograms. Examples are changing the brightness or contrast to help the models handle different lighting conditions. \\
+    \textbf{3. Kernel filters} & This method works by sliding a kernel filter ( $ n\chi n$  matrix).over an image to either blur or sharpen it . Blurring can help with motion blur resistance while sharpening can highlight details. A variant called Patchshuffle Regularization , shuffles pixel values within a window to encourage more robust learning. \\
+    \textbf{4. Mixing images} &  This approach combines mutliple images to create new samples. Techniques can eithe be average between two images ( SamplePairing) or they can be concatenating random crops. Although the images can look unnatural , the method can reduce error rates. \\
+    \textbf{5. Random erasing} &  Taking inspiration by dropout this method just masks an $n \times m$  patch , with zeros , maximum values, or noise. By hiding different parts it forces the model to look at the entire image , which can help with occlusion problems. \\
     \textbf{6. Feature space augmentation} & Instead of manipulating input images, this technique operates on the lower-dimensional vector representations (feature space) found in high-level network layers. Techniques include adding noise to these vectors or performing interpolations between nearest neighbors (similar to SMOTE) to generate new instances. \\
     \textbf{7. Adversarial training} & This involves using a rival framework to generate "adversarial attacks"—constrained noise injections that cause misclassifications. Using these adversarial examples during training acts as a search algorithm for augmentations, strengthening weak decision boundaries and improving model robustness. \\
     \textbf{8. GANs} & Generative Adversarial Networks (GANs) use a "generator" network to create artificial images and a "discriminator" network to distinguish real from fake ones. This powerful oversampling technique can "unlock" additional information from a dataset and create synthetic training data to increase size and diversity. \\
@@ -138,7 +136,7 @@ Data Augmentation is a collection of techniques used to increase both the qualit
     \label{fig:aug_techniques}
 \end{figure}
 
-Furthermore, distinct approaches have been developed to generate synthetic training data; one study utilized Deep Convolutional Generative Adversarial Networks (DCGANs) to synthesize Positron Emission Tomography (PET) images across three disease stages, effectively overcoming the lack of labeled data \cite{sajjadDeepConvolutionalGenerative2021}. Similarly, other research employed data augmentation within a transfer learning framework to rectify severe class imbalance in 3D Magnetic Resonance Imaging (MRI) datasets from the OASIS dataset \cite{afzalDataAugmentationbasedFramework2019}. In both instances, the application of these augmentation strategies resulted in significant improvements in model accuracy and diagnostic performance.
+Furthermore, distinct approaches have been developed to generate synthetic training data; one study utilized Deep Convolutional Generative Adversarial Networks (DCGANs) to synthesize Positron Emission Tomography (PET) images across three disease stages, effectively overcoming the lack of labeled data \cite{sajjadDeepConvolutionalGenerative2021}. Similarly, other research employed data augmentation within a transfer learning framework to rectify severe class imbalance in 3D Magnetic Resonance Imaging (MRI) datasets from the OASIS dataset \cite{afzalDataAugmentationbasedFramework2019}.Both studies showed that the methods improved accuracy and diagnosis. 
 
 \subsection{Transfer Learning}
 

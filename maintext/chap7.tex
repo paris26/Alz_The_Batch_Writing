@@ -4,7 +4,7 @@
 
 It is well understood from the literature that the performance of a machine learning (ML) model is upper bounded by the quality of the data \cite{jainOverviewImportanceData2020}. Effective classification with imbalanced data is an important area of research, as high class imbalance is naturally inherent in many real-world applications, e.g., fraud detection and cancer detection \cite{johnsonSurveyDeepLearning2019a}.
 
-In this problem, the majority of the sample data are labeled as one class and only a few samples are labeled as another class. This creates an imbalance in the dataset, and it is hard to solve because common classification algorithms are not designed to face these sorts of data \cite{niazClassImbalanceProblems2022}. In such a problem, almost all the examples are labeled as one class, while far fewer examples are labeled as the other class, usually the more important class. In this case, standard machine learning algorithms tend to be overwhelmed by the majority class and ignore the minority class since traditional classifiers seek accurate performance over a full range of instances \cite{guoClassImbalanceProblem2008}. In ML problems, differences in prior class probabilities—or class imbalances—have been reported to hinder the performance of standard classifiers such as decision trees \cite{japkowiczClassImbalanceProblem2002}.
+In this problem, the majority of the sample data are labeled as one class and only a few samples are labeled as another class. This creates an imbalance in the dataset, and it is hard to solve because common classification algorithms are not designed to face these sorts of data \cite{niazClass2022}. In such a problem, almost all the examples are labeled as one class, while far fewer examples are labeled as the other class, usually the more important class. In this case, standard machine learning algorithms tend to be overwhelmed by the majority class and ignore the minority class since traditional classifiers seek accurate performance over a full range of instances \cite{guoClassImbalanceProblem2008}. In ML problems, differences in prior class probabilities—or class imbalances—have been reported to hinder the performance of standard classifiers such as decision trees \cite{japkowiczClassImbalanceProblem2002}.
 
 When dealing with imbalanced datasets, standard evaluation metrics like accuracy can be misleading, as they are often biased toward the majority class. For a more robust and insightful assessment of classifier performance, it is crucial to employ metrics specifically designed to handle skewed class distributions. Based on \cite{japkowiczAssessmentMetricsImbalanced2013}, these can be divided into two primary categories: \textbf{Threshold Metrics} and \textbf{Ranking Methods}.
 
@@ -16,29 +16,37 @@ Threshold metrics evaluate a classifier's performance at a fixed operational poi
 These metrics evaluate performance on each class independently.
 
 \begin{itemize}
-    \item \textbf{Sensitivity (Recall, True Positive Rate):} Proportion of actual positive instances correctly identified.
-    \item \textbf{Specificity:} Proportion of actual negative instances correctly identified.
+    \item \textbf{Sensitivity (Recall, True Positive Rate):} The number of positive instances that are correctly identified as in Eq.~\eqref{eq:sensitivity}
+    \item \textbf{Specificity:} Negative instances that are correctly identified as in Eq.~\eqref{eq:specificity}
 \end{itemize}
 
 \paragraph{Precision and Recall}
-Widely used in information retrieval, these focus on the positive class.
+These two metrics are the quantification of precision and recall 
 
 \begin{itemize}
-    \item \textbf{Precision:} Proportion of predicted positives that are true positives.
-    \item \textbf{Recall:} Equivalent to sensitivity.
+    \item \textbf{Precision:} Precision is used to show the proportion of examples that are correctly identified Eq. \eqref{precision}
+    \item \textbf{Recall:} The ratio of treu positives over the actual positives ( Eq \eqref{recall}).
 \end{itemize}
 
 \paragraph{Combined Metrics}
-To simplify evaluation, the following metrics combine sensitivity, specificity, precision, and recall:
+In order to simplify evaluation and provdide a more comprehensive view some metrics combine all of the above. 
 
 \begin{itemize}
-    \item \textbf{G-Mean:} Geometric mean of sensitivity and specificity, balancing performance across classes.
-    \item \textbf{F-Measure:} Weighted harmonic mean of precision and recall, widely used in text categorization.
+	\item \textbf{G-Mean (Geometric Mean):} It balances the ability of the model both on positive and negative cases by taking the square root of the product between sensitivity and specificity.
+	\begin{equation}
+		\text{G-Mean} = \sqrt{\text{Sensitivity} \times \text{Specificity}}
+		\label{eq:gmean}
+	\end{equation}
+	
+	\item \textbf{F-Measure (F1-Score):} It computes the harmonic mean between recall and precision.
+	\begin{equation}
+		\text{F-Measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+		\label{eq:f1score}
+	\end{equation}
 \end{itemize}
 
 \subsection{Ranking Methods and Metrics}
-
-Ranking methods evaluate performance across all decision thresholds, useful when class distribution or error costs vary.
+In cases where class distribution varies such as imbalanced data or the error costs for making a wrong decision can vary , ranking methods are used to provide an overview of performance across all decision thresholds. 
 
 \paragraph{ROC Analysis}
 Plots True Positive Rate vs. False Positive Rate across thresholds. A curve near the top-left corner indicates a strong classifier. Particularly effective for imbalanced data.
@@ -54,29 +62,26 @@ In conclusion, evaluating classifiers on imbalanced datasets requires combining 
 
 \section{Limited Datasets}
 
-Big data and labels are not always available. Often we only have limited labeled data, such as medical images requiring expert annotation. ML with limited data poses major challenges. Domain shift is a critical issue in few-shot learning when training and testing domains differ \cite{yaoMachineLearningLimited2021}. Few datasets with limited data exist to train ML models \cite{merkinMachineLearningArtificial2022}, and robust models are hindered by the lack of large annotated datasets \cite{martinInterpretableMachineLearning2023b}.
+Big data and labels are not always available. Often we only have limited labeled data, such as medical images requiring expert annotation. ML with limited data poses major challenges. Domain shift is a critical issue in few-shot learning when training and testing domains differ \cite{yaoMachineLearningLimited2021}. Few datasets with limited data exist to train ML models \cite{merkinMachineLearningArtificial2022}, and robust models are hindered by the lack of large annotated datasets \cite{martinInterpretableMachineLearning2023}. 
 
-A recent study reports a dementia progression ML model built using a ``limited, real-world clinical dataset,'' demonstrating that dataset scarcity harms model generalizability and clinical applicability \cite{huangEstablishingMachineLearning2024}. Similarly, a comprehensive review highlights technical barriers and challenges in ML applications for dementia, particularly data scarcity and dataset diversity constraints \cite{wangUnderstandingMachineLearning2024}.
+Data scarcity and dataset diversity remain the primary barriers for application in dementia reseearch. Recent studies reinforce the hypothesis that limited data can impact model generazibility which in turn hurts clinical adoption and utility in dementia prediciton. \cite{huangEstablishingMachineLearning2024, wangUnderstanding2024}. 
+
 
 \subsection{Context and Challenges}
-
-Recent research consistently identifies the lack of large-scale, heterogeneous datasets (neuroimaging, biomarkers, clinical records) as a bottleneck for accurate and generalizable dementia ML models. Data limitations affect early diagnosis, subtype prediction, and progression tracking.
+ All subsequent tasks such as early diagnosis , disease progression, and tracking are impacted heavily by the lack of data. The lack of large scale, heterogeneous datasets  (neuroimaing , biomarkers , clinical records ), has become the main bottleneck for accurate and general ML models.
 
 \section{Small Sample Sizes}
+Even though the application of DL on imaging challenges , especially combined with large image datasets can provide major opportunities , barriers such as data availability and logistical constraints persist \cite{Challenges2022} . Models often lack generalizability , lack of gold standards and they fail to address privacy concerns as well as safety \cite{aljuhaniUse2024}. Studies point to the lack of efficient methodologies to define an appropriate data sample \cite{SampleSizeDeterminationMethodologies2019}. Additionally smaller studies often report inflated accuracy metrics indicating that numbers are upper limits or even superficial at times , meaning there exists systematic bias in the literature \cite{luSmallStudyEffects2022}. 
 
-The combination of DL image analysis and large-scale imaging datasets presents major opportunities, yet barriers such as data availability, interpretability, and logistical constraints persist \cite{ChallengesMachineLearning2022}. Further challenges include generalization, lack of gold standards, privacy concerns, and safety \cite{aljuhaniUseArtificialIntelligence2024}. Studies emphasize the scarcity of sample-size determination methodologies for ML in medical imaging \cite{SampleSizeDeterminationMethodologies2019}. A meta-analysis shows that smaller studies often report inflated diagnostic accuracy, indicating systematic bias \cite{luSmallStudyEffects2022}.
 
 \section{Image Quality and Variability}
-
-MRI intensities are acquired in arbitrary units, making scans non-comparable across sites. Even after normalization, inter-scan variability remains due to scanner effects and technical artifacts \cite{benzingerRegionalVariabilityImaging2013}. Variance in volumetric measures can differ by up to 10× depending on acquisition conditions, influenced by scanner hardware and tissue contrast differences \cite{kruggelImpactScannerHardware2010}. Additional work quantifies scanner make, model, and protocol variability in image quality, which limits generalizability of CNNs across sites \cite{monteroIntraInterscannerCT2025, bhosekarReviewDeepLearningbased}.
+MRI lacks arbitrary units. As a consequence scans become non-comparable across sites. Even after normalization , images contain technical artifacts and specific scanner related effects \cite{benzingerRegionalVariabilityImaging2013}. For volumetric measurements the difference in variance can be up to 10x more depending on the scanner, protocol, and acquisition conditions \cite{kruggelImpactScannerHardware2010}. More quantified metrics are reported in \cite{monteroIntraInterscannerCT2025, bhosekarReviewDeepLearningbased} for scanner maker, model and protocol variability that limit the abililty of CNN networks to generalize. 
 
 \section{Interpretability in Medical Applications}
-
-ML models in medicine must be interpretable, shareable, reproducible, and accountable. Black-box models are often accurate but face regulatory resistance. Interpretable approaches (kernel methods, prototype-based learning, deep kernel models) can provide clinically meaningful insights. Other key components include fairness, uncertainty quantification, and privacy-preserving collaborative learning such as federated learning and synthetic data via diffusion models \cite{begumbektasMachineLearningMedicine2025}. Explainable AI enhances transparency and ethical compliance, though challenges remain in workflow integration and regulatory alignment \cite{SurveyExplainableArtificial2024}. ML has transformed healthcare across applications, though ethical concerns such as bias, privacy, and legal issues remain \cite{MachineLearningHealthcare}. Challenges also persist in skin cancer detection due to data imbalance, interpretability limits, and model generalization difficulties \cite{ReviewApplicationsMachine}.
+Black-box models may be able to achieve high accuracy but they face regulatory scrutiny and difficulties in approval for clinical use. More interpretable methods like kernel-based or prototype-based models offer insights that cliniciasn can understand and rely upon for further decision making. On the same basis privacy-preserving, uncertainty estimation and fair techniques such as federated learning or diffusion based data generation can align more with the standards of the medical domain and issues that are most important \cite{begumbektasMachineLearningMedicine2025} . Explainable AI is a term for explainable systems that improve transparency and support ethical standards , but integrating them into the clinical flow workflows and meeting regulatory standards still remains difficult \cite{Survey2024} . ML has made progress and offered advancements in multiple medical domain areas but there are still concerns about bias , privacy and legal accountabilty \cite{MachineLearningHealthcare}. 
 
 \section{Computational Costs}
-
-Deep learning progress correlates strongly with rising compute demands, which are becoming economically and environmentally unsustainable \cite{thompsonComputationalLimitsDeep2022}. Efficient deep learning research explores model compression, optimization, and hardware acceleration. Compression techniques such as pruning, quantization, and knowledge distillation can reduce model size by over 100× while maintaining accuracy \cite{PDFEfficientDeep2025}. Lightweight models are essential for deployment on resource-constrained devices \cite{liuLightweightDeepLearning2024}. Architectures such as MobileNet and EfficientNet address this need while sustaining accuracy \cite{nampalleDeepMediXDeepLearningDriven2023}. Transfer learning reduces training costs, improving performance with limited data \cite{dashTransferLearningBased2024}. Pruning and knowledge distillation remain critical for shrinking large models \cite{gouKnowledgeDistillationSurvey2021, vaderaMethodsPruningDeep2022, hoeflerSparsityDeepLearning}. Additional work applies these techniques to Alzheimer’s MRI classification \cite{liClassificationAlzheimersDisease2022}.
+Deep Learning progress is strongly correlated with rising compute demands , which are quicly becoming economically and envrionmentally unsustainable \cite{thompsonComputationalLimitsDeep2022}. Deep learning research explores how to compress, optimize and accelearate how the models run on the hardware. Newer techniques like pruning, quantization and knowledge distillation have emerged and can shrink models by more than 100 times with minimal loss in accuracy \cite{PDFEfficientDeep2025} . Compact models are necessary for running models on devices with limited computational capacity \cite{liuLightweightDeepLearning2024} . MobileNet and EfficientNet are two  architectures designed for this purpose, still achieving comparable accuracy despite their small size \cite{nampalleDeepMediXDeepLearningDriven2023}. Transfer learnign can also be used to adress computational costs in the training phase and it can improve results when data is scarce \cite{dashTransferLearningBased2024} . Additionally pruning and knowledge distillation methods are key for reducing the size of larger models \cite{gouKnowledgeDistillationSurvey2021, vaderaMethodsPruningDeep2022, hoeflerSparsityDeepLearning}. Finally there is work that applies these techniques to Alzheimer's MRI classification \cite{liClassificationAlzheimersDisease2022}.
 
 \section{Data Distillation}
 
