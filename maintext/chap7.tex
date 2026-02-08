@@ -2,9 +2,8 @@
 
 \section{Imbalanced Data}
 
-It is well understood from the literature that the performance of a machine learning (ML) model is upper bounded by the quality of the data \cite{jainOverviewImportanceData2020}. Effective classification with imbalanced data is an important area of research, as high class imbalance is naturally inherent in many real-world applications, e.g., fraud detection and cancer detection \cite{johnsonSurveyDeepLearning2019a}.
-
-In this problem, the majority of the sample data are labeled as one class and only a few samples are labeled as another class. This creates an imbalance in the dataset, and it is hard to solve because common classification algorithms are not designed to face these sorts of data \cite{niazClass2022}. In such a problem, almost all the examples are labeled as one class, while far fewer examples are labeled as the other class, usually the more important class. In this case, standard machine learning algorithms tend to be overwhelmed by the majority class and ignore the minority class since traditional classifiers seek accurate performance over a full range of instances \cite{guoClassImbalanceProblem2008}. In ML problems, differences in prior class probabilities—or class imbalances—have been reported to hinder the performance of standard classifiers such as decision trees \cite{japkowiczClassImbalanceProblem2002}.
+The performance of any machine learning model is fundamentally limited by the quality of its data \cite{jainOverviewImportanceData2020}. A critical challenge that can degrade data quality is class imbalance, which occurs when one class contains many more sample than another - for example medical applications or fraud detection - \cite{johnsonSurveyDeepLearning2019}.
+Thi imbalnce therefore represents a major challenge since since standard ML algorithms are designed to maximize overall accuracy \cite{niazClass2022}. When trained on imbalanced data they tend to show bias towards the majority class while placing less significance to the minority class - often the class of most significance , since detecting the presence of disease is the primary interest- \cite{guoClassImbalanceProblem2008}. This performance degradation is documented , in decision tree classifiers \cite{japkowiczClassImbalanceProblem2002}. 
 
 When dealing with imbalanced datasets, standard evaluation metrics like accuracy can be misleading, as they are often biased toward the majority class. For a more robust and insightful assessment of classifier performance, it is crucial to employ metrics specifically designed to handle skewed class distributions. Based on \cite{japkowiczAssessmentMetricsImbalanced2013}, these can be divided into two primary categories: \textbf{Threshold Metrics} and \textbf{Ranking Methods}.
 
@@ -54,6 +53,8 @@ Plots True Positive Rate vs. False Positive Rate across thresholds. A curve near
 \paragraph{AUC}
 Area Under the ROC Curve; represents the probability that a randomly chosen positive instance is ranked higher than a randomly chosen negative one.
 
+Area Under the ROC Curve , is a metric for how well a classifier distinguished between classes.It actually quantifies the probability that a model assigns a higher probability to a randomly selected positive sample than a negative one . 
+
 \paragraph{Precision--Recall Curves}
 Show precision--recall trade-offs across thresholds and are preferred for highly imbalanced datasets.
 
@@ -61,8 +62,7 @@ Show precision--recall trade-offs across thresholds and are preferred for highly
 In conclusion, evaluating classifiers on imbalanced datasets requires combining threshold metrics with ranking-based metrics. While threshold metrics evaluate specific operational conditions, ranking methods such as ROC and PR curves provide a more holistic understanding of classifier performance.
 
 \section{Limited Datasets}
-
-Big data and labels are not always available. Often we only have limited labeled data, such as medical images requiring expert annotation. ML with limited data poses major challenges. Domain shift is a critical issue in few-shot learning when training and testing domains differ \cite{yaoMachineLearningLimited2021}. Few datasets with limited data exist to train ML models \cite{merkinMachineLearningArtificial2022}, and robust models are hindered by the lack of large annotated datasets \cite{martinInterpretableMachineLearning2023}. 
+The lack of large collections of labeled data is a major challenge in medical machine learning, as large annotated datasets require domain expertise and are both time consuming and and expensive to produce \cite{yaoMachineLearningLimited2021, merkinMachineLearningArtificial2022}. An additional challenge is domain shift - when the distribution of test data differs from the training data , leading to degraded model performance \cite{martinInterpretableMachineLearning2023}. 
 
 Data scarcity and dataset diversity remain the primary barriers for application in dementia reseearch. Recent studies reinforce the hypothesis that limited data can impact model generazibility which in turn hurts clinical adoption and utility in dementia prediciton. \cite{huangEstablishingMachineLearning2024, wangUnderstanding2024}. 
 

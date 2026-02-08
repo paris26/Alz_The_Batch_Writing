@@ -88,6 +88,7 @@
 % GRAPHICS AND FIGURES
 % ============================================
 \usepackage{graphicx}
+\usepackage{pdfpages}           % Include PDF documents
 \graphicspath{{images/}}        % Graphics path
 \usepackage{xcolor}             % Color support
 \usepackage{float}              % Float positioning
@@ -286,6 +287,11 @@ breaklinks=true
 		
 		\include{appendix/app_pathophysiology}  % Pathophysiology of Alzheimer
 		\include{appendix/app_supplementary}    % Supplementary materials
+		
+		% Source Code Repository
+		\section*{Source Code}
+		\addcontentsline{toc}{section}{Source Code}
+		The source code for this thesis is available at: \url{https://github.com/paris26/alzTheBatch}
 		
 		% Bibliography
 		\renewcommand\bibname{Bibliography}

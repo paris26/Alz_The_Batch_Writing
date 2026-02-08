@@ -3,7 +3,10 @@
  
 \section{Magnetic Resonance Imaging (MRI)}
 
-Magnetic Resonance Imaging (MRI) is a non-invasive method for visualizing the internal structure and certain functional aspects of the human body. In contrast with other imaging modalities such as CT scans, MRI uses a large magnetic field and non-ionizing electromagnetic radiation, and therefore does not cause exposure-related hazards. Detailed imaging occurs through the use of radio-frequency (RF) pulses in the presence of a carefully controlled magnetic field, producing high-quality images. When the patient is placed inside this magnetic field, the nuclei within the body align with the applied field and interact with the electromagnetic pulses. As analyzed below, the atoms precess, and this precessional movement is detected by receiver coils.
+Magnetic Resonance Imaging (MRI) is a technique based on NMR principles. Even though the classical view is not fully correct, it is quite useful as an introduction to the technique. Atomic nuclei possess the property of spin, which can be imagined as a spinning top with that property being its angular momentum. When a large magnetic field is applied to the nuclei, they tend to align with the field while continuing to spin.
+Unlike other modalities such as CT scans, which can subject the patient to ionizing radiation, MRI does not cause any exposure-related hazards since it uses non-ionizing electromagnetic radiation \cite{davisNuclearMagneticResonance1982}. Excitation in the case of MRI happens through radio-frequency (RF) pulses specifically tuned to the Larmor frequency. At this frequency, the nuclei resonantly absorb energy, causing the net magnetization vector to tip away from the applied magnetic field. The process analyzed classically is analogous to an oscillating body that performs a periodic movement (forced oscillator), receiving energy at a matching frequency to enhance the amplitude of its motion (e.g., a swing that gets pushed at the right intervals). It should be noted that pulse sequences can vary, but more detail will be discussed later. Once the pulse sequence stops, the nuclei relax back toward equilibrium and while doing so they emit a detectable signal captured by receiver coils \cite{kattiMagneticResonanceImaging2011, plewesPhysicsMRIPrimer2012, davisNuclearMagneticResonance1982, paiMagneticResonanceImaging2025}.
+Capturing, however, does not happen all at once. To achieve localized imaging of tissue, magnetic field gradients are employed. They alter the magnetic field so that it varies spatially, and in doing so only selected tissue precesses at the frequency matching the RF pulse.
+Overall, MRI offers a non-invasive way that possesses great accuracy in capturing the underlying tissue.
 
 \subsection{Spin}
 
@@ -11,13 +14,13 @@ Atomic nuclei possess an intrinsic property known as \textit{spin}. Spin occurs 
 
 \subsection{Properties of Spin}
 
-When a particle with net spin is placed within a magnetic field of strength $B$, it can absorb a photon of frequency $\nu$. This frequency depends on the gyromagnetic ratio $\gamma$ of the particle:
+When a particle with net spin is placed within a magnetic field of strength $B$, it can absorb a photon of frequency $\nu$. This frequency depends on the gyromagnetic ratio $\gamma$ of the particle \cite{vangeunsBasicPrinciplesMagnetic1999} :
 
 \[
 \nu = \gamma B .
 \]
 
-For hydrogen atoms, the gyromagnetic ratio is
+For hydrogen atoms, the gyromagnetic ratio is \cite{kattiMagneticResonanceImaging2011}
 
 \[
 \gamma = 42.58\ \text{MHz/T}.
@@ -27,7 +30,7 @@ MRI uses nuclei with either an unpaired proton or an unpaired neutron, allowing 
 
 \subsection{Hydrogen Nuclei in MRI}
 
-Hydrogen nuclei  are the most abundant MR-visible nuclei in the human body (primarily in water, H\textsubscript{2}O) and consist of a single proton with non-zero spin, allowing them to act as magnetic dipoles under a strong magnetic field. When a magnetic field is applied, all hydrogen spin angular momentum vectors tend to align either parallel (spin-up) or anti-parallel (spin-down) to the field. Since spin projection comes in quantized these energy states are distinct. Nuclei can transition between different energy states by absorbing or emitting energy , which in the case of MRI is provided by RF pulses at the ( Larmor ) resonance frequency. 
+Hydrogen nuclei  are the most abundant MR-visible nuclei in the human body (primarily in water, H\textsubscript{2}O) and consist of a single proton with non-zero spin, allowing them to act as magnetic dipoles under a strong magnetic field \cite{plewesPhysicsMRIPrimer2012,groverMagneticResonanceImaging2015}. When a magnetic field is applied, all hydrogen spin angular momentum vectors tend to align either parallel (spin-up) or anti-parallel (spin-down) to the field. Since spin projection comes in quantized these energy states are distinct. Nuclei can transition between different energy states by absorbing or emitting energy , which in the case of MRI is provided by RF pulses at the ( Larmor ) resonance frequency. 
 
 
 The axes of spinning protons do not align perfectly parallel to the applied field; rather, they \textit{precess}. The frequency of precession is called the \textit{Larmor frequency}, which is proportional to the magnetic field strength:
@@ -71,13 +74,11 @@ In AD Alzhimer can help find structural changes that take place in the brain of 
 
 MRI is also increasingly used in research to track the effectiveness of disease-modifying drugs based on the structural markers mentioned above. While MRI plays an important role in tracking disease progression and determining atrophy in specific brain regions, it is essential to point out that many other imaging and non-imaging techniques are used in clinical assessment.
 
-The utility of structural imaging and other markers will be enhanced by standardization of acquisition and analysis methods, as well as by the development of robust algorithms for automated assessment \cite{frisoniClinicalUseStructural2010}.
-
-As previously mentioned, Alzheimer’s disease is associated with progressive accumulation of abnormal proteins in the brain, which lead to synaptic, neuronal, and axonal damage. Neurobiological changes occur years before symptoms appear, following a stereotypical pattern: early medial temporal lobe involvement (entorhinal cortex and hippocampus), followed by progressive neocortical damage \cite{braakNeuropathologicalStageingAlzheimerrelated1991, delacourteBiochemicalPathwayNeurofibrillary1999}.
-
-The delay in cognitive impact suggests that the toxic effects of abnormal proteins accumulate progressively until they reach a critical threshold where cognitive symptoms become noticeable. For example, amnesic MCI is followed by other cognitive deficits across multiple domains until a disability threshold is reached and typical diagnostic criteria for AD are fulfilled.
-
-Due to new research on disease-modifying drugs that aim to slow disease progression, the value of identifying individuals at earlier stages has increased substantially. Several studies have shown correlations between tissue damage or loss in characteristically vulnerable regions—such as the hippocampus and entorhinal cortex—and the likelihood of progression from MCI to AD. This is also the main objective of the current work: to determine whether algorithms can reliably predict this conversion, which would have a major impact on treatment and disease management \cite{frisoniClinicalUseStructural2010}.
+The critical utility of MRI in the clinical domain has been discussed, particularly for AD and dementia. By adopting standardization protocols during acquisition or as part of further processing after the capture of a scan, we can ensure robustness and reliability. Any subsequent algorithmic task will thus be further improved \cite{frisoniClinicalUseStructural2010}.
+The pattern of AD development specifically follows a progressive accumulation of abnormal proteins (e.g., A$\beta$42), which in turn lead to synaptic, neuronal, and axonal damage. This pattern of accumulation occurs many years before any cognitive dysfunction becomes evident in patients. The progression in AD follows quite a typical pattern. It first presents itself in the medial temporal lobes (entorhinal cortex and hippocampus), which then spreads to inflict further neocortical damage \cite{braakNeuropathologicalStageingAlzheimerrelated1991, delacourteBiochemicalPathwayNeurofibrillary1999}.
+This delay, in fact, suggests that the toxic effects induced by abnormal protein deposition have to reach a certain threshold to initiate noticeable cognitive symptoms. For example, in amnesic Mild Cognitive Impairment (aMCI), deficits must emerge across multiple cognitive domains before the full AD diagnostic criteria are fulfilled.
+Additionally, the development of disease-modifying drugs that can decrease the rate of decline—or potentially halt it—requires early identification of at-risk individuals to evaluate treatment efficacy. Consequently, the value of early diagnosis has increased substantially.
+Studies have already shown that significant correlations exist between damage in regions such as the hippocampus and entorhinal cortex and the likelihood of MCI-to-AD progression. This constitutes the primary objective of this work: evaluating whether algorithmic approaches can reliably predict this conversion, which would have significant implications for treatment planning and disease management \cite{frisoniClinicalUseStructural2010}.
 
 \section{Atrophy as a Neurodegeneration Marker}
 
@@ -89,18 +90,18 @@ In the asymptomatic stage, amyloid markers provide indirect evidence of disease 
 
 \section{Alzheimer Disease Criteria and MRI}
 
-The report from the International Working Group (IWG-2) Criteria for Alzheimer’s Disease defines a shift from viewing AD as a clinicopathological entity to a clinicobiological one. The new diagnostic framework requires both an appropriate clinical phenotype (typical or atypical) and the presence of a biomarker consistent with AD pathology.
+The diagnostic approach to AD as proposed in the International Working Group (IWG-2) Criteria has shifted from a clinicopathological to a clinicobiological one. This shift reflects the incorporation of biomarkers into the clinical diagnosis process. The new framework requires two criteria to be satisfied: an appropriate clinical phenotype (typical or atypical) and the presence of a biomarker consistent with AD pathology.
 
-The criteria cover the full range of disease stages, including typical AD, atypical variants, mixed AD, and preclinical states (asymptomatic at-risk and presymptomatic AD).
+The criteria are complete and can capture all disease stages, including typical AD, atypical variants, mixed AD, and preclinical states (asymptomatic at-risk and presymptomatic AD).
 
 Pathophysiological markers are restricted to those that directly indicate amyloid or tau pathology and must be present for a diagnosis of AD.
 
 \subsection*{Specific Criteria}
 
 \begin{itemize}
-    \item A specific CSF signature (decreased $A\beta_{42}$ together with increased T-tau or P-tau concentrations).
-    \item Increased tracer retention on amyloid PET.
-    \item Presence of an autosomal dominant AD mutation.
+	\item A CSF profile showing decreased A$\beta_{42}$ alongside increased T-tau or P-tau concentrations.
+	\item Elevated tracer retention on amyloid PET imaging.
+	\item Presence of an autosomal dominant AD mutation.
 \end{itemize}
 
 Topographical biomarkers such as volumetric MRI (e.g., hippocampal atrophy) and FDG-PET have been removed from the core diagnostic algorithm, as they lack sufficient pathological specificity for AD detection. Their new role is to monitor disease progression over time \cite{duboisAdvancingResearchDiagnostic2014}.
@@ -138,11 +139,22 @@ Image reconstruction in CT relies on the mathematical foundations of the Radon t
 
 \subsubsection{X-ray Attenuation}
 
-After X-rays pass through an object, some photons are absorbed while others reach the detector. X-ray attenuation follows the exponential law:
+As X-rays pass through tissue, some photons are absorbed or scattered 
+while others reach the detector. Different tissue types attenuate 
+X-rays differently—bone absorbs much more than soft tissue, for instance. 
+This selective absorption is what creates contrast in the final image. 
+The phenomenon is described by the exponential attenuation law:
+
 \begin{equation}
-    I_{x} = I_{0} \, e^{-\mu x},
+	I_{x} = I_{0} \, e^{-\mu x},
 \end{equation}
-where $I_{0}$ is the initial intensity, $I_{x}$ the transmitted intensity, $x$ the material thickness, and $\mu$ the linear attenuation coefficient.
+
+\begin{itemize}
+	\item $I_0$: initial intensity
+	\item $I_x$: transmitted intensity at the detector
+	\item $\mu$: linear attenuation coefficient (tissue-dependent)
+	\item $x$: material thickness
+\end{itemize}
 
 For multiple materials along the path:
 \begin{equation}
@@ -164,7 +176,7 @@ Attenuation can also be expressed as a line integral:
 
 \subsection{Data Acquisition}
 
-During a CT scan, the sample (e.g., a patient’s head) lies on a table while an X-ray source rotates around it. Opposite the source, detectors measure the transmitted X-ray intensity. These measurements are sent to the Data Acquisition System (DAS), which digitizes them and prepares them for reconstruction.
+The process of data acquisition in a CT scan begins by placing the patient or sample inside the scanner. A rotating X-ray source then emits radiation as it orbits the sample, while a detector on the opposite side captures the transmitted signal. These signal intensities are digitized by the Data Acquisition System (DAS) and prepared for reconstruction.
 
 Acquisition criteria:
 
@@ -239,7 +251,7 @@ Positron Emission Tomography (PET) is an analytical process in which compounds l
 
 Positron emission is based on proton-rich nuclei, called ``emitters,'' which are unstable. To stabilize themselves, they may either release excess protons and gain neutrons, or capture electrons. The first process is known as \textit{positron emission}, and the second as \textit{electron capture (EC)}. Both processes are isobaric decays, meaning the mass number remains unchanged between the parent and daughter nuclei. In nuclei with low atomic weight, positron emission is more prevalent, while in heavier nuclei electron capture dominates.
 
-The process can be represented as:
+It can be described by :
 
 \[
 _{m}X^{n} \longrightarrow {}_{m-1}Y^{n} + \beta^{+} + \nu
@@ -249,9 +261,13 @@ _{m}X^{n} \longrightarrow {}_{m-1}Y^{n} + \beta^{+} + \nu
 p \rightarrow n + e^{+} + \nu_{c}
 \]
 
-Because of the excess protons, a nuclear transmutation occurs, producing a daughter nucleus with the same mass number but an atomic number reduced by one. The emitted neutrino escapes without interacting with the surrounding material.
+The nucleus by having too many protons , undergoes beta-plus decay . In this process a proton converts into a neutron, emitting a positron and a neutrino. This results in a new element with ; 
+\begin{itemize}
+	\item Same mass number ( protons + neutrons unchanged)
+	\item Atomic Number decreased by one ( one fewer proton )
+\end{itemize}
 
-The emitted positron is highly interactive due to its small mass and positive charge. It travels a short distance and is slowed by scattering in the surrounding tissue.
+The neutrino leaves without interacting with any of the tissue, whereas the positron, being charged is slowed by scattering in the tissue. 
 
 The distance traveled (the \textit{range}) depends on its energy:
 
@@ -265,15 +281,13 @@ As the positron slows, it eventually annihilates with an electron, producing eit
     \item a short-lived positronium, which also decays into two 511~keV photons.
 \end{itemize}
 
-These photons, called \textit{annihilation photons}, have energies corresponding to the rest mass of an electron and positron and are emitted nearly $180^\circ$ apart. However, due to residual momentum, the emission angle varies slightly around $180^\circ$.
+The photons that are produced are emmited nearly $180^\circ$  apart. However due to residual momentum , the emission angle varies slightly around $180^\circ$ . Their energy is equal to that of a positron and electron at rest mass while their are more officially named "\textbf{annihilation photons} .
 
 \subsection{Detection of Annihilation Radiation}
 
-To detect annihilation photons, the system uses a narrow coincidence timing window (3--15 ns). Both photons must be detected within this window for the event to be accepted. This method is called \textit{coincidence detection} or \textit{electronic collimation}.
+To detect the anihilation process the system identifies events through a coincidence detection window ( also known as electronic collmination ). Ths process works by creating a timing window (3-15ns) within which the photons need to strike two opposing detectors. If both of them arrive within this interval , the system records the interaction that occured , somewhere along the line of response ( LOR ) , which is the direct path connecting the two detectors. 
 
-The interaction is assumed to have occurred somewhere along the straight line connecting the two detectors. This line is known as the \textit{line of response (LOR)} or \textit{coincidence line}.
-
-\subsection{Factors Limiting the Spatial Resolution of PET}
+\subsection{PET Spatial Resolution Limitations}
 
 \begin{enumerate}
     \item \textbf{Positron Range:}  
@@ -300,7 +314,9 @@ PET scanner was introduced in 1998. It has the ability to show both body structu
 
 \subsection{The Use of PET in Alzheimer's Disease}
 
-Alzheimer's disease (AD) is characterized by amyloid plaques, neurofibrillary tangles (intracellular hyperphosphorylated tau aggregates), activated microglia, neurotransmitter changes, and neuronal loss. Brain changes can take place many years before any symptoms appear so the new criteria that have been proposed , have emphasized CSF analysis and brain imagin as early biomarkers and useful tools to track progression.  \cite{duboisResearchCriteriaDiagnosis2007, duboisAdvancingResearchDiagnostic2014}.
+The pathology of AD is defined by amyloid plagues in the first place ( according to Braak staging) , tau tangles ( neurofibrillary tangles ) concentration , activated microglia, neurotransmitter changes, and neuronal loss.
+
+The characteristic pathology of Alzheimer’s Disease (AD) includes the accumulation of amyloid plaques in the brain and intracellular hyperphosphorylated tau protein in the form of neurofibrillary tangles; activation of microglial cells; alterations in neurotransmitter levels; and neuronal death. Changes in the brain can occur for a long time prior to the onset of clinical manifestations. Therefore, it is now important to consider CSF analysis and brain imaging as early biomarkers and useful tools for tracking AD progression. \cite{duboisResearchCriteriaDiagnosis2007, duboisAdvancingResearchDiagnostic2014}.
 
 New PET imaging technologies allow the identification of AD in prodromal stages and support the development and monitoring of disease-modifying treatments. PET enables measurement of multiple functional processes in the brain, including metabolism and neurotransmitter activity, providing region-specific insights that strengthen diagnostic accuracy and treatment evaluation.
 

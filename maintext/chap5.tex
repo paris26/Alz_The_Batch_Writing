@@ -2,18 +2,13 @@
 
 \section{Foundational Machine Learning Paradigms in Dementia Classification}
 
-Before the widespread adoption of deep learning, classical machine learning pipelines followed a multi-step process consisting of:
-\begin{enumerate}
-    \item feature extraction,
-    \item feature selection and dimensionality reduction,
-    \item classification using a machine learning model.
-\end{enumerate}
+Prior to the deep learning era, research in dementia and AD relied on traditional machine learning methods. These workflows typically followed a pipeline of preprocessing, manual feature extraction, selection, and classification
 
 This pipeline formed the basis of early computational dementia research
 \cite{joDeepLearningAlzheimers2019, islamBrainMRIAnalysis2018}.
 
 \subsection{Support Vector Machines (SVM)}
-Support Vector Machines (SVMs) were among the earliest and most widely used algorithms for binary classification. An SVM works by identifying an optimal hyperplane that separates data from different classes while maximizing the margin---the distance between the hyperplane and the nearest data points. For non-linearly separable data, SVMs employ the \textit{kernel trick}, using polynomial or radial basis function (RBF) kernels to implicitly map data into a higher-dimensional space where linear separation becomes possible.
+Support Vector Machines are one of the most widely used algorithms and a foundational for classification. The algorithm works by solving an optimization problem to maximize the margin of a hyperplane between the projected data points, while separating the classes. For non linearly separable data it can employ the \textbf{kernel trick}, using polynomial or radial basis function to map data into a higher-dimensional space where they can be linearly separated. 
 
 In dementia research, SVMs were extensively applied for classifying Alzheimer's disease (AD) versus healthy controls (HC). Input features were typically derived from structural MRI, often by dividing the brain into regions of interest (ROIs) and computing measurements such as grey matter (GM) volume, cortical thickness, or voxel-based morphometry (VBM) values.
 
